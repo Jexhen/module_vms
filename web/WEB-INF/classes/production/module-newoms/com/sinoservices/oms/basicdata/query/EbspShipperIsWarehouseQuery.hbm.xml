@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EbspShipperIsWarehouseQuery">
+		<![CDATA[
+select s.ebsp_shipper_no,s.EBSP_REQ_WAREHOUSE from eb_shipper  s where 1=1 
+<<and s.ebsp_shipper_no in (:ebspShipperNos)>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

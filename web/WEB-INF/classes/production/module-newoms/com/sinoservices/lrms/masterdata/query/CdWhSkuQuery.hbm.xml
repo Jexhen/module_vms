@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="CdWhSkuQuery">
+		<![CDATA[
+select cdws.cdws_sku_code,
+cdws.cdws_cust_material_no,
+cdws.cdws_sku_name,
+cdws.cdws_cubic,
+cdws.cdws_gross_weight,
+cdws.cdws_lot_code
+from cd_wh_sku cdws
+where 1=1
+<<and cdws.cdws_cust_material_no = :eooiCustomerItemNo>>
+<<and cdws.cdws_cust_material_no in (:eooiCustomerItemNos)>>
+<<and cdws.cdws_sku_code = :eooiCode>>
+<<and cdws.cdws_sku_code in (:eooiCodes)>>
+<<and cdws.cdws_owner_group_code in (select g.owner_group_code
+from cd_owner_group g
+left join cd_owner_group_detail gd 
+on gd.owner_group_code=g.owner_group_code
+where gd.owner_code = :customerCode)>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

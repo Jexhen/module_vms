@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoCarrierRuleQuery">
+		<![CDATA[
+SELECT
+       EOCR.EOCR_CONSIGNEE_CODE,
+       EOCR.EOCR_CONSIGNEE_NAME,
+       EOCR.EOCR_TRANS_TYPE_CODE,
+       EOCR.EOCR_TRANS_TYPE_NAME,
+       EOCR.EOCR_PROVINCE_CODE,
+       EOCR.EOCR_PROVINCE_NAME,
+       EOCR.EOCR_CARRIER_CODE,
+       EOCR.EOCR_CARRIER_NAME,
+       EOCR.EOCR_STATUS,
+       EOCR.EOCR_ID,
+       EOCR.CREATOR,
+       EOCR.CREATE_TIME,
+       EOCR.MODIFIER,
+       EOCR.MODIFY_TIME,
+       EOCR.REC_STATUS,
+       EOCR.REC_VER,
+       ESUS.ESUS_USER_NAME_CN      AS ESUS_USER_CREATOR_NAME,
+       ESUSM.ESUS_USER_NAME_CN      AS ESUS_USER_MODIFIER_NAME
+  FROM EO_CARRIER_RULE EOCR
+  LEFT JOIN ES_USER ESUS
+    ON EOCR.CREATOR = ESUS.ESUS_ID
+  LEFT JOIN ES_USER ESUSM
+    ON EOCR.MODIFIER = ESUSM.ESUS_ID
+ WHERE 1=1
+ <<AND EOCR.EOCR_CONSIGNEE_CODE LIKE :eocrConsigneeCode>>
+ <<AND EOCR.EOCR_CONSIGNEE_NAME LIKE :eocrConsigneeName>>
+ <<AND EOCR.EOCR_TRANS_TYPE_CODE LIKE :eocrTransTypeCode>>
+ <<AND EOCR.EOCR_TRANS_TYPE_NAME LIKE :eocrTransTypeName>>
+ <<AND EOCR.EOCR_PROVINCE_CODE LIKE :eocrProvinceCode>>
+ <<AND EOCR.EOCR_PROVINCE_NAME LIKE :eocrProvinceName>>
+ <<AND EOCR.EOCR_CARRIER_CODE LIKE :eocrCarrierCode>>
+ <<AND EOCR.EOCR_CARRIER_NAME LIKE :eocrCarrierName>>
+ <<AND EOCR.EOCR_STATUS LIKE :eocrStatus>>
+ <<AND EOCR.EOCR_ID LIKE :eocrId>>
+ <<AND EOCR.CREATOR LIKE :creator>>
+ <<AND EOCR.CREATE_TIME > :createTimeFrom>>
+ <<AND EOCR.CREATE_TIME <= :createTimeTo + 1>>
+ <<AND EOCR.MODIFIER LIKE :modifier>>
+ <<AND EOCR.MODIFY_TIME > :modifyTimeFrom>>
+ <<AND EOCR.MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND EOCR.REC_STATUS LIKE :recStatus>>
+ <<AND EOCR.REC_VER LIKE :recVer>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

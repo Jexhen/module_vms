@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EbCustomerIsGroupQuery">
+		<![CDATA[
+  select t.ebcu_customer_no as pm_code,t.is_group_customer from EB_CUSTOMER T  where 1=1
+  and t.ebcu_customer_no in (:pmCodes)
+		]]>
+	</sql-query>
+</hibernate-mapping>

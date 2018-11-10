@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <sql-query name="EoDivideStockParamQuery">
+    <![CDATA[
+
+select 
+DISTINCT
+EODP.EODP_ID,
+EODP.REC_STATUS,
+EODP.ORG_ID,
+EODP.EODP_CODE,
+EODP.CREATOR,
+EODP.CREATE_TIME,
+EODP.MODIFIER,
+EODP.MODIFY_TIME,
+EODP.REC_VER,
+EODP.EODP_NAME_EN,
+EODP.EODP_NAME,
+EODP.EODP_CUSTOMER_CODE,
+EODP.EODP_CUSTOMER_NAME,
+EODP.EODP_ORDER_TYPE_CODE,
+EODP.EODP_ORDER_TYPE_NAME,
+EODP.EODP_TRANSPORT_TYPE_CODE,
+EODP.EODP_TRANSPORT_TYPE_NAME,
+EODP.EODP_PRIORITY,
+EODP.TIME_ZONE,
+EODP.PM_CODE,
+ESUS.ESUS_USER_NAME_CN      AS ESUS_USER_CREATOR_NAME,
+ESUSM.ESUS_USER_NAME_CN      AS ESUS_USER_MODIFIER_NAME,
+EODP.EODP_REMARK 
+from EO_DIVIDE_STOCK_PARAM EODP
+LEFT JOIN ES_USER ESUS
+    ON EODP.CREATOR = ESUS.ESUS_ID
+LEFT JOIN ES_USER ESUSM
+    ON EODP.MODIFIER = ESUSM.ESUS_ID
+where 1=1
+ <<AND EODP.ORG_ID=:orgId>>
+ <<and EODP.EODP_CODE like :eodpCode >>
+ <<and EODP.EODP_NAME like :eodpName >>
+ <<and EODP.EODP_NAME_EN like :eodpNameEn >>
+ <<and EODP.EODP_CUSTOMER_CODE  = :eodpCustomerCode >> 
+ <<and EODP.EODP_ORDER_TYPE_CODE = :eodpOrderTypeCode >> 
+ <<and EODP.EODP_TRANSPORT_TYPE_CODE = :eodpTransportTypeCode >>  
+ <<and EODP.EODP_REMARK like :eodpRemark >>
+ <<and EODP.REC_STATUS = :recStatus >> 
+ <<and EODP.EODP_PRIORITY = :eodpPriority >>
+ 
+ order by EODP.EODP_PRIORITY asc
+
+
+    ]]>
+  </sql-query>
+</hibernate-mapping>

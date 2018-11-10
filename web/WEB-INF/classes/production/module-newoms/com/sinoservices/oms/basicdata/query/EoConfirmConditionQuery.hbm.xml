@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoConfirmConditionQuery">
+		<![CDATA[
+SELECT	distinct
+       EOCC_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       ORG_ID,
+       TIME_ZONE,
+       PM_CODE,
+       COMPANY_CODE,
+       SITE_CODE,
+       EOCC_EOCS_CODE,
+       EOCC_NO,
+       EOCC_LEFT_BRACKET,
+       EOCC_COLUMN_CODE,
+       EOCC_OPERATE,
+       EOCC_VALUE,
+       EOCC_RIGHT_BRACKET,
+       EOCC_CONTROL_LOGIC
+  FROM EO_CONFIRM_CONDITION
+ WHERE 1=1
+<< AND ORG_ID = :orgId >>
+<< AND SITE_CODE = :siteCode >>
+<< AND EOCC_EOCS_CODE = :eoccEocsCode >>
+<< AND EOCC_EOCS_CODE IN (:eoccEocsCodes) >>
+ ORDER BY EOCC_NO ASC
+		]]>
+	</sql-query>
+</hibernate-mapping>

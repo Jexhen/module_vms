@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="EoSiteInvQuery">
+		<![CDATA[
+SELECT ESI.JOB_ID,
+       ESI.OWNER_CODE,
+       ESI.SKU_CODE,
+       ESI.SKU_STATUS,
+       NVL(WM.CODE_ALIAS, T.CODE_ALIAS) AS SKU_STATUSNAME,
+       ESI.IN_QTY_EA,
+       ESI.QTY_EA,
+       ESI.OUT_QTY_EA,
+       ESI.COMPANY_CODE,
+       ESI.SITE_CODE,
+       ESI.REC_VER,
+       ESI.CREATOR,
+       ESI.CREATE_TIME,
+       ESI.MODIFIER,
+       ESI.MODIFY_TIME,
+       ESI.REC_STATUS,
+       ESI.TIME_ZONE,
+       EC.EBCU_NAME_CN OWNER_NAME,
+       EC1.ESCO_COMPANY_NAME_CN COMPANY_NAME,
+       EC2.ESCO_COMPANY_NAME_CN SITE_NAME,
+       CCM.CDWS_CUST_MATERIAL_NO AS CUST_MATERIAL_NO,
+       CCM.CDWS_SKU_NAME SKU_NAME,
+       ESI.QTY_EA - ESI.OUT_QTY_EA AS ABLE_QTY_EA,
+       EBMG.EBMG_NAME_CN /*商品类别名称*/
+
+  FROM EO_SITE_INV ESI
+  LEFT JOIN EB_CUSTOMER EC
+    ON EC.EBCU_CUSTOMER_NO = ESI.OWNER_CODE
+  LEFT JOIN CD_WH_SKU CCM
+    ON ESI.SKU_CODE = CCM.CDWS_SKU_CODE
+  LEFT JOIN EB_MATERIAL_CLASSIFICATION EBMG
+    ON CCM.CDWS_GROUP_CODE = EBMG.EBMG_CODE
+   AND EBMG.REC_STATUS = 0
+  LEFT JOIN ES_COMPANY EC1
+    ON EC1.ESCO_COMPANY_NO = ESI.COMPANY_CODE
+  LEFT JOIN ES_COMPANY EC2
+    ON EC2.ESCO_COMPANY_NO = ESI.SITE_CODE
+  LEFT JOIN (SELECT CODE_ID, CODE_ALIAS, OWNER_CODE FROM WM_CODE_MASTER) WM
+    ON WM.OWNER_CODE = ESI.OWNER_CODE
+   AND WM.CODE_ID = ESI.SKU_STATUS
+  LEFT JOIN (SELECT EB.EBCD_CODE AS CODE_ID, EB.EBCD_NAME_CN AS CODE_ALIAS
+               FROM EB_CODE_MASTER EB
+              WHERE EBCD_DICTIONARY_TYPE = 'SYS_WM_QUALIFY') T
+    ON T.CODE_ID = ESI.SKU_STATUS
+ WHERE 1 = 1
+   AND (ESI.IN_QTY_EA > 0 OR ESI.QTY_EA > 0 OR ESI.OUT_QTY_EA > 0)
+<<AND EBMG.EBMG_CODE = :cdcmTypeCode  >>
+<<AND ESI.JOB_ID LIKE :jobId>>
+<<AND ESI.OWNER_CODE LIKE :eoviOwnerCode>>
+<<AND ESI.SKU_CODE LIKE :eoviSkuCode>>
+<<AND ESI.SKU_STATUS LIKE :skuStatus>>
+<<AND ESI.IN_QTY_EA LIKE :inQtyEa>>
+<<AND ESI.QTY_EA LIKE :qtyEa>>
+<<AND ESI.OUT_QTY_EA LIKE :outQtyEa>>
+<<AND ESI.COMPANY_CODE LIKE :companyCode>>
+<<AND ESI.SITE_CODE LIKE :siteCode>>
+<<AND ESI.REC_VER LIKE :recVer>>
+<<AND ESI.CREATOR LIKE :creator>>
+<<AND ESI.CREATE_TIME > :createTimeFrom>>
+<<AND ESI.CREATE_TIME <= :createTimeTo + 1>>
+<<AND ESI.MODIFIER LIKE :modifier>>
+<<AND ESI.MODIFY_TIME > :modifyTimeFrom>>
+<<AND ESI.MODIFY_TIME <= :modifyTimeTo + 1>>
+<<AND ESI.REC_STATUS LIKE :recStatus>>
+<<AND ESI.SKU_CODE in (:skuCodes)>>
+<<AND ESI.SKU_STATUS in (:skuStatues)>>
+<<AND ESI.TIME_ZONE LIKE :timeZone>>
+<<AND EC.IS_GROUP_CUSTOMER LIKE :isGroupCustomer>>
+
+ <<AND EC.Ebcu_Bu_Code = :ebcuBuCode>>
+ <<AND EC.is_agent =:isAgent >>
+ <<AND EC.is_sale_company =:isSaleCompany>>
+
+ and <@dataFilter Table="ES_COMPANY" field= "COMPANY_CODE" alias="ESI" />
+ and <@dataFilter Table="ES_COMPANY" field= "SITE_CODE" alias="ESI" />
+ and <@dataFilter Table="EB_CUSTOMER" field= "OWNER_CODE" alias="ESI" />
+ORDER BY ESI.CREATE_TIME DESC
+${queryPlanDefinedSql}
+${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

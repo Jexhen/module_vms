@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoDivideStockConditionQuery">
+		<![CDATA[
+
+select                  
+EODC.EODC_ID,           
+EODC.CREATOR,           
+EODC.CREATE_TIME,       
+EODC.MODIFIER,          
+EODC.MODIFY_TIME,       
+EODC.REC_VER ,          
+EODC.REC_STATUS,        
+EODC.ORG_ID,            
+EODC.PM_CODE,           
+EODC.TIME_ZONE,         
+EODC.EODC_EODP_PM_CODE, 
+EODC.EODC_NO,           
+EODC.EODC_LEFT_BRACKET, 
+EODC.EODC_COLUMN_CODE,  
+EODC.EODC_OPERATE,      
+EODC.EODC_VALUE,        
+EODC.EODC_RIGHT_BRACKET,
+EODC.EODC_CONTROL_LOGIC 
+from                    
+EO_DIVIDE_STOCK_CONDITION EODC
+where 1=1
+<< AND EODC.ORG_ID = :orgId >>
+<< AND EODC.EODC_EODP_PM_CODE = :eodcEodpPmCode >>
+<< AND EODC.EODC_EODP_PM_CODE IN (:eodcEodpPmCodes) >>
+ORDER BY EODC.EODC_NO ASC /*按序号升序排序*/
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <sql-query name="EoDivideMileStoneQuery">
+    <![CDATA[
+	    select
+	    	eodp.EODR_ID,
+	    	eodp.CREATOR,
+	    	eodp.CREATE_TIME,
+	    	eodp.MODIFIER,
+	    	eodp.MODIFY_TIME,
+	    	eodp.REC_VER,
+	    	eodp.REC_STATUS,
+	    	eodp.ORG_ID,
+	    	eodp.TIME_ZONE,
+	    	eodp.PM_CODE,
+	    	eodp.EODR_SEQUENCE,
+	    	eodp.EODR_DIVIDE_CODE,
+	    	eodp.EODR_DIVIDE_NAME,
+	    	eodp.EODR_WORK_TYPE_CODE,
+	    	eodp.EODR_WORK_TYPE_NAME,
+	    	eodp.EODR_EVENT_OBJECT_CODE,
+	    	eodp.EODR_EVENT_OBJECT_NAME,
+	    	eodp.EODR_PROVIDER_ROLE_CODE,
+	    	eodp.EODR_PROVIDER_ROLE_NAME,
+	    	eodp.EODR_AUTO_ASSIGN,
+	    	eodp.EODR_REMARK,
+	    	eodp.EODR_WEATHER_RECEIPT,
+	    	eodp.EODR_EODP_PM_CODE,
+	    	eowm.EOWM_SEQUENCE,
+			eowm.EOWM_CODE,
+			eowm.EOWM_NAME,
+			eowm.EOWM_NAME_EN,
+			eowm.EOWM_WORK_TYPE_CODE,
+			eowm.EOWM_WORK_TYPE_NAME,
+			eowm.EOWM_EVENT_OBJECT_CODE,
+			eowm.EOWM_EVENT_OBJECT_NAME,
+			eowm.EOWM_EVENT_STATUS_CODE,
+			eowm.EOWM_EVENT_STATUS_NAME,
+			eowm.EOWM_PLAN_TIME_SQL,
+			eowm.EOWM_REMARK, 
+			eowm.EOWM_WORK_STATUS
+	    from eo_divide_procedure eodp,eo_work_milestone eowm
+	   where 1=1
+	   	   and eodp.ORG_ID=eowm.ORG_ID
+		   and eodp.EODR_WORK_TYPE_CODE=eowm.EOWM_WORK_TYPE_CODE
+	    << and eodp.ORG_ID =:orgId>> 
+	    << and eodp.EODR_EODP_PM_CODE = :eodpPmCode >> 
+	    << and eodp.EODR_WORK_TYPE_CODE = :workTypeCode >> 
+	    << and eodp.EODR_WORK_TYPE_CODE in(:workTypeCodes) >> 
+    ]]>
+  </sql-query>
+</hibernate-mapping>

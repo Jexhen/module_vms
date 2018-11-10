@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="PopEbMaterialClassificationQuery">
+		<![CDATA[
+SELECT EBMG_ID,EBMG_CODE, FIRST_NAME_CN||'/'||SECOND_NAME_CN||'/'||THIRD_NAME_CN ebmg_name_cn
+FROM(
+	SELECT A.ebmg_id ebmg_id,A.ebmg_code ebmg_code,A.ebmg_name_cn THIRD_NAME_CN,B.ebmg_name_cn SECOND_NAME_CN,C.ebmg_name_cn FIRST_NAME_CN 
+	FROM
+	EB_MATERIAL_CLASSIFICATION A 
+	LEFT JOIN EB_MATERIAL_CLASSIFICATION B ON A.EBMG_PARENT_PM_CODE = B.EBMG_CODE
+	LEFT JOIN EB_MATERIAL_CLASSIFICATION C ON B.EBMG_PARENT_PM_CODE = C.EBMG_CODE
+	WHERE 1=1
+	
+	<if is_empty(ebmgHierarchy)>
+	 AND A.EBMG_HIERARCHY ='3'
+	</if> 
+	
+	 AND A.EBMG_STATE='0'
+	 )
+<if !is_empty(ebmgNameCn,ebmgCode)>
+ 	WHERE (
+   			1=2
+  	<< OR FIRST_NAME_CN||'/'||SECOND_NAME_CN||'/'||THIRD_NAME_CN LIKE '%' || :ebmgNameCn || '%' >>
+  	<< OR EBMG_CODE LIKE '%' || :ebmgCode || '%' >>
+  		)
+</if>
+		]]>
+	</sql-query>
+</hibernate-mapping>
