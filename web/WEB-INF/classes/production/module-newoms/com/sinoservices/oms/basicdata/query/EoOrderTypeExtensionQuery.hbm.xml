@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderTypeExtensionQuery">
+		<![CDATA[
+		select
+			CTOT.CTOT_NAME,
+			CTOT.CTOT_CODE,
+			EOTE.EOTE_EVENT_OBJECT_NAME,
+			EOTE.EOTE_EVENT_OBJECT_CODE,
+			EOTE_INVENTORY_EFFECT
+		from
+			EO_ORDER_TYPE_EXTENSION EOTE
+		left join CD_TS_ORDER_TYPE CTOT on EOTE.EOTE_ORDER_TYPE_CODE=CTOT.CTOT_CODE
+										and EOTE.ORG_ID=CTOT.ORG_ID
+		where 1=1
+		<<and CTOT.CTOT_NAME in (:orderTypeName)>>
+		<<and CTOT.CTOT_CODE in (:orderTypeCode)>>
+		<<and EOTE.ORG_ID = :orgId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

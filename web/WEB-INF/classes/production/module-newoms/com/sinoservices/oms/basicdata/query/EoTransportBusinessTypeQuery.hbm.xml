@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoTransportBusinessTypeQuery">
+		<![CDATA[
+SELECT
+       EOTB_ID,
+       EO_TRANSPORT_BUSINESS_TYPE.CREATOR,
+       EO_TRANSPORT_BUSINESS_TYPE.CREATE_TIME,
+       EO_TRANSPORT_BUSINESS_TYPE.MODIFIER,
+       EO_TRANSPORT_BUSINESS_TYPE.MODIFY_TIME,
+       EO_TRANSPORT_BUSINESS_TYPE.REC_VER,
+       EO_TRANSPORT_BUSINESS_TYPE.REC_STATUS,
+       EOTB_CUSTOMER_CODE,
+       EOTB_CUSTOMER_NAME,
+       COMPANY_CODE,
+       COMPANY_NAME,
+       SITE_CODE,
+       SITE_NAME,
+       ESUS.ESUS_USER_NAME_CN      AS ESUS_USER_CREATOR_NAME,
+       ESUSM.ESUS_USER_NAME_CN      AS ESUS_USER_MODIFIER_NAME,
+       EOTB_BUSINESS_TYPE
+  FROM EO_TRANSPORT_BUSINESS_TYPE
+  LEFT JOIN ES_USER ESUS
+    ON EO_TRANSPORT_BUSINESS_TYPE.CREATOR = ESUS.ESUS_ID
+  LEFT JOIN ES_USER ESUSM
+    ON EO_TRANSPORT_BUSINESS_TYPE.MODIFIER = ESUSM.ESUS_ID
+ WHERE 1=1
+  <if dataAuthority != 'N'>
+  AND <@dataFilter Table="HLS_ES_COMPANY_CODE" fiEld= "COMPANY_CODE" aLias="EOOR" />
+
+   AND <@dataFilter Table="HLS_EB_CUSTOMER" fiEld= "EOOR_CUSTOMER_CODE" aLias="EOOR" /> 
+ </if>
+ <<AND REC_STATUS = :recStatus>>
+ <<AND EOTB_CUSTOMER_CODE = :eotbCustomerCode>>
+ <<AND EOTB_CUSTOMER_NAME LIKE :eotbCustomerName>>
+ <<AND COMPANY_CODE = :companyCode>>
+ <<AND COMPANY_NAME LIKE :companyName>>
+ <<AND SITE_CODE = :siteCode>>
+ <<AND SITE_NAME LIKE :siteName>>
+ <<AND EOTB_BUSINESS_TYPE = :eotbBusinessType>>
+ order by MODIFY_TIME desc
+		]]>
+	</sql-query>
+</hibernate-mapping>

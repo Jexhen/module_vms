@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="OmsIfExamResultVQuery">
+		<![CDATA[
+select v.MO_PRODUCT_CODE,
+	   v.GROSS_WEIGHT,
+	   v.NET_WEIGHT,
+	   v.LENGTH,
+	   v.WIDTH,
+	   v.HEIGHT,
+	   v.VOLUME,
+	   v.UOM,
+	   v.EXAM_RESULT,
+	   v.REMARKS,
+	   v.EXPORT_ORG_ID
+ from oms_if_exam_result_v v where 1=1
+<< and v.mo_product_code in (:moProductCodes) >>
+<< and v.exam_result = :examResult >>
+		]]>
+	</sql-query>
+</hibernate-mapping>

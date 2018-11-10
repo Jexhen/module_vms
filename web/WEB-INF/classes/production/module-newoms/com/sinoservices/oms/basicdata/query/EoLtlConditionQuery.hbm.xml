@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoLtlConditionQuery">
+		<![CDATA[
+SELECT
+       EOLC_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       ORG_ID,
+       TIME_ZONE,
+       PM_CODE,
+       COMPANY_CODE,
+       SITE_CODE,
+       EOLC_EOLS_PM_CODE,
+       EOLC_NO,
+       EOLC_LEFT_BRACKET,
+       EOLC_COLUMN_CODE,
+       EOLC_OPERATE,
+       EOLC_VALUE,
+       EOLC_RIGHT_BRACKET,
+       EOLC_CONTROL_LOGIC
+  FROM EO_LTL_CONDITION
+ WHERE 1=1
+ <<AND REC_STATUS = :recStatus>>
+ <<AND ORG_ID = :orgId>>
+ <<AND TIME_ZONE = :timeZone>>
+ <<AND PM_CODE = :pmCode>>
+ <<AND COMPANY_CODE = :companyCode>>
+ <<AND SITE_CODE = :siteCode>>
+ <<AND EOLC_EOLS_PM_CODE = :eolcEolsPmCode>>
+ <<AND EOLC_NO = :eolcNo>>
+ <<AND EOLC_LEFT_BRACKET = :eolcLeftBracket>>
+ <<AND EOLC_COLUMN_CODE = :eolcColumnCode>>
+ <<AND EOLC_OPERATE = :eolcOperate>>
+ <<AND EOLC_VALUE = :eolcValue>>
+ <<AND EOLC_RIGHT_BRACKET = :eolcRightBracket>>
+ <<AND EOLC_CONTROL_LOGIC = :eolcControlLogic>>
+ ORDER BY PM_CODE ASC
+		]]>
+	</sql-query>
+</hibernate-mapping>

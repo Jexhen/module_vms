@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EsCustomerParamQuery">
+		<![CDATA[
+SELECT
+       ESCP_ID,
+       ESCP_ESST_CODE,
+       ESCP_CODE,
+       ESCP_NAME,
+       ESCP_VALUE,
+       ESCP_DESC,
+       ORG_ID,
+       REC_VER,
+       MODIFY_TIME,
+       MODIFIER,
+       CREATE_TIME,
+       CREATOR,
+       REC_STATUS,
+       COMPANY_CODE,
+       SITE_CODE
+  FROM ES_CUSTOMER_PARAM
+ WHERE 1=1
+ <<AND ESCP_ID LIKE :escpId>>
+ <<AND ESCP_ESST_CODE LIKE :escpEsstCode>>
+ <<AND ESCP_ESST_CODE in (:escpEsstCodes)>>
+ <<AND ESCP_CODE LIKE :escpCode>>
+ <<AND ESCP_NAME LIKE :escpName>>
+ <<AND ESCP_VALUE LIKE :escpValue>>
+ <<AND ESCP_DESC LIKE :escpDesc>>
+ <<AND ORG_ID LIKE :orgId>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND COMPANY_CODE LIKE :companyCode>>
+ <<AND SITE_CODE LIKE :siteCode>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

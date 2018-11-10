@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkOrderMergeParamQuery">
+		<![CDATA[
+
+select 
+DISTINCT
+EWMP.EWMP_ID,
+EWMP.REC_STATUS,
+EWMP.ORG_ID,
+EWMP.EWMP_CODE,
+EWMP.CREATOR,
+EWMP.CREATE_TIME,
+EWMP.MODIFIER,
+EWMP.MODIFY_TIME,
+EWMP.REC_VER,
+EWMP.EWMP_NAME_EN,
+EWMP.EWMP_NAME,
+EWMP.EWMP_CUSTOMER_CODE,
+EWMP.EWMP_CUSTOMER_NAME,
+EWMP.EWMP_WORK_TYPE_CODE,
+EWMP.EWMP_WORK_TYPE_NAME,
+EWMP.EWMP_PRIORITY,
+EWMP.EWMP_EFFECT_SHIPPER_TIME_FM,
+EWMP.EWMP_EFFECT_SHIPPER_TIME_TO,
+EWMP.EWMP_EFFECT_CONSIGNEE_TIME_FM,
+EWMP.EWMP_EFFECT_CONSIGNEE_TIME_TO,
+EWMP.EWMP_REMARK 
+from EO_WORK_MERGER_PARAM EWMP
+where 1=1
+ <<and EWMP.EWMP_CODE = :ewmpCode>>
+ <<and EWMP.EWMP_NAME like :ewmpName>>
+ <<and EWMP.EWMP_NAME_EN like :ewmpNameEn>>
+ <<and EWMP.EWMP_CUSTOMER_CODE = :ewmpCustomerCode>> 
+ <<and EWMP.EWMP_WORK_TYPE_CODE = :ewmpWorkTypeCode>> 
+ <<and EWMP.EWMP_REMARK = :ewmpRemark >>
+ <<and EWMP.REC_STATUS = :recStatus>> 
+ <<and EWMP.EWMP_PRIORITY = :ewmpPriority>>
+ <<and EWMP.ORG_ID = :orgId>>
+ order by EWMP.EWMP_ID desc
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

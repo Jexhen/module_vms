@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="WorkSplitParamByCustomerAndTypeQuery">
+		<![CDATA[
+		select 
+			EWSP.EWSP_ID,
+			EWSP.CREATOR,
+			EWSP.CREATE_TIME,
+			EWSP.MODIFIER,
+			EWSP.MODIFY_TIME,
+			EWSP.REC_VER,
+			EWSP.REC_STATUS,
+			EWSP.ORG_ID,
+			EWSP.EWSP_CODE,
+			EWSP.EWSP_NAME,
+			EWSP.EWSP_NAME_EN,
+			EWSP.EWSP_CUSTOMER_CODE,
+			EWSP.EWSP_CUSTOMER_NAME,
+			EWSP.EWSP_WORK_TYPE_CODE,
+			EWSP.EWSP_WORK_TYPE_NAME,
+			EWSP.EWSP_PRIORITY,
+			EWSP.EWSP_REMARK
+		from EO_WORK_SPLIT_PARAM EWSP
+		where 1=1
+		and ((EWSP.EWSP_CUSTOMER_CODE =:customer and EWSP.EWSP_WORK_TYPE_CODE =:type)
+		or ((EWSP.EWSP_CUSTOMER_CODE is null or EWSP.EWSP_CUSTOMER_CODE='') and EWSP.EWSP_WORK_TYPE_CODE =:type)
+		or (EWSP.EWSP_CUSTOMER_CODE =:customer and (EWSP.EWSP_WORK_TYPE_CODE is null or EWSP.EWSP_WORK_TYPE_CODE=''))
+		or ((EWSP.EWSP_CUSTOMER_CODE is null or EWSP.EWSP_CUSTOMER_CODE='') and (EWSP.EWSP_WORK_TYPE_CODE is null or EWSP.EWSP_WORK_TYPE_CODE='')))
+		and EWSP.REC_STATUS =0
+		<<and EWSP.ORG_ID = :orgId>>
+		order by nvl(EWSP.EWSP_PRIORITY,0) desc
+		]]>
+	</sql-query>
+</hibernate-mapping>

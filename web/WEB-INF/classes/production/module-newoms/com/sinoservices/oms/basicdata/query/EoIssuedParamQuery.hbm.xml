@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <sql-query name="EoIssuedParamQuery">
+    <![CDATA[
+    select
+    	EOIP.EOIP_ID,
+    	EOIP.CREATOR,
+    	EOIP.CREATE_TIME,
+    	EOIP.MODIFIER,
+    	EOIP.MODIFY_TIME,
+    	EOIP.REC_VER,
+    	EOIP.REC_STATUS,
+    	EOIP.ORG_ID,
+    	EOIP.TIME_ZONE,
+    	EOIP.PM_CODE,
+    	EOIP.EOIP_NAME,
+    	EOIP.EOIP_NAME_EN,
+    	EOIP.EOIP_REMARK,
+    	EOIP.EOIP_PRIORITY,
+    	ESUS.ESUS_USER_NAME_CN      AS ESUS_USER_CREATOR_NAME,
+    	ESUSM.ESUS_USER_NAME_CN      AS ESUS_USER_MODIFIER_NAME,
+    	EOIP.EOIP_TYPE
+    from EO_ISSUED_PARAM EOIP
+    LEFT JOIN ES_USER ESUS
+    ON EOIP.CREATOR = ESUS.ESUS_ID
+    LEFT JOIN ES_USER ESUSM
+    ON EOIP.MODIFIER = ESUSM.ESUS_ID
+   where 1=1
+   <<and EOIP.EOIP_ID = :eoipId>>
+   <<and EOIP.CREATOR = :creator>>
+   <<and EOIP.CREATE_TIME = :createTime>>
+   <<and EOIP.MODIFIER = :modifier>>
+   <<and EOIP.MODIFY_TIME = :modifyTime>>
+   <<and EOIP.REC_VER = :recVer>>
+   <<and EOIP.REC_STATUS = :recStatus>>
+   <<and EOIP.ORG_ID = :orgId>>
+   <<and EOIP.TIME_ZONE = :timeZone>>
+   <<and EOIP.PM_CODE = :pmCode>>
+   <<and EOIP.EOIP_NAME = :eoipName>>
+   <<and EOIP.EOIP_NAME_EN = :eoipNameEn>>
+   <<and EOIP.EOIP_REMARK = :eoipRemark>>
+   <<and EOIP.EOIP_PRIORITY = :eoipPriority>>
+   <<and EOIP.EOIP_NAME IN (:eoipNames)>>
+   <<and EOIP.EOIP_ID NOT IN (:eoipIds)>>
+   <<and EOIP.EOIP_TYPE LIKE :eoipType>>
+   order by EOIP.EOIP_PRIORITY asc
+   	
+    ]]>
+  </sql-query>
+</hibernate-mapping>

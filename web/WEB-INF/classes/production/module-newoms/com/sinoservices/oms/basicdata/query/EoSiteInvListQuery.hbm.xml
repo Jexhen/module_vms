@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoSiteInvListQuery">
+		<![CDATA[
+SELECT
+       JOB_ID,
+       OWNER_CODE,
+       SKU_CODE,
+       SKU_STATUS,
+       IN_QTY_EA,
+       QTY_EA,
+       OUT_QTY_EA,
+       COMPANY_CODE,
+       SITE_CODE,
+       REC_VER,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_STATUS,
+       TIME_ZONE
+  FROM EO_SITE_INV
+ WHERE 1=1
+ <<AND JOB_ID = :jobId>>
+ <<AND OWNER_CODE = :ownerCode>>
+ <<AND SKU_CODE = :skuCode>>
+ <<AND SKU_STATUS = :skuStatus>>
+ 
+ <<AND SKU_CODE in (:skuCodes)>>
+ <<AND SKU_STATUS in (:skuStatues)>>
+ 
+ <<AND IN_QTY_EA = :inQtyEa>>
+ <<AND QTY_EA = :qtyEa>>
+ <<AND OUT_QTY_EA = :outQtyEa>>
+ <<AND COMPANY_CODE = :companyCode>>
+ <<AND SITE_CODE = :siteCode>>
+ <<AND REC_VER = :recVer>>
+ <<AND CREATOR = :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER = :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_STATUS = :recStatus>>
+ <<AND TIME_ZONE = :timeZone>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

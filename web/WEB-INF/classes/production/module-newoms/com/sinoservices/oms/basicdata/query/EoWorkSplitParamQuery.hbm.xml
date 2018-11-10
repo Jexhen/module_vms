@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkSplitParamQuery">
+		<![CDATA[
+		select 
+			EWSP.EWSP_ID,
+			EWSP.CREATOR,
+			EWSP.CREATE_TIME,
+			EWSP.MODIFIER,
+			EWSP.MODIFY_TIME,
+			EWSP.REC_VER,
+			EWSP.REC_STATUS,
+			EWSP.ORG_ID,
+			EWSP.EWSP_CODE,
+			EWSP.EWSP_NAME,
+			EWSP.EWSP_NAME_EN,
+			EWSP.EWSP_CUSTOMER_CODE,
+			EWSP.EWSP_CUSTOMER_NAME,
+			EWSP.EWSP_WORK_TYPE_CODE,
+			EWSP.EWSP_WORK_TYPE_NAME,
+			EWSP.EWSP_PRIORITY,
+			EWSP.EWSP_REMARK
+		from EO_WORK_SPLIT_PARAM EWSP
+		where 1=1
+		<<and EWSP.EWSP_ID = :ewspId>>
+		<<and EWSP.REC_STATUS = :recStatus>>
+		<<and EWSP.ORG_ID = :orgId>>
+		<<and EWSP.EWSP_CODE = :ewspCode>>
+		<<and EWSP.EWSP_NAME LIKE :ewspName >>
+		<<and EWSP.EWSP_NAME_EN LIKE :ewspNameEn >>
+		<<and EWSP.EWSP_CUSTOMER_CODE = :ewspCustomerCode>>
+		<<and EWSP.EWSP_CUSTOMER_NAME LIKE :ewspCustomerName>>
+		<<and EWSP.EWSP_WORK_TYPE_CODE = :ewspWorkTypeCode>>
+		<<and EWSP.EWSP_WORK_TYPE_NAME LIKE :ewspWorkTypeName>>
+		<<and EWSP.EWSP_PRIORITY = :ewspPriority>>
+		<<and EWSP.EWSP_REMARK = :ewspRemark >>
+		]]>
+	</sql-query>
+</hibernate-mapping>
