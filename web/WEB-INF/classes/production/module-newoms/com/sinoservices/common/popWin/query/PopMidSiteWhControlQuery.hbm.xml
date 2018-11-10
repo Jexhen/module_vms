@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopMidSiteWhControlQuery">
+		<![CDATA[
+SELECT
+       MIDS.JOB_ID,
+       MIDS.CREATOR,
+       MIDS.CREATE_TIME,
+       MIDS.MODIFIER,
+       MIDS.MODIFY_TIME,
+       MIDS.CUST_WH_CODE,
+       MIDS.CUST_WH_NAME,
+       MIDS.CUSTOMER_CODE,
+       MIDS.CUSTOMER_NAME,
+       MIDS.SITE_NAME,
+       MIDS.STATUS,
+       MIDS.WH_NAME,
+       MIDS.SITE_CODE,
+       MIDS.WH_CODE,
+       MIDS.PLANT_ID,
+       MIDS.COMPANY_CODE,
+       MIDS.IS_LATTER_SUBWAREHOUSE,
+       MIDS.COMPANY_NAME
+  FROM MID_SITE_WH_CONTROL MIDS
+  LEFT JOIN MID_CUSTOMER_CONTROL MIDC 
+  ON MIDC.CUST_CUSTOMER_CODE = MIDS.CUSTOMER_CODE AND MIDS.PLANT_ID = MIDC.PLANT_ID
+ WHERE 1=1
+ <if !is_empty(custWhCode,custWhName)>
+	and (
+			1 = 2 
+			 <<or MIDS.CUST_WH_NAME LIKE '%' ||:custWhName|| '%'>>
+			 <<or MIDS.CUST_WH_CODE LIKE '%' ||:custWhCode|| '%'>>
+		) 
+</if>
+ <<AND MIDS.JOB_ID =:jobId>>
+ <<AND MIDS.CREATOR =:creator>>
+ <<AND MIDS.CREATE_TIME > :createTimeFrom>>
+ <<AND MIDS.CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MIDS.MODIFIER =:modifier>>
+ <<AND MIDS.MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MIDS.MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND MIDS.CUSTOMER_CODE =:customerCode>>
+ <<AND MIDS.CUSTOMER_NAME = :customerName>>
+ <<AND MIDS.SITE_NAME =:siteName>>
+ <<AND MIDS.STATUS =:status>>
+ <<AND MIDS.WH_NAME = :whName>>
+ <<AND MIDS.SITE_CODE = :siteCode>>
+ <<AND MIDS.WH_CODE = :whCode>>
+ <<AND MIDS.CUST_WH_CODE IN (:whCodeNos)>>
+ <<AND MIDS.PLANT_ID = :plantId>>
+ <<AND MIDS.COMPANY_CODE =:companyCode>>
+ <<AND MIDS.COMPANY_NAME =:companyName>>
+ <<AND MIDC.ANN_CUSTOMER_CODE =:cusCustomerCode>>
+ <<AND MIDC.ANN_CUSTOMER_NAME =:cusCustomerName>>
+ ORDER BY MODIFY_TIME DESC
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoDeliveryReceiptHisQuery">
+		<![CDATA[
+
+SELECT EORH.EORH_ID,EORH.EORH_EODE_ID,EORH.EORH_WORK_ORDER_NO,EORH.EORH_ORDER_NO,EORH.EORH_RETURN_OPERATOR,EORH.EORH_RETURN_TIME,EORH.ORG_ID,EORH.CREATOR,EORH.CREATE_TIME,EORH.MODIFIER,EORH.MODIFY_TIME,EORH.REC_VER,EORH.REC_STATUS 
+ FROM EO_DELIVERY_RECEIPT_HIS EORH
+ WHERE EORH.EORH_EODE_ID IN (:eorhEodeId) ORDER BY EORH.MODIFY_TIME 
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

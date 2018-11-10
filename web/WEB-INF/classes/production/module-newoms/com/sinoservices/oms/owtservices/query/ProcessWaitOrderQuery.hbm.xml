@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="ProcessWaitOrderQuery">
+		<![CDATA[
+		select count(1) as ORDER_NUM from EO_ORDER EO
+		where 1=1 
+		and EOOR_STATUS_CODE IN ('00','10','20') 
+		<<and create_time > :createTimeFrom>>
+		<<and create_time < :createTimeTo>>
+		and <@dataFilter Table="HLS_ES_COMPANY_CODE" field= "COMPANY_CODE"  alias="EO" />
+		and EOOR_ORDER_BIG_TYPE =:orderType
+		]]>
+	</sql-query>
+</hibernate-mapping>

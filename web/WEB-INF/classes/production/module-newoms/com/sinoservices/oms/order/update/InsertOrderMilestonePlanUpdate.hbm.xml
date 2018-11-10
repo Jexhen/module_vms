@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="InsertOrderMilestonePlanUpdate">
+		<![CDATA[
+
+insert into EO_ORDER_MILESTONE
+  (EOOM_ID,
+   CREATOR,
+   CREATE_TIME,
+   MODIFIER,
+   MODIFY_TIME,
+   REC_VER,
+   REC_STATUS,
+   ORG_ID,
+   EOOM_SEQUENCE,
+   EOOM_ORDER_NO,
+   EOOM_MILESTONE_CODE,
+   EOOM_MILESTONE_NAME,
+   EOOM_STATUS_CODE,
+   EOOM_STATUS_NAME,
+   EOOM_PLAN_TIME,
+   EOOM_ACTUAL_TIME,
+   EOOM_WORK_TYPE_CODE,
+   EOOM_WORK_TYPE_NAME,
+   EOOM_WORK_NO,
+   EOOM_OPERATOR_CODE,
+   EOOM_OPERATOR_NAME,
+   EOOM_LOCATION_CODE,
+   EOOM_LOCATION_NAME,
+   EOOM_REMARK,
+   EOOM_REMARK_NAME_A,
+   EOOM_REMARK_VALUE_A,
+   EOOM_REMARK_NAME_B,
+   EOOM_REMARK_VALUE_B,
+   EOOM_REMARK_NAME_C,
+   EOOM_REMARK_VALUE_C,
+   EOOM_REMARK_NAME_D,
+   EOOM_REMARK_VALUE_D,
+   EOOM_REMARK_NAME_E,
+   EOOM_REMARK_VALUE_E,
+   EOOM_STATUS_COLOR)
+  select SEQ_EO_ORDER_MILESTONE.NEXTVAL, /*EOOM_ID*/
+         :creator, /*CREATOR*/
+         SYSDATE, /*CREATE_TIME*/
+         :creator, /*MODIFIER*/
+         SYSDATE, /*MODIFY_TIME*/
+         0, /*REC_VER*/
+         0, /*REC_STATUS*/
+         EOOR.ORG_ID, /*ORG_ID*/
+         nvl(EOWO.EOWO_DIVIDE_SEQUENCE,1) * 100 + nvl(EOWM.EOWM_SEQUENCE,1), /*EOOM_SEQUENCE*/
+         EOOR.EOOR_ORDER_NO, /*EOOM_ORDER_NO*/
+         EOWM.EOWM_CODE, /*EOOM_MILESTONE_CODE*/
+         EOWM.EOWM_NAME, /*EOOM_MILESTONE_NAME*/
+         EOWM.EOWM_EVENT_STATUS_CODE, /*EOOM_STATUS_CODE*/
+         EOWM.EOWM_EVENT_STATUS_NAME, /*EOOM_STATUS_NAME*/
+         OMS_ORDER_MILESTONE_PLAN_TIME(EOWM.EOWM_PLAN_TIME_SQL,
+                                       EOOR.EOOR_ORDER_NO,
+                                       EOOR.ORG_ID), /*EOOM_PLAN_TIME*/
+         NULL, /*EOOM_ACTUAL_TIME*/
+         EOWM.EOWM_WORK_TYPE_CODE, /*EOOM_WORK_TYPE_CODE*/
+         EOWM.EOWM_WORK_TYPE_NAME, /*EOOM_WORK_TYPE_NAME*/
+         EOWO.EOWO_WORK_ORDER_NO, /*EOOM_WORK_NO*/
+         NULL, /*EOOM_OPERATOR_CODE*/
+         NULL, /*EOOM_OPERATOR_NAME*/
+         NULL, /*EOOM_LOCATION_CODE*/
+         NULL, /*EOOM_LOCATION_NAME*/
+         NULL, /*EOOM_REMARK*/
+         NULL, /*EOOM_REMARK_NAME_A*/
+         NULL, /*EOOM_REMARK_VALUE_A*/
+         NULL, /*EOOM_REMARK_NAME_B*/
+         NULL, /*EOOM_REMARK_VALUE_B*/
+         NULL, /*EOOM_REMARK_NAME_C*/
+         NULL, /*EOOM_REMARK_VALUE_C*/
+         NULL, /*EOOM_REMARK_NAME_D*/
+         NULL, /*EOOM_REMARK_VALUE_D*/
+         NULL, /*EOOM_REMARK_NAME_E*/
+         NULL, /*EOOM_REMARK_VALUE_E*/
+         EOWO.EOWO_STATUS_COLOR /*EOOM_STATUS_COLOR*/
+    from EO_ORDER EOOR
+    left JOIN EO_WORK_ORDER EOWO
+      on EOWO.EOWO_ORDER_NO = EOOR.EOOR_ORDER_NO
+     and EOWO.ORG_ID = EOOR.ORG_ID
+    left JOIN EO_WORK_MILESTONE EOWM
+      on EOWM.EOWM_WORK_TYPE_CODE = EOWO.EOWO_WORK_TYPE_CODE
+     and EOWM.ORG_ID = EOWO.ORG_ID
+   where EOWM.EOWM_ID is not null
+     and EOOR.EOOR_ORDER_NO in (:eoorOrderNos)
+     and EOOR.ORG_ID = :orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="IntefCcsSoOrderGQuery">
+ <![CDATA[
+SELECT
+       INTL_ID,
+       INTH_ID,
+       LINE_ID,
+       HEAD_ID,
+       ITEM_CODE,
+       ITEM_NAME,
+       WAREHOUSE_CODE,
+       QTY_BILL,
+       PRICE_BILL,
+       CONSIGNMENT_TYPE,
+       ATTRIBUTE1,
+       ATTRIBUTE2,
+       ATTRIBUTE3,
+       ATTRIBUTE4,
+       ATTRIBUTE5,
+       PRICE,
+       UPDATE_DATE,
+       NOTE,
+       CREATE_BY,
+       CREATE_DATE,
+       LAST_CREATE_BY,
+       LAST_UPDATE_DATE
+  FROM INTEF_CCS_SO_ORDER_G
+ WHERE 1=1
+ <<AND INTL_ID LIKE :intlId>>
+ <<AND INTH_ID LIKE :inthId>>
+ <<AND LINE_ID LIKE :lineId>>
+ <<AND HEAD_ID LIKE :headId>>
+ <<AND ITEM_CODE LIKE :itemCode>>
+ <<AND ITEM_NAME LIKE :itemName>>
+ <<AND WAREHOUSE_CODE LIKE :warehouseCode>>
+ <<AND QTY_BILL LIKE :qtyBill>>
+ <<AND PRICE_BILL LIKE :priceBill>>
+ <<AND CONSIGNMENT_TYPE LIKE :consignmentType>>
+ <<AND ATTRIBUTE1 LIKE :attribute1>>
+ <<AND ATTRIBUTE2 LIKE :attribute2>>
+ <<AND ATTRIBUTE3 LIKE :attribute3>>
+ <<AND ATTRIBUTE4 LIKE :attribute4>>
+ <<AND ATTRIBUTE5 LIKE :attribute5>>
+ <<AND PRICE LIKE :price>>
+ <<AND UPDATE_DATE > :updateDateFrom>>
+ <<AND UPDATE_DATE <= :updateDateTo + 1>>
+ <<AND NOTE LIKE :note>>
+ <<AND CREATE_BY LIKE :createBy>>
+ <<AND CREATE_DATE > :createDateFrom>>
+ <<AND CREATE_DATE <= :createDateTo + 1>>
+ <<AND LAST_CREATE_BY LIKE :lastCreateBy>>
+ <<AND LAST_UPDATE_DATE > :lastUpdateDateFrom>>
+ <<AND LAST_UPDATE_DATE <= :lastUpdateDateTo + 1>>
+ ]]>
+	</sql-query>
+</hibernate-mapping>

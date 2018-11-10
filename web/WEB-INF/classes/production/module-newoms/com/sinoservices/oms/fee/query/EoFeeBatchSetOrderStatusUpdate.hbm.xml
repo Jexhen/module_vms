@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoFeeBatchSetOrderStatusUpdate">
+		<![CDATA[
+
+UPDATE EO_FEE_MANAGEMENT_ORDER ORD
+SET ORD.EOFO_FEE_COMFIRM_STATUS_CODE=:statuCode, 
+ORD.EOFO_FEE_COMFIRM_STATUS_NAME=:statuName
+WHERE ORD.EOFO_ORDER_NO=:orderNo
+AND ORD.EOFO_ID IN(:feeIds)
+AND ORD.ORG_ID=:orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

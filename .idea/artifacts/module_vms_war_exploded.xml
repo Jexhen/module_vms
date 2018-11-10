@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="module_vms:war exploded">
+    <output-path>$PROJECT_DIR$/../war</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="module_vms" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="vms_lib" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="module_vms/web/Web" />
+    </root>
+  </artifact>
+</component>

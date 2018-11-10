@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOnwayInvItemQuery">
+		<![CDATA[
+		select 
+			EOVI.EOII_ID,
+			EOVI.CREATOR,
+			EOVI.CREATE_TIME,
+			EOVI.MODIFIER,
+			EOVI.MODIFY_TIME,
+			EOVI.REC_VER,
+			EOVI.REC_STATUS,
+			EOVI.ORG_ID,
+			EOVI.EOII_ORDER_NO,
+			EOVI.EOII_LOGISTIC_NO,
+			EOVI.EOII_WORK_ORDER_NO,
+			EOVI.EOII_WORK_NO,
+			EOVI.EOII_LOT_NUM,
+			EOVI.EOII_SKU_CODE,
+			EOVI.EOII_SKU_NAME,
+			EOVI.EOII_CUSTOMER_CODE,
+			EOVI.EOII_CUSTOMER_NAME,
+			EOVI.EOII_WH_CODE,
+			EOVI.EOII_WH_NAME,
+			EOVI.EOII_EXPECTED_TYPE,
+			EOVI.EOII_EXPECTED_TIME,
+			EOVI.EOII_EXPECTED_QTY,
+			EOVI.PM_CODE
+		from EO_ONWAY_INV_ITEM EOVI
+		where 1=1
+		<<and EOVI.REC_STATUS =:recStatus>>
+		<<and EOVI.ORG_ID =:orgId>>
+		<<and EOVI.EOII_ORDER_NO LIKE :eoiiOrderNo>>
+		<<and EOVI.EOII_LOGISTIC_NO LIKE :eoiiLogisticNo>>
+		<<and EOVI.EOII_LOT_NUM in (:eoiiLotNum)>>
+		<<and EOVI.EOII_SKU_CODE in (:eoiiSkuCode)>>
+		<<and EOVI.EOII_CUSTOMER_CODE LIKE :eoiiCustomerCode>>
+		<<and EOVI.EOII_WH_CODE  LIKE :eoiiWhCode>>
+		<<and EOVI.EOII_EXPECTED_TYPE LIKE :eoiiExpectedType>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

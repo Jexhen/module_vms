@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderEdiQuery">
+		<![CDATA[
+SELECT EOOR.EOOR_ID,
+  EOOR.CREATOR,
+  EOOR.CREATE_TIME,
+  EOOR.MODIFIER,
+  EOOR.MODIFY_TIME,
+  EOOR.REC_VER,
+  EOOR.REC_STATUS,
+  EOOR.ORG_ID,
+  EOOR.PM_CODE,
+  EOOR.EOOR_ORDER_NO,
+  EOOR.EOOR_EDI_FLAG,
+  EOOR.EOOR_UPSTREAM_SYS
+   FROM EO_ORDER_EDI EOOR
+   WHERE 1=1
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

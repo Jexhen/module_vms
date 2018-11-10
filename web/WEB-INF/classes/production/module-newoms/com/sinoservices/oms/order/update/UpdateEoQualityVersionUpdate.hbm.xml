@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<!--
+   根据系统订单号(物流订单号)批量更新订单版本
+ -->
+<hibernate-mapping>
+	<sql-query name="UpdateEoQualityVersionUpdate">
+		<![CDATA[ 
+		
+		UPDATE EO_QUALITY EOQU
+   		   SET EOQU.REC_VER = EOQU.REC_VER + 1
+		WHERE EOQU.EOQU_ORDER_NO IN (:eoquOrderNos)
+		 
+		]]>
+	</sql-query>
+</hibernate-mapping>

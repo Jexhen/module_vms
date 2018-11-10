@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="MidEoOrderB2bItemQuery">
+		<![CDATA[
+SELECT
+       JOB_ID,
+       EOOI_ORDER_ID,
+       EOOI_ORDER_NO,
+       EOOI_CODE,
+       EOOI_NAME,
+       EOOI_QUANTITY,
+       EOOI_VOLUME,
+       EOOI_GROSS_WEIGHT,
+       EOOI_PRICE,
+       EOOI_AMOUNT,
+       EOOI_REMARK,
+       EOOI_LINE_ID,
+       EOOI_PACKAGE_TYPE_CODE,
+       EOOI_PACKAGE_TYPE_NAME,
+       EOOI_PACKAGE_UNIT_CODE,
+       EOOI_PACKAGE_UNIT_NAME,
+       EOOI_ITEM_TYPE_CODE,
+       EOOI_ITEM_TYPE_NAME,
+       EOOI_PACKAGE_QUANTITY,
+       EOOI_NET_WEIGHT,
+       EOOI_SOURCE_SUBINV_CODE,
+       EOOI_TARGET_SUBINV_CODE,
+       EOOI_BOX_PREFIX,
+       EOOI_SOURCE_SYSTEM_CODE,
+       EOOI_TRANS_CODE,
+       EOOI_SOURCE_SALESMAN_ID,
+       EOOI_TARGET_SALESMAN_ID,
+       EOOI_BULK_FLAG,
+       EOOI_COM_INSPECT_REMARKS,
+       EOOI_ITEM_BARCODE,
+       EOOI_CATEGORY_CODE,
+       EOOI_UOM_CODE,
+       EOOI_COMPONENT_CODE,
+       EOOI_COMPONENT_NAME,
+       EOOI_IS_SET_FLAG,
+       EOOI_CONSIGNMENT_TYPE,
+       EOOI_HEAD_ID,
+       EOOI_UNTAX_PRICE,
+       EOOI_PLAN_QUANTITY,
+       EOOI_LOGISTIC_NO,
+       EOOI_GROSS_WEIGHT_UNIT,
+       EOOI_VOLUME_UNIT,
+       EOOR_PRINT_PRICE,
+       EOOI_PRODUCTION_DATE,
+       EOOI_BLM,
+       EOOI_IN_ITEM_STATUS,
+       EOOI_IN_WEARHOUSE_AREA,
+       EOOI_IN_WEARHOUSE_CODE,
+       EOOI_OUT_ITEM_STATUS,
+       EOOI_OUT_WEARHOUSE_AREA,
+       EOOI_OUT_WEARHOUSE_CODE,
+       EOOI_LOT_NO,
+       EDI_TRANS_ID,
+       EOOI_IN_WEARHOUSE_NAME,
+       EOOI_ITEM_DESC,
+       EOOI_IN_ITEM_STATUS_NAME,
+       EOOI_UOM_NAME,
+       EOOI_OUT_WEARHOUSE_NAME,
+       EOOI_OUT_ITEM_STATUS_NAME,
+       EOOI_LOT_ATT01,
+       EOOI_LOT_ATT02,
+       EOOI_LOT_ATT03,
+       EOOI_LOT_ATT04,
+       EOOI_LOT_ATT05,
+       EOOI_LOT_ATT06,
+       EOOI_LOT_ATT07,
+       EOOI_LOT_ATT08,
+       EOOI_LOT_ATT09,
+       EOOI_LOT_ATT10,
+       EOOI_PALLET_ID,
+       EOOI_SO_ID_G,
+       EOOI_REFERENCE_LINE_ID,
+       EOOI_SALESMAN_NAME,
+       EOOI_KIT_CODE,
+       EOOI_ADJUSTMEN_TYPE,
+       EOOI_KIT_NAME,
+       EOOI_SOURCE_UOM_CODE
+  FROM MID_EO_ORDER_B2B_ITEM
+ WHERE 1=1
+ <<AND EOOI_ORDER_ID LIKE :eooiOrderId>>
+ <<AND EOOI_ORDER_NO LIKE :eooiOrderNo>>
+ <<AND EDI_TRANS_ID LIKE :ediTransId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

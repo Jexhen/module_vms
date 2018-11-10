@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkRecycleQuery">
+		<![CDATA[
+SELECT
+       EOWR_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       COMPANY_CODE,
+       SITE_CODE,
+       COMPANY_NAME,
+       SITE_NAME,
+       EOWR_ORDER_NO,
+       EOWR_WORK_ORDER_NO,
+       EOWR_DOWNSTREAM_NO,
+       EOWR_DELIVERY_NO,
+       EOWR_DRIVER_CODE,
+       EOWR_DRIVER_NAME,
+       EOWR_CAR_NO,
+       EOWR_DRIVER_PHONE,
+       EOWR_STEVEDORAGE_TYPE,
+       EOWR_RETURN_APPLICATION_NO,
+       EOWR_BACK_REASON,
+       EOWR_VAMP_NO,
+       EOWR_WAVE_COUNT_NO,
+       EOWR_DISPATCH_DATE,
+       EOWR_LOADING_DATE,
+       EOWR_DEPARTURE_DATE,
+       EOWR_ELECTRONIC_DATE,
+       EOWR_CUSTOMER_SIGNER,
+       EOWR_CUSTOMER_SIGN_DATE,
+       EOWR_SIGNER,
+       EOWR_SIGN_DATE,
+       EOWR_CONTRACT_NO,
+       EOWR_LOADGROUP_CODE,
+       EOWR_LOADGROUP_NAME,
+       EOWR_MANAGER_NAME,
+       EOWR_MANAGER_CODE,
+       EOWR_RECEIVING_DATE,
+       EOWR_REAL_SHIP_DATE,
+       EOWR_CARRIER_CODE,
+       EOWR_CARRIER_NAME,
+       EOWR_PLAN_QUANTITY,
+       EOWR_PACKAGE_QUANTITY,
+       EOWR_QUANTITY,
+       EOWR_GROSS_WEIGHT,
+       EOWR_NET_WEIGHT,
+       EOWR_VOLUME,
+       EOWR_STATUS_CODE,
+       EOWR_STATUS_NAME,
+       EOWR_ORDER_BIG_TYPE,
+       EOWR_TASK_BIG_TYPE,
+       EOWR_RELEASE_SYSTEM_CODE,
+       EOWR_RELEASE_SYSTEM_NAME,
+       EOWR_SCHEDULING_QUANTITY,
+       EOWR_SHIPPING_QUANTITY,
+       EOWR_SIGN_QUANTITY,
+       EOWR_DELIVERY_QUANTITY,
+       EOWR_RECEIVING_QUANTITY,
+       EOWR_SUBSTR1,
+       EOWR_SUBSTR2,
+       EOWR_SUBSTR3,
+       EOWR_SUBSTR4,
+       EOWR_SUBSTR5,
+       EOWR_SUBSTR6,
+       EOWR_SUBDATE1,
+       EOWR_SUBDATE2,
+       EOWR_SUBDATE3,
+       EOWR_SUBNUM1,
+       EOWR_SUBNUM2,
+       EOWR_SUBNUM3,
+       EOWR_SHIPPER_PWH_CODE,
+       EOWR_CONSIGNEE_PWH_CODE,
+       EOWR_PICKING_WH_DATE,
+       EOWR_OUT_WH__DATE,
+       EOWR_OUT_WH_QUANTITY,
+       EOWR_RECEIVE_FLAG,
+       EOWR_REJECT_QUANTITY,
+       EOWR_DOWN_ORDER_TYPE,
+       EOWR_BUSINESS_STATE,
+       EOWR_UP_BILLING,
+       EOWR_DOWN_BILLING,
+       EOWR_FINANCIAL_STATE
+  FROM EO_WORK_RECYCLE
+ WHERE 1=1
+ <<AND EOWR_ID LIKE :eowrId>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND COMPANY_CODE LIKE :companyCode>>
+ <<AND SITE_CODE LIKE :siteCode>>
+ <<AND COMPANY_NAME LIKE :companyName>>
+ <<AND SITE_NAME LIKE :siteName>>
+ <<AND EOWR_ORDER_NO LIKE :eowrOrderNo>>
+ <<AND EOWR_WORK_ORDER_NO LIKE :eowrWorkOrderNo>>
+ <<AND EOWR_DOWNSTREAM_NO LIKE :eowrDownstreamNo>>
+ <<AND EOWR_DELIVERY_NO LIKE :eowrDeliveryNo>>
+ <<AND EOWR_DRIVER_CODE LIKE :eowrDriverCode>>
+ <<AND EOWR_DRIVER_NAME LIKE :eowrDriverName>>
+ <<AND EOWR_CAR_NO LIKE :eowrCarNo>>
+ <<AND EOWR_DRIVER_PHONE LIKE :eowrDriverPhone>>
+ <<AND EOWR_STEVEDORAGE_TYPE LIKE :eowrStevedorageType>>
+ <<AND EOWR_RETURN_APPLICATION_NO LIKE :eowrReturnApplicationNo>>
+ <<AND EOWR_BACK_REASON LIKE :eowrBackReason>>
+ <<AND EOWR_VAMP_NO LIKE :eowrVampNo>>
+ <<AND EOWR_WAVE_COUNT_NO LIKE :eowrWaveCountNo>>
+ <<AND EOWR_DISPATCH_DATE > :eowrDispatchDateFrom>>
+ <<AND EOWR_DISPATCH_DATE <= :eowrDispatchDateTo + 1>>
+ <<AND EOWR_LOADING_DATE > :eowrLoadingDateFrom>>
+ <<AND EOWR_LOADING_DATE <= :eowrLoadingDateTo + 1>>
+ <<AND EOWR_DEPARTURE_DATE > :eowrDepartureDateFrom>>
+ <<AND EOWR_DEPARTURE_DATE <= :eowrDepartureDateTo + 1>>
+ <<AND EOWR_ELECTRONIC_DATE > :eowrElectronicDateFrom>>
+ <<AND EOWR_ELECTRONIC_DATE <= :eowrElectronicDateTo + 1>>
+ <<AND EOWR_CUSTOMER_SIGNER LIKE :eowrCustomerSigner>>
+ <<AND EOWR_CUSTOMER_SIGN_DATE > :eowrCustomerSignDateFrom>>
+ <<AND EOWR_CUSTOMER_SIGN_DATE <= :eowrCustomerSignDateTo + 1>>
+ <<AND EOWR_SIGNER LIKE :eowrSigner>>
+ <<AND EOWR_SIGN_DATE > :eowrSignDateFrom>>
+ <<AND EOWR_SIGN_DATE <= :eowrSignDateTo + 1>>
+ <<AND EOWR_CONTRACT_NO LIKE :eowrContractNo>>
+ <<AND EOWR_LOADGROUP_CODE LIKE :eowrLoadgroupCode>>
+ <<AND EOWR_LOADGROUP_NAME LIKE :eowrLoadgroupName>>
+ <<AND EOWR_MANAGER_NAME LIKE :eowrManagerName>>
+ <<AND EOWR_MANAGER_CODE LIKE :eowrManagerCode>>
+ <<AND EOWR_RECEIVING_DATE > :eowrReceivingDateFrom>>
+ <<AND EOWR_RECEIVING_DATE <= :eowrReceivingDateTo + 1>>
+ <<AND EOWR_REAL_SHIP_DATE > :eowrRealShipDateFrom>>
+ <<AND EOWR_REAL_SHIP_DATE <= :eowrRealShipDateTo + 1>>
+ <<AND EOWR_CARRIER_CODE LIKE :eowrCarrierCode>>
+ <<AND EOWR_CARRIER_NAME LIKE :eowrCarrierName>>
+ <<AND EOWR_PLAN_QUANTITY LIKE :eowrPlanQuantity>>
+ <<AND EOWR_PACKAGE_QUANTITY LIKE :eowrPackageQuantity>>
+ <<AND EOWR_QUANTITY LIKE :eowrQuantity>>
+ <<AND EOWR_GROSS_WEIGHT LIKE :eowrGrossWeight>>
+ <<AND EOWR_NET_WEIGHT LIKE :eowrNetWeight>>
+ <<AND EOWR_VOLUME LIKE :eowrVolume>>
+ <<AND EOWR_STATUS_CODE LIKE :eowrStatusCode>>
+ <<AND EOWR_STATUS_NAME LIKE :eowrStatusName>>
+ <<AND EOWR_ORDER_BIG_TYPE LIKE :eowrOrderBigType>>
+ <<AND EOWR_TASK_BIG_TYPE LIKE :eowrTaskBigType>>
+ <<AND EOWR_RELEASE_SYSTEM_CODE LIKE :eowrReleaseSystemCode>>
+ <<AND EOWR_RELEASE_SYSTEM_NAME LIKE :eowrReleaseSystemName>>
+ <<AND EOWR_SCHEDULING_QUANTITY LIKE :eowrSchedulingQuantity>>
+ <<AND EOWR_SHIPPING_QUANTITY LIKE :eowrShippingQuantity>>
+ <<AND EOWR_SIGN_QUANTITY LIKE :eowrSignQuantity>>
+ <<AND EOWR_DELIVERY_QUANTITY LIKE :eowrDeliveryQuantity>>
+ <<AND EOWR_RECEIVING_QUANTITY LIKE :eowrReceivingQuantity>>
+ <<AND EOWR_SUBSTR1 LIKE :eowrSubstr1>>
+ <<AND EOWR_SUBSTR2 LIKE :eowrSubstr2>>
+ <<AND EOWR_SUBSTR3 LIKE :eowrSubstr3>>
+ <<AND EOWR_SUBSTR4 LIKE :eowrSubstr4>>
+ <<AND EOWR_SUBSTR5 LIKE :eowrSubstr5>>
+ <<AND EOWR_SUBSTR6 LIKE :eowrSubstr6>>
+ <<AND EOWR_SUBDATE1 > :eowrSubdate1From>>
+ <<AND EOWR_SUBDATE1 <= :eowrSubdate1To + 1>>
+ <<AND EOWR_SUBDATE2 > :eowrSubdate2From>>
+ <<AND EOWR_SUBDATE2 <= :eowrSubdate2To + 1>>
+ <<AND EOWR_SUBDATE3 > :eowrSubdate3From>>
+ <<AND EOWR_SUBDATE3 <= :eowrSubdate3To + 1>>
+ <<AND EOWR_SUBNUM1 LIKE :eowrSubnum1>>
+ <<AND EOWR_SUBNUM2 LIKE :eowrSubnum2>>
+ <<AND EOWR_SUBNUM3 LIKE :eowrSubnum3>>
+ <<AND EOWR_SHIPPER_PWH_CODE LIKE :eowrShipperPwhCode>>
+ <<AND EOWR_CONSIGNEE_PWH_CODE LIKE :eowrConsigneePwhCode>>
+ <<AND EOWR_DOWN_ORDER_TYPE LIKE :eowrDownOrderType>>
+ <<AND EOWR_BUSINESS_STATE LIKE :eowrBusinessState>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

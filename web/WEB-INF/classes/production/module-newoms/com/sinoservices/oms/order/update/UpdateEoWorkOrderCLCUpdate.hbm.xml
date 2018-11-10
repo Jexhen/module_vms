@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="UpdateEoWorkOrderCLCUpdate">
+		<![CDATA[
+		
+		update EO_WORK_ORDER T set T.Eowo_Vamp_No = :eowoVampNo,T.eowo_vamp_date= :eowoVampDate where t.eowo_work_no in (
+			select w.eowo_work_no from EO_WORK_ORDER w where w.eowo_work_order_no in (:eoWorkNos)
+		)
+		
+		]]>
+	</sql-query>
+</hibernate-mapping>

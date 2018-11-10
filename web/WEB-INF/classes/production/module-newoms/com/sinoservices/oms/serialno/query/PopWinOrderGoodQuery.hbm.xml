@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopWinOrderGoodQuery">
+		<![CDATA[
+		
+		select eooi.eooi_id, eooi.eooi_code, eooi.eooi_name
+		  from eo_order_item eooi
+		 where 1 = 1
+		 <if !is_empty(goodName,goodCode)>
+			and (	
+					1=2
+					<<or eooi.eooi_code LIKE '%' ||  :goodCode || '%'>>
+   					<<or eooi.eooi_name LIKE '%' ||  :goodName || '%'>>
+				) 
+		 </if>
+		 <<and eooi.eooi_order_no = :orderNo>>
+		
+		]]>
+	</sql-query>
+</hibernate-mapping>

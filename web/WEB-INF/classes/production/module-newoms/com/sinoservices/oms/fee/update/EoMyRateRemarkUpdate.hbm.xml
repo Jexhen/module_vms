@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoMyRateRemarkUpdate">
+		<![CDATA[
+
+DELETE FROM EO_RATE_REMARK REMARK
+
+ WHERE REMARK.ORG_ID=:orgId 
+ AND REMARK.EORR_EORE_NO IN(:eorrEoreNo) 
+ AND REMARK.EORR_ID IN (:eorrId)
+		]]>
+	</sql-query>
+</hibernate-mapping>

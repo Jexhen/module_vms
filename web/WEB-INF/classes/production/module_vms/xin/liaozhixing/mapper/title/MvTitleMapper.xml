@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xin.liaozhixing.mapper.title.MvTitleMapper" >
+
+    <resultMap id="titleModel" type="xin.liaozhixing.model.title.MvTitleModel">
+        <result column="mvtt_id" property="mvttId"></result>
+        <result column="mvtt_name" property="mvttName"></result>
+        <result column="mvtt_url" property="mvttUrl"></result>
+        <result column="mvtt_parent_id" property="mvttParentId"></result>
+    </resultMap>
+
+    <select id="getTitle" resultMap="titleModel">
+
+        <if test="roleId != null and roleId == 1">
+            SELECT
+            mvtt.mvtt_id,
+            mvtt.mvtt_name,
+            mvtt.mvtt_url,
+            mvtt.mvtt_parent_id
+            FROM
+            mv_title mvtt
+            WHERE
+            1 = 1
+            <if test="isParentNode != null and isParentNode != '' and isParentNode == '1'.toString()">
+                AND mvtt.mvtt_parent_id = -1
+            </if>
+            <if test="isParentNode != null and isParentNode != '' and isParentNode != '1'.toString()">
+                AND mvtt.mvtt_parent_id != -1
+            </if>
+        </if>
+        <if test="roleId != null and roleId != 1">
+            SELECT
+            mvtt.mvtt_id,
+            mvtt.mvtt_name,
+            mvtt.mvtt_url,
+            mvtt.mvtt_parent_id
+            FROM
+            mv_role_title_relation mrtr
+            LEFT JOIN mv_title mvtt ON mvtt.mvtt_id = mrtr.mrtr_title_id
+            WHERE
+            1 = 1
+                AND mrtr.mrtr_role_id = #{roleId}
+            <if test="isParentNode != null and isParentNode != '' and isParentNode == '1'.toString()">
+                AND mvtt.mvtt_parent_id = -1
+            </if>
+            <if test="isParentNode != null and isParentNode != '' and isParentNode != '1'.toString()">
+                AND mvtt.mvtt_parent_id != -1
+            </if>
+        </if>
+
+
+    </select>
+
+
+</mapper>

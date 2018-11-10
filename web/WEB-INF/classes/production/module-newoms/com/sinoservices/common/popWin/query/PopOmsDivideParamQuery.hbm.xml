@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsDivideParamQuery">
+		<![CDATA[
+			 select 
+			    EODP_ID,
+			    CREATOR,
+			    CREATE_TIME,
+			    MODIFIER,
+			    MODIFY_TIME,
+			    REC_VER,
+			    REC_STATUS,
+			    ORG_ID,
+			    EODP_CODE,
+			    EODP_NAME,
+			    EODP_NAME_EN,
+			    EODP_CUSTOMER_CODE,
+			    EODP_CUSTOMER_NAME,
+			    EODP_ORDER_TYPE_CODE,
+			    EODP_ORDER_TYPE_NAME,
+			    EODP_TRANSPORT_TYPE_CODE,
+			    EODP_TRANSPORT_TYPE_NAME,
+			    EODP_REMARK,
+			    PM_CODE
+			from EO_DIVIDE_PARAM EODP
+			where 1 = 1
+			<<and EODP.ORG_ID = :orgId>>
+			<<and EODP.PM_CODE LIKE  '%' || :pmCode || '%' >>
+			<<and EODP.REC_STATUS = :recStatus>>
+			<<and EODP.EODP_CODE like  '%' || :eodpCode || '%'>>
+			<<and EODP.EODP_NAME like  '%' || :eodpName || '%'>>
+			<<and EODP.EODP_NAME_EN like  '%' || :eodpNameEn || '%'>>
+			<<and EODP.EODP_TRANSPORT_TYPE_CODE like  '%' || :eodpTransportTypeCode || '%'>>
+			<<and EODP.EODP_TRANSPORT_TYPE_NAME like  '%' || :eodpTransportTypeName || '%'>>
+			<<and EODP.EODP_ORDER_TYPE_CODE like  '%' || :eodpOrderTypeCode || '%'>>
+			<<and EODP.EODP_ORDER_TYPE_NAME like  '%' || :eodpOrderTypeName || '%'>>
+			<<and EODP.EODP_CUSTOMER_CODE like  '%' || :eodpCustomerCode || '%'>> 
+			<<and EODP.EODP_CUSTOMER_NAME like  '%' || :eodpCustomerName || '%'>> 
+			<<AND EODP.EODP_ORDER_TYPE_CODE IN (:eodpOrderTypeCodes)>>
+            <<AND EODP.EODP_ORDER_TYPE_NAME IN (:eodpOrderTypeNames)>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EbCustomerByCodeQuery">
+		<![CDATA[
+		select
+			EBCU.EBCU_CUSTOMER_NO,
+			EBCU.EBCU_NAME_CN,
+			EBCU.EBCU_NAME_EN,
+			EBCU.IS_IMP_EXP_CUSTOMER,
+			EBCU.EBCU_CUSTOMER_GROUP_NAME
+		from EB_CUSTOMER EBCU
+		where 1=1
+		<<and EBCU.EBCU_CUSTOMER_NO in (:codes)>>
+   			 <<AND EBCU.COMPANY_CODE = :companyCode>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

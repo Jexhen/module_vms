@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoFeeMgtOrderBalanceQuery">
+		<![CDATA[
+
+select 
+EOFO.EOFO_TOTAL_AMOUNT,
+EOFO.EOFO_IS_HAVE_CHARGEOFF,
+EOFO.EOFO_IS_HAVE_BILL,
+EOFO.EOFO_IS_RECONCILIATION,
+EOFO.EOFO_FEE_COMFIRM_STATUS_CODE,
+EOFO.EOFO_ID
+ from EO_FEE_MANAGEMENT_ORDER EOFO
+ where 1=1
+ AND EOFO.EOFO_FEE_COMFIRM_STATUS_CODE!='FEE_REPEAL_STATUS'/*过滤掉撤销状态的费用*/
+ <<AND EOFO.EOFO_PARTY_CODE LIKE :eofoPartyCode>>
+ <<AND EOFO.EOFO_PARTY_NAME LIKE :eofoPartyName>>
+ <<AND EOFO.EOFO_RP_FLAG_CODE LIKE :eofoRpFlagCode>>
+ <<AND (EOFO.EOFO_IS_HAVE_CHARGEOFF is NULL OR EOFO.EOFO_IS_HAVE_CHARGEOFF=:eofoIsHaveChargeoff)>>
+ <<AND EOFO.ORG_ID=:orgId>>
+ 
+		]]>
+	</sql-query>
+</hibernate-mapping>

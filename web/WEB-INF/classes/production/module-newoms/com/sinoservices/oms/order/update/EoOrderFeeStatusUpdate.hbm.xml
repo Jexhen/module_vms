@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderFeeStatusUpdate">
+		<![CDATA[
+
+UPDATE EO_ORDER_FEE EOOF
+   SET EOOF.EOOF_STATUS_CODE = 'SYS_OMS_FEE_NEW',
+       EOOF.EOOF_STATUS_NAME = '新增'
+ WHERE EOOF.PM_CODE IN (:pmCodes)
+ and EOOF.ORG_ID=:orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

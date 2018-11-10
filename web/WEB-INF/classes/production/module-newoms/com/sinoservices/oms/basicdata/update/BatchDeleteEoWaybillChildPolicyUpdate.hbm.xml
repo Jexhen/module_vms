@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="BatchDeleteEoWaybillChildPolicyUpdate">
+		<![CDATA[
+		
+DELETE FROM EO_WAYBILL_CHILD_POLICY EOCP
+ where not exists (select 1
+          from EO_WAYBILL_GROUP_POLICY EOGP
+         where EOGP.Pm_Code = EOCP.EOCP_EOGP_PM_CODE)
+   and EOCP.Org_Id = :orgId
+
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

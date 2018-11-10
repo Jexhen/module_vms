@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="EoSerialNoQuery">
+		<![CDATA[
+select eosn.eosn_id,
+       eosn.eosn_no,
+       eosn.eosn_item_id,
+       eooi.eooi_name,
+       c.esus_user_name_cn as creator,
+       eosn.create_time,
+       m.esus_user_name_cn as modifier,
+       eosn.modify_time
+  from oms2b.eo_serial_no eosn
+  left join oms2b.eo_order_item eooi
+    on eosn.eosn_item_id = eooi.eooi_id
+  left join oms2b.eo_order eoor
+    on eoor.eoor_order_no = eooi.eooi_order_no
+  left join es_user c
+    on c.esus_id = eosn.creator
+  left join es_user m
+    on m.esus_id = eosn.modifier
+ where 1 = 1
+   <<and eoor.eoor_order_no = :eoorOrderNo>>
+   <<and eoor.eoor_logistic_no = :customerOrderNo>>
+   <<and eosn.eosn_item_id = :commodityId>>
+   <<and eosn.eosn_no = :eosnNo>>
+   
+ 
+ 
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

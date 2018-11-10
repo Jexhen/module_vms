@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mf="http://www.sinoservices.com/schema/modular-interface"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	 http://www.sinoservices.com/schema/modular-interface http://www.sinoservices.com/schema/sns-modular-interface-1.0.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- 接口服务 -->
+	<mf:InterfaceDependOnRegistry id="InterfaceDependOnRegistry">
+
+		<mf:module name="map" version="" endpoint="${facade.endpoint.map}">
+			<mf:facade>com.sinoservices.map.api.facade.MapApi</mf:facade>
+		</mf:module>
+
+		<!-- LMDM 
+		<mf:module name="lmdm" version="" endpoint="${facade.endpoint.lmdm}">-->
+		<mf:module name="lmsMainInfo" version="" endpoint="${facade.endpoint.lmsMainInfo}">
+			<mf:facade>com.sinoservices.lrms.item.service.CdWarehouseManager</mf:facade>
+			<mf:facade>com.midea.mdm.api.facade.AgentCustomerFacade</mf:facade>
+			<mf:facade>com.sinoservices.lrms.item.service.CdWhLotDetailManager</mf:facade>
+			<mf:facade>com.sinoservices.lrms.masterdata.service.EbCustomerManager</mf:facade>
+			<mf:facade>com.sinoservices.lrms.masterdata.service.EbShipperManager</mf:facade>
+		</mf:module>
+		
+		<!-- TMS -->
+		<mf:module name="tms" version="" endpoint="${facade.endpoint.tms}">
+			<mf:facade>com.sinoservices.tes.owtservices.service.OwtTmsInInterface</mf:facade>
+		</mf:module>
+		
+		<!-- WMS -->
+		<mf:module name="newwms" version="" endpoint="${facade.endpoint.wms}">
+			<mf:facade>com.sinoservices.wms.owtservices.service.OwtWmsInInterface</mf:facade>
+			<mf:facade>com.sinoservices.wms.owtservices.service.WmsOutTmsInterface</mf:facade>
+			<mf:facade>com.sinoservices.wms.owtservices.service.OwtWmsOutInvQueryInterface</mf:facade>
+			<mf:facade>com.sinoservices.wms.owtservices.service.EoVirtualInvItemInInterface</mf:facade>
+			<mf:facade>com.sinoservices.wms.owtservices.service.WmsOriginalNoUpdateService</mf:facade>
+			<mf:facade>com.sinoservices.wms.owtservices.action.Oms2bInInterface</mf:facade>
+			<mf:facade>com.sinoservices.wms.owtservices.facade.OwtToWmsInOrderTransaction</mf:facade>
+		</mf:module>
+		
+		<!-- EDI -->
+		<mf:module name="edi-in" version="" endpoint="${facade.endpoint.edi-in}">
+			<mf:facade>com.sinoservices.sdi.rpc.service.EOOrderB2BCreateService</mf:facade>
+			<mf:facade>com.sinoservices.sdi.rpc.service.B2BOrderViewCreateOrderInterceptOrderService</mf:facade>
+			<mf:facade>com.sinoservices.sdi.rpc.service.EOOrderAdjustB2BCreateService</mf:facade>
+			<mf:facade>com.sinoservices.sdi.rpc.service.CcsSoOrderService</mf:facade>
+			<mf:facade>com.sinoservices.sdi.cache.services.MappingCacheService</mf:facade>
+			<mf:facade>com.sinoservices.sdi.rpc.service.EOOrderTransferB2BCreateService</mf:facade>
+		</mf:module>
+		
+		<mf:module name="interfaces" version="" endpoint="${facade.endpoint.edi-in}">
+			<mf:facade>com.sinoservices.sdi.lmdm.service.SyncCommondMaterialManager</mf:facade>
+			<mf:facade>com.sinoservices.sdi.outercustomer.yutong.service.YuTongMaterialReveiveService</mf:facade>
+		</mf:module>
+		
+		<mf:module name="edi" version="" endpoint="${facade.endpoint.edi}">
+			<mf:facade>com.sinoservices.sdi.gcrm.service.CustomerInfoSyncService</mf:facade>
+		</mf:module>
+		
+		<!--更新接口对照缓存C端-->
+		<mf:module name="edi-in4c" version="" endpoint="${facade.endpoint.edi-in4c}">
+			<mf:facade>com.sinoservices.sdi.b2ccache.services.MappingCacheB2cService</mf:facade>
+		</mf:module>
+		
+		<!--仓库信息同步-->
+		<mf:module name="edi4c" version="" endpoint="${facade.endpoint.edi4c}">
+			<mf:facade>com.midea.lms.warehouseInfosync.api.service.WarehouseInfoSyncService</mf:facade>
+		</mf:module>
+		
+		<mf:module name="message" version="" endpoint="${facade.endpoint.app}"> 
+            <mf:facade>com.sinoservices.common.timer.service.DbTimerLogManager</mf:facade>
+			<mf:facade>com.sinoservices.common.service.NOGeneratorMananger</mf:facade>
+		</mf:module>
+		
+		<!-- BMS -->
+		<mf:module name="bms" version="" endpoint="${facade.endpoint.bms}">
+			<mf:facade>com.sinoservices.bms.owtservices.service.OwtBmsInInterface</mf:facade>
+		</mf:module>
+		
+		<!--  lmsAbility -->
+		<mf:module name="lmsAbility" version="" endpoint="${facade.endpoint.lmsAbility}">
+			<mf:facade>com.sinoservices.lrms.ability.obInterfaceService.service.obInLmsInterface</mf:facade>
+			<mf:facade>com.sinoservices.lrms.ability.obInterfaceService.service.AbilityManager</mf:facade>
+		</mf:module>
+		
+		
+		
+		
+		
+	</mf:InterfaceDependOnRegistry>
+</beans>

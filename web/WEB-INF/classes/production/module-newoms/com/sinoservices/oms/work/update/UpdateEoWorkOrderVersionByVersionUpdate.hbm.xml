@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="UpdateEoWorkOrderVersionByVersionUpdate">
+		<![CDATA[ 
+		
+		UPDATE EO_WORK_ORDER EOWO 
+		SET EOWO.REC_VER = EOWO.REC_VER + 1 
+		WHERE EOWO.REC_VER = :recVer AND EOWO.EOWO_WORK_ORDER_NO = :workOrderNo
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

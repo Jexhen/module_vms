@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsEbMaterialInvQuery">
+		<![CDATA[
+SELECT
+	DISTINCT
+    CDCM.JOB_ID,
+    CDCM.CDWS_SKU_CODE,
+    CDCM.CDWS_SKU_NAME,
+    CDCM.CDWS_PRICE,
+    CDCM.CDWS_FOREIGN_NAME,
+    CDCM.CDWS_SHORT_NAME,
+    CDCM.CDWS_BAR_CODE,
+    CDCM.CDWS_TYPE_CODE,
+    CDCM.CDWS_PACK_CODE,
+    CDCM.CDWS_CUBIC,
+    CDCM.CDWS_LENGTH,
+    CDCM.CDWS_WIDTH,
+    CDCM.CDWS_HEIGHT,
+    CDCM.CDWS_GROSS_WEIGHT,
+    CDCM.CDWS_NET_WEIGHT,
+    CDCM.CDWS_IS_DG,
+    CDCM.CDWS_DG_CLASS,
+    CDCM.REMARK,
+    CDCM.REC_STATUS,
+    CDCM.REC_VER,
+    CDCM.CREATOR,
+    CDCM.CREATE_TIME,
+    CDCM.MODIFIER,
+    CDCM.MODIFY_TIME,
+    CDCM.ORG_ID,
+    CDCM.CDCM_ITEM_GROUP_CODE,
+    CDCM.CDWS_TEMP_LEVEL,
+    CDCM.CDCM_STOCK_UNIT_PRICE,
+    CDCM.CDWS_PROVIDE_CUST_CODE,
+    CDCM.CDWS_PERIOD_OF_VALIDITY,
+    CDCM.CDWS_VALIDITY_UNIT,
+    EBCU.EBCU_NAME_CN AS CDCM_PROVIDE_CUST_NAME,
+    CDWP.CDPA_CODE,
+    CDWP.CDPA_FORMAT,
+    CDPR.CDPR_CDPA_PM_CODE AS CDPR_UNIT,
+    CDPR.CDPR_DESC,
+    CDPR.CDPR_QUANTITY,
+    CDCM.CDWS_CUST_MATERIAL_NO,
+    EBMG.EBMG_NAME_CN,/*商品类型名称*/
+    CDCM.CDWS_IS_PARENT,/**是否套件**/
+    EBMG.EBMG_CODE,/*商品类型编码*/
+    CDCM.CDWS_LOT_CODE,/**商品批次号**/
+	0 AS QTY_EA
+  FROM
+  CD_WH_SKU CDCM
+   inner join CD_OWNER_GROUP_DETAIL CDGD
+              on CDGD.OWNER_GROUP_CODE = CDCM.CDWS_OWNER_GROUP_CODE
+  INNER JOIN CD_OWNER_GROUP CDOG ON CDGD.OWNER_GROUP_CODE = CDOG.OWNER_GROUP_CODE
+  /*通过商品包装规格代码关联包装规格表*/
+  LEFT JOIN CD_WH_PACKAGE CDWP ON CDCM.CDWS_PACK_CODE=CDWP.CDPA_CODE AND CDWP.REC_STATUS=0
+  LEFT JOIN CD_WH_PACKAGE_RELATION CDPR ON  CDPR.CDPR_PA_ID = CDWP.CDPA_ID
+  LEFT JOIN EB_MATERIAL_CLASSIFICATION EBMG ON CDCM.CDWS_GROUP_CODE  = EBMG.EBMG_CODE AND CDPR.REC_STATUS=0
+  LEFT JOIN EB_CUSTOMER EBCU ON CDCM.CDWS_PROVIDE_CUST_CODE=EBCU.EBCU_CUSTOMER_NO AND EBCU.REC_STATUS=0
+  where 1=1 
+  << AND CDCM.CDWS_AUDIT_STATUS = :auditStatus >>
+  and CDCM.REC_STATUS = :recStatus
+  AND CDGD.OWNER_CODE = :customerCode
+  and CDOG.STATUS = '0'
+    << AND CDCM.CDWS_SKU_CODE LIKE '%' || :cdwsSkuCodeOwt || '%' >>     /*代码*/
+    << AND CDWP.CDPA_FORMAT LIKE '%' || :cdpaFormatOwt || '%' >>          /*包装规格*/
+    <if is_empty(cdwsBarCode,cdpaFormat,cdwsSkuCode,cdwsSkuName,cdwsForeignName,cdcmCustMaterialNo) == false >
+    AND ( 1=2
+      << OR CDCM.CDWS_BAR_CODE LIKE '%' || :cdwsBarCode || '%' >>       /*商品条码*/
+      << OR CDCM.CDWS_SKU_CODE LIKE '%' || :cdwsSkuCode || '%' >>     /*代码*/
+        << OR CDCM.CDWS_SKU_NAME LIKE '%' || :cdwsSkuName || '%' >>         /*名称*/
+        << OR CDCM.CDWS_FOREIGN_NAME LIKE '%' || :cdwsForeignName || '%' >>         /*英文名称*/
+        << OR CDCM.CDWS_CUST_MATERIAL_NO LIKE '%' || :cdwsCustMaterialNo || '%' >>/*客户商品编码*/
+        << OR CDWP.CDPA_FORMAT LIKE '%' || :cdpaFormat || '%' >>          /*包装规格*/
+    )
+    </if>
+  ORDER BY CDCM.MODIFY_TIME DESC
+		]]>
+	</sql-query>
+</hibernate-mapping>

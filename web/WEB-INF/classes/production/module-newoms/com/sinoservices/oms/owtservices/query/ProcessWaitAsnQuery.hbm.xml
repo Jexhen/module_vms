@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="ProcessWaitAsnQuery">
+		<![CDATA[
+		select count(1) as ORDER_NUM 
+		from WM_ASN_HEADER asn where 1=1 
+		and status in (:statuses) 
+		<<and create_time > :createTimeFrom>>
+		<<and create_time < :createTimeTo>>
+		and <@dataFilter Table="HLS_ES_COMPANY_CODE" field= "COMPANY_CODE"  alias="asn" />
+		]]>
+	</sql-query>
+</hibernate-mapping>

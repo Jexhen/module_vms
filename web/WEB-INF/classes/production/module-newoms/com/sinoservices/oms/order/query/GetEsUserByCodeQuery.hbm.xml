@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="GetEsUserByCodeQuery">
+		<![CDATA[
+		select
+			ESUS.ESUS_LOGIN_NAME,
+			ESUS.ESUS_USER_NAME_CN,
+			ESUS.ESUS_ID,
+			EOEU.EOEU_DEFAULT,
+			EOEU.EOEU_ID,
+			EOEU.CREATOR,
+			EOEU.CREATE_TIME,
+			EOEU.MODIFIER,
+			EOEU.MODIFY_TIME,
+			EOEU.REC_VER,
+			EOEU.REC_STATUS,
+			EOEU.ORG_ID,
+			EOEU.EOEU_EOTO_CODE
+		from EO_EORE_2_ESPU EOEU
+		left join ES_USER ESUS
+		on EOEU.ORG_ID = ESUS.ESUS_ESCO_ID and EOEU.EOEU_ESUS_ID=ESUS.ESUS_ID
+		where 1=1
+		<<and EOEU.EOEU_EOTO_CODE LIKE :code>>
+		<<and EOEU.ORG_ID =:orgId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

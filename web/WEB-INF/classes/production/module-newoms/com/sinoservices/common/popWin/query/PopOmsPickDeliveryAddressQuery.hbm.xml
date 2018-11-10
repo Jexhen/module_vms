@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsPickDeliveryAddressQuery">
+		<![CDATA[
+
+SELECT DISTINCT EBLC.EBLC_ID,
+                EBLC.EBLC_CODE,
+                EBLC.EBLC_NAME_SHORT,
+                EBLC.EBLC_NAME_CN,
+                EBLC.EBLC_NAME_EN,
+                EBLC.EBLC_ADDRESS
+  FROM EB_LOCATION EBLC
+  WHERE 1=1 AND EBLC.REC_STATUS=0
+<<AND EBLC.ORG_ID = :orgId>>
+<<AND EBLC.EBLC_CODE LIKE '%' || :eblcCode || '%'>>
+<<AND EBLC.EBLC_NAME_CN like '%' || :eblcNameCn || '%' >>
+<< AND EBLC.EBLC_ADDRESS like '%' || :eblcAddress  || '%'>>
+<<AND EBLC.EBLC_ADDRESS IN (:eblcAddressLst)>>
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

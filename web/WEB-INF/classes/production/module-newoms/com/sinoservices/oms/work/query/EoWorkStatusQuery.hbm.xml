@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkStatusQuery">
+		<![CDATA[
+
+SELECT EOWA_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       ORG_ID,
+       EOWA_SEQUENCE,
+       EOWA_WORK_NO,
+       EOWA_STATUS_CODE,
+       EOWA_STATUS_NAME,
+       EOWA_STATUS_COLOR,
+       EOWA_ACTUAL_TIME,
+       EOWA_OPERATOR_CODE,
+       EOWA_OPERATOR_NAME,
+       EOWA_LOCATION_CODE,
+       EOWA_LOCATION_NAME,
+       EOWA_REMARK,
+       EOWA_REMARK_NAME_A,
+       EOWA_REMARK_VALUE_A,
+       EOWA_REMARK_NAME_B,
+       EOWA_REMARK_VALUE_B,
+       EOWA_REMARK_NAME_C,
+       EOWA_REMARK_VALUE_C,
+       EOWA_REMARK_NAME_D,
+       EOWA_REMARK_VALUE_D,
+       EOWA_REMARK_NAME_E,
+       EOWA_REMARK_VALUE_E,
+       EOWA_EVENT_STATUS_CODE,
+       EOWA_OPERATE_DATE
+  FROM EO_WORK_STATUS EOWA
+ WHERE 1 = 1
+<< AND EOWA.EOWA_WORK_NO IN (:eowaWorkNos) >>
+
+ /*根据创建时间、序号倒序排序*/ 
+ ORDER BY EOWA.CREATE_TIME,EOWA.EOWA_OPERATE_DATE,EOWA.EOWA_SEQUENCE DESC
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="BatchSetEoWaybillGroupPolicyStatusUpdate">
+		<![CDATA[
+
+UPDATE EO_WAYBILL_GROUP_POLICY EOGP SET EOGP.Rec_Status = :recStatus
+ WHERE EOGP.EOGP_ID IN (:eogpIds)  AND EOGP.ORG_ID = :orgId
+ 
+		]]>
+	</sql-query>
+</hibernate-mapping>

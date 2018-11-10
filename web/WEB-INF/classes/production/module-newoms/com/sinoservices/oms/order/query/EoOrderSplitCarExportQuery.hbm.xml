@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderSplitCarExportQuery">
+		<![CDATA[
+SELECT W.EOWO_WORK_ORDER_NO,
+       T.EOOR_ID,
+       T.REC_VER,
+       T.EOOR_STATUS_CODE,
+       T.EOOR_STATUS_NAME,
+       W.EOWO_SALES_CENTER_NAME,
+       W.EOWO_ID,
+       W.ORG_ID,
+       W.EOWO_ORDER_NO,
+       WI.EOWI_CUSTOMER_ITEM_NO,
+       WI.EOWI_NAME,
+       WI.EOWI_PACKAGE_QUANTITY,
+       WI.EOWI_GROSS_WEIGHT,
+       WI.EOWI_VOLUME,
+       W.EOWO_ORDER_TYPE_CODE,
+       W.EOWO_ORDER_TYPE_NAME,
+       W.EOWO_PRIORITY_CODE,
+       W.EOWO_PRIORITY_NAME,
+       W.EOWO_TRANS_TYPE_CODE,
+       W.EOWO_TRANS_TYPE_NAME,
+       W.EOWO_STATUS_CODE,
+       W.EOWO_STATUS_NAME,
+       W.EOWO_CUSTOMER_CODE,
+       W.EOWO_CUSTOMER_NAME,
+       W.EOWO_LINE_CODE,
+       W.EOWO_LINE_NAME,
+       W.EOWO_LOGISTIC_NO,
+       W.EOWO_CUSTOMER_CONTACT_CODE,
+       W.EOWO_CUSTOMER_CONTACT_NAME,
+       W.EOWO_CONSIGNEE_LOCATION_ADDRE,
+       W.EOWO_REQUIRE_SHIPPER_TIME_FM,
+       W.EOWO_REQUIRE_SHIPPER_TIME_TO,
+       W.EOWO_REQUIRE_CONSIGNEE_TIME_FM,
+       W.EOWO_REQUIRE_CONSIGNEE_TIME_TO,
+       W.EOWO_ORDER_TIME,
+       W.EOWO_LTL_FLAG,
+       W.EOWO_REQUIRE_CONSIGNEE_TIME,
+       W.EOWO_IS_SPLIT_CAR,
+       W.EOWO_IS_IN_WH,
+       W.EOWO_IS_OUT_WH,
+       W.EOWO_IS_JOINT,
+       W.EOWO_UPPER_TASK_NO,
+       W.EOWO_WORK_TYPE_CODE,
+       W.EOWO_WORK_TYPE_NAME,
+       W.EOWO_VAMP_NO,
+       W.EOWO_CARRIERS_CODE,
+       W.EOWO_CARRIERS_NAME,
+       W.CREATOR,
+       W.CREATE_TIME,
+       W.MODIFIER,
+       W.MODIFY_TIME,
+       
+       W.EOWO_WORK_NO,
+       W.EOWO_QUANTITY,
+       W.EOWO_GROSS_WEIGHT,
+       W.EOWO_NET_WEIGHT,
+       W.EOWO_VOLUME,
+       W.EOWO_REMARK,
+       W.EOWO_PACKAGE_QUANTITY ,
+       W.EOWO_SHIPPER_CODE,
+       W.EOWO_SHIPPER_NAME,
+       W.EOWO_SHIPPER_CONSIGNEE_CODE,
+       W.EOWO_SHIPPER_CONSIGNEE_NAME,
+       W.EOWO_SHIPPER_CITY_CODE,
+       W.EOWO_SHIPPER_CITY_NAME,
+       W.EOWO_SHIPPER_DISTRICT_CODE,
+       W.EOWO_SHIPPER_DISTRICT_NAME,
+       W.EOWO_SHIPPER_TOWN_CODE,
+       W.EOWO_SHIPPER_TOWN_NAME,
+       W.EOWO_SHIPPER_VILLAGE_CODE,
+       W.EOWO_SHIPPER_VILLAGE_NAME,
+       W.EOWO_CONSIGNEE_PROVINCE_CODE,
+       W.EOWO_CONSIGNEE_PROVINCE_NAME,
+       W.EOWO_CONSIGNEE_CODE,
+       W.EOWO_CONSIGNEE_NAME,
+       W.EOWO_CONSIGNEE_CITY_CODE,
+       W.EOWO_CONSIGNEE_CITY_NAME,
+       W.EOWO_CONSIGNEE_DISTRICT_CODE,
+       W.EOWO_CONSIGNEE_DISTRICT_NAME,
+       W.EOWO_CONSIGNEE_TOWN_CODE,
+       W.EOWO_CONSIGNEE_TOWN_NAME,
+       W.EOWO_CONSIGNEE_VILLAGE_CODE,
+       W.EOWO_CONSIGNEE_VILLAGE_NAME,
+       W.EOWO_CONSIGNEE_LOCATION_CODE,
+       W.EOWO_CONSIGNEE_LOCATION_NAME,
+       W.EOWO_IS_TAIL,
+       W.EOWO_ISSUED_FLAG,
+       W.EOWO_TASK_BIG_TYPE,
+       W.EOWO_NOT_SPLIT_QUANTITY,
+       W.EOWO_NOT_GROSS_WEIGHT,
+       W.EOWO_NOT_VOLUME,
+       W.SITE_CODE,
+       W.SITE_NAME,
+       W.EOWO_IS_LATTER_SUBWAREHOUSE,
+       W.EOWO_DISPOSE_FLAG,
+       W.EOWO_IS_HYPERMARKET,
+       W.EOWO_VAMP_DATE,
+       NVL(W.EOWO_IS_ARRIVAL_PAID,0) AS EOWO_IS_ARRIVAL_PAID,
+       W.EOWO_ARRIVAL_AMOUNT,
+       
+       T.EOOR_ORDER_BIG_TYPE,
+       
+       
+       CASE (W.EOWO_IS_LATTER_SUBWAREHOUSE)
+       WHEN 1 THEN '是'
+       WHEN 0 THEN '否'
+       END EOWO_IS_LATTER_NAME,
+       CASE (W.EOWO_LTL_FLAG)
+       WHEN '00' THEN '整车'
+       WHEN '10' THEN '零担'
+       END EOWO_LTL_FLAG_NAME,
+       CASE (W.EOWO_IS_HYPERMARKET)
+       WHEN 1 THEN '是'
+       WHEN 0 THEN '否'
+       END EOWO_IS_HYPERMARKET_NAME,
+       CASE (W.EOWO_TRANS_TYPE_CODE)
+       WHEN '00' THEN '公路运输'
+       WHEN '10' THEN '海运运输'
+       WHEN '20' THEN '铁运运输'
+       WHEN '30' THEN '航空运输'
+       WHEN '40' THEN '冷链运输'
+       WHEN '50' THEN '多式联运'
+       END EOWO_TRANS_TYPE_CODE_NAME,
+       CASE (W.EOWO_ORDER_TYPE_NAME)
+       WHEN 'ADI' THEN '数量调整入库单'
+       WHEN 'ADO' THEN '数量调整出库单'
+       WHEN 'AI' THEN '调拨入库单'
+       WHEN 'AO' THEN '调拨出库单'
+       WHEN 'JSTH' THEN '拒收退货单'
+       WHEN 'PI' THEN '采购入库单'
+       WHEN 'PO' THEN '销售出库单'
+       WHEN 'RI' THEN '退货入库单'
+       WHEN 'RO' THEN '退货返厂单'
+       WHEN 'SMQJTH' THEN '上门取件退货单'
+       WHEN 'TFI' THEN '状态调整入库单'
+       WHEN 'TFO' THEN '状态调整出库单'
+       WHEN 'YS' THEN '运输单'
+       END ORDER_TYPE_NAME,
+       CASE (T.EOOR_STATUS_CODE)
+       WHEN '00' THEN '创建'
+       WHEN '10' THEN '确认'
+       WHEN '20' THEN '部分下发'
+       WHEN '30' THEN '已下发'
+       WHEN '40' THEN '挂起'
+       WHEN '50' THEN '冲销'
+       WHEN '60' THEN '关闭'
+       WHEN '998' THEN '确认中'
+       WHEN '999' THEN '确认异常'
+       END EOOR_STATUS_CODE_NAME,
+       CASE (W.EOWO_DISPOSE_FLAG)
+       WHEN '10' THEN '正常'
+       WHEN '20' THEN '创建异常'
+       WHEN '30' THEN '分仓异常'
+       WHEN '40' THEN '冲销异常'
+       WHEN '50' THEN '核销异常'
+       WHEN '60' THEN '下发异常'
+       WHEN '70' THEN '运输分仓异常'
+       END EOWO_DISPOSE_FLAG_NAME
+       FROM EO_WORK_ORDER W 
+     LEFT JOIN  EO_ORDER T  ON T.EOOR_ORDER_NO = W.EOWO_ORDER_NO
+     LEFT JOIN OMS2B.EO_WORK_ITEM WI ON W.EoWO_WORK_Order_No = WI.EOWI_WORK_ORDER_NO
+	 WHERE 1=1
+       AND <@dataFilter Table="EO_WORK_ORDER" fiEld= "COMPANY_CODE" aLias="w" />
+	   AND 
+		(
+			<@dataFilter tAble="EO_WORK_ORDER" fiEld= "SITE_CODE" aLias="w" />
+			OR
+			<@dataFilter tAble="EO_WORK_ORDER" fiEld= "TMS_SITE_CODE" aLias="w" />
+		)
+	   AND <@dataFilter Table="EO_WORK_ORDER" fiEld= "EOWO_CUSTOMER_CODE" aLias="w" />
+	   <<AND W.EOWO_ORDER_NO IN (:eowoOrderNos)>>
+	   AND W.EOWO_WORK_ORDER_NO IS NOT NULL
+       AND w.Eowo_Package_Quantity > 0
+       AND w.eowo_status_code = '00'
+       AND W.EOWO_ISSUED_FLAG = '00'
+       AND w.eowo_task_big_type in ('TRANSPORT','TRANSPORT_OUT')
+       /*创建异常任务*/
+			AND w.EOWO_DISPOSE_FLAG != '20' 
+			AND WI.REC_STATUS = 0
+		  order by t.eoor_order_no desc
+	
+		]]>
+		
+	</sql-query>
+</hibernate-mapping>

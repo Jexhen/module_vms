@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="GetEoIssueParamPmCodeByIssuedTimeQuery">
+		<![CDATA[
+
+SELECT
+EOIR.EOIR_EODP_PM_CODE
+FROM EO_ISSUED_RULE EOIR
+WHERE 1=1
+AND (EOIR.EOIR_ISSUED_TIME_ONE=:issuedTime
+OR EOIR.EOIR_ISSUED_TIME_TWO=:issuedTime
+OR EOIR.EOIR_ISSUED_TIME_THREE=:issuedTime)
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

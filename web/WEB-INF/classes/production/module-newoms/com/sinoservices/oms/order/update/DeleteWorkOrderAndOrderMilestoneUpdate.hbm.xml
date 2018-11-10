@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteWorkOrderAndOrderMilestoneUpdate">
+		<![CDATA[
+begin
+
+DELETE EO_WORK_ORDER EOWO WHERE EOWO.EOWO_ORDER_NO in (:orderNos) AND EOWO.ORG_ID=:orgId ;
+
+DELETE EO_ORDER_MILESTONE EOOM WHERE EOOM.EOOM_ORDER_NO in (:orderNos) AND EOOM.ORG_ID=:orgId AND EOOM.EOOM_SEQUENCE>40 ;
+
+end;
+		]]>
+	</sql-query>
+</hibernate-mapping>

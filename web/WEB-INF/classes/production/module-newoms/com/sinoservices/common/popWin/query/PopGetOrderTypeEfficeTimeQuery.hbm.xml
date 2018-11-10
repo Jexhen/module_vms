@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopGetOrderTypeEfficeTimeQuery">
+		<![CDATA[
+	SELECT CTOT.CTOT_CODE,
+       CTOT.CTOT_NAME,
+       CTOT_BIG_TYPE
+  FROM CD_TS_ORDER_TYPE CTOT
+ WHERE 1 = 1
+    AND CTOT.REC_STATUS=0
+    AND CTOT.CTOT_CODE in ('PO','PI','YS','RI','AI','AO','ADI','ADO','TS','AD','TF','MF','JP')/*一期只有这些场景*/
+    <if !is_empty(ctotCode,ctotName)>
+	and (	
+			1=2
+			<< OR CTOT.CTOT_CODE =  :ctotCode >>
+   			<< OR CTOT.CTOT_NAME LIKE '%' ||  :ctotName || '%' >>
+		) 
+	</if>
+   <<AND CTOT.CTOT_NAME IN (:orderTypeNames)>>
+   <<AND CTOT.CTOT_BIG_TYPE = :ctotBigType >>
+	<#if orderTypeNot == '1'>
+    	AND CTOT.CTOT_CODE NOT IN('TR','CI','TC','CO')
+    </#if>
+		]]>
+	</sql-query>
+</hibernate-mapping>

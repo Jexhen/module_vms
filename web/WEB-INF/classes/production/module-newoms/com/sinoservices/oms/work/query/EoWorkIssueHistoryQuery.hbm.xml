@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkIssueHistoryQuery">
+		<![CDATA[
+		select
+			EWIH.EWIH_ID,
+			EWIH.EWIH_ORDER_NO,
+			EWIH.EWIH_LOGISTICNO_NO,
+			EWIH.EWIH_WORK_ORDER_NO,
+			EWIH.EWIH_STATUS_CODE,
+			EWIH.EWIH_ISSUE_TIME,
+			EWIH.EWIH_ISSUE_ADD,
+			EWIH.EWIH_ISSUE_MESSAGE,
+			EWIH.EWIH_REMARK,
+			EWIH.CREATOR,
+			EWIH.CREATE_TIME,
+			EWIH.MODIFIER,
+			EWIH.MODIFY_TIME,
+			EWIH.REC_VER,
+			EWIH.REC_STATUS,
+			EWIH.ORG_ID,
+			EWIH.PM_CODE,
+			EWIH.TIME_ZONE
+		from EO_WORK_ISSUE_HISTORY EWIH
+	   where 1=1
+	   <<and EWIH.EWIH_ID LIKE :ewihId>>
+	   <<and EWIH.CREATOR LIKE :creator>>
+	   <<and EWIH.CREATE_TIME=:createTime>>
+	   <<and EWIH.MODIFIER LIKE :modifier>>
+	   <<and EWIH.MODIFY_TIME=:modifyTime>>
+	   <<and EWIH.REC_VER LIKE :recVer>>
+	   <<and EWIH.REC_STATUS LIKE :recStatus>>
+	   <<and EWIH.ORG_ID LIKE :orgId>>
+	   <<and EWIH.TIME_ZONE LIKE :timeZone>>
+	   <<and EWIH.PM_CODE LIKE :pmCode>>
+	   <<and EWIH.EWIH_ORDER_NO like :ewihOrderNo>>
+	   <<and EWIH.EWIH_LOGISTICNO_NO like :ewihLogisticnoNo>>
+	   <<and EWIH.EWIH_WORK_ORDER_NO like :ewihWorkOrderNo>>
+	   <<and EWIH.EWIH_STATUS_CODE LIKE :ewihStatusCode>>
+	   <<and EWIH.EWIH_STATUS_NAME like :ewihStatusName>>
+	   <<and EWIH.EWIH_ISSUE_TIME =:ewihIssueTime>>
+	   <<and EWIH.EWIH_ISSUE_ADD LIKE :ewihIssueAdd>>
+	   <<and EWIH.EWIH_ISSUE_SYSTEM LIKE :ewihIssueSystem>>
+	   <<and EWIH.EWIH_ISSUE_MESSAGE like :ewihIssueMessage>>
+	   <<and EWIH.EWIH_REMARK like :ewihRemark>>
+	   <<and EWIH.EWIH_WORK_ORDER_NO in (:ewihWorkOrderNos)>>
+	   order by EWIH.EWIH_ISSUE_TIME desc
+		]]>
+	</sql-query>
+</hibernate-mapping>

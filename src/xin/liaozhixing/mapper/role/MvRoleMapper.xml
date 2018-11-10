@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xin.liaozhixing.mapper.role.MvRoleMapper" >
+
+    <resultMap id="roleModel" type="xin.liaozhixing.model.role.MvRoleModel">
+        <result column="mvrl_id" property="mvrlId"></result>
+        <result column="mvrl_name" property="mvrlName"></result>
+        <result column="creator" property="creator"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modifier" property="modifier"></result>
+        <result column="modify_time" property="modifyTime"></result>
+    </resultMap>
+
+    <select id="getRoles" resultMap="roleModel">
+        SELECT
+            mvrl.mvrl_id,
+            mvrl.mvrl_name,
+            IFNULL( c.mvus_name, '系统' ) AS creator,
+            DATE_FORMAT(mvrl.create_time,'%Y-%m-%d %H:%i:%s') as create_time,
+            IFNULL( m.mvus_name, '系统' ) AS modifier,
+            DATE_FORMAT(mvrl.modify_time,'%Y-%m-%d %H:%i:%s') as modify_time
+        FROM
+            mv_role mvrl
+            LEFT JOIN mv_user c ON mvrl.creator = c.mvus_id
+            LEFT JOIN mv_user m ON mvrl.modifier = m.mvus_id
+        WHERE
+            1 = 1
+            <if test="id != null">
+                AND mvrl.mvrl_id = #{id}
+            </if>
+    </select>
+
+    <update id="modifyRole">
+        UPDATE mv_role mvrl
+        SET mvrl.mvrl_name = #{role.mvrlName},
+        mvrl.modifier = #{role.modifier},
+        mvrl.modify_time = SYSDATE( )
+        WHERE
+            mvrl.mvrl_id = #{role.mvrlId}
+    </update>
+
+    <insert id="addRole">
+        INSERT INTO mv_role ( mvrl_name, creator, create_time, modifier, modify_time )
+        VALUES
+            ( #{role.mvrlName}, #{role.creator}, SYSDATE( ), #{role.modifier}, SYSDATE( ) )
+    </insert>
+
+    <delete id="deleteRoles">
+        DELETE
+        FROM
+        mv_role
+        WHERE
+        1 = 1
+        AND mvrl_id IN
+        <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+</mapper>

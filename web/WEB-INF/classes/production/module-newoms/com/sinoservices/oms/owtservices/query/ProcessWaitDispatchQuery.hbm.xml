@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="ProcessWaitDispatchQuery">
+		<![CDATA[
+		select count(1) as ORDER_NUM 
+		from Et_Dispatch_Order etdo
+		where 1=1 
+		and etdo_Status in (:dispatchStatuses)
+		<<and create_time > :createTimeFrom>>
+		<<and create_time < :createTimeTo>>
+		and <@dataFilter Table="HLS_ES_COMPANY_CODE" field= "COMPANY_CODE"  alias="etdo" />
+		]]>
+	</sql-query>
+</hibernate-mapping>

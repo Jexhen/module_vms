@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoLogWorkPushQuery">
+		<![CDATA[
+SELECT
+       EOLO.EOLO_ID,
+       EOLO.CREATOR,
+       EOLO.CREATE_TIME,
+       EOLO.MODIFIER,
+       EOLO.MODIFY_TIME,
+       EOLO.REC_VER,
+       EOLO.REC_STATUS,
+       EOLO.COMPANY_CODE,
+       EOLO.SITE_CODE,
+       EOLO.COMPANY_NAME,
+       EOLO.SITE_NAME,
+       EOLO.EOLO_WORK_ORDER_NO,
+       EOLO.EOLO_OPERATE_NAME,
+       EOLO.EOLO_OPERATE_CODE,
+       
+       EOLO.EOLO_OPERATE_TYPE_CODE,
+       (select eb.ebcd_name_cn
+  		from eb_code_master eb
+ 		where eb.ebcd_dictionary_type = 'OMS_NOTE_TYPE'
+   		and eb.ebcd_code = EOLO_OPERATE_TYPE_CODE ) EOLO_OPERATE_TYPE_NAME,
+   		
+       EOLO.EOLO_OPERATE_TIME,
+       EOLO.EOLO_REMARK,
+       EOLO.EOLO_ORDER_NO,
+       EOLO.EOLO_NODE_TYPE,
+       
+       (select eb.ebcd_name_cn
+  		from eb_code_master eb
+ 		where eb.ebcd_dictionary_type = 'OMS_MILESTONE_NODE'
+   		and eb.ebcd_code = EOLO_NODE_TYPE ) EOLO_NODE_TYPE_NAME,
+       
+       EOLO.EOLO_LINK_LOGISTIC_NO,
+       EOLO.EOLO_DOWNSTREAM_NO,
+       EOLO.EOLO_OPERATE_QTY,
+       nvl(EOLO.EOLO_IS_ALL_HOMEWORK,1) EOLO_IS_ALL_HOMEWORK,
+       nvl(EOLO.EOLO_REVERSE_LOGO,0) EOLO_REVERSE_LOGO,
+       EOWO.EOWO_SOURCE_SYS,
+       EOWO.EOWO_LOGISTIC_NO,
+       EOWO.EOWO_EXPRESS_NO,
+       EOWO.EOWO_CARRIER_CODE
+  FROM EO_LOG_WORK EOLO
+  LEFT JOIN EO_WORK_ORDER EOWO ON EOLO.EOLO_WORK_ORDER_NO = EOWO.EOWO_WORK_ORDER_NO
+ WHERE 1=1
+ << AND EOWO.EOWO_SOURCE_SYS IN (:eowoSourceSys)>>
+ <<AND EOLO.EOLO_ID LIKE :eoloId>>
+ <<AND EOLO.CREATOR LIKE :creator>>
+ <<AND EOLO.CREATE_TIME > :createTimeFrom>>
+ <<AND EOLO.CREATE_TIME <= :createTimeTo + 1>>
+ <<AND EOLO.MODIFIER LIKE :modifier>>
+ <<AND EOLO.MODIFY_TIME > :modifyTimeFrom>>
+ <<AND EOLO.MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND EOLO.REC_VER LIKE :recVer>>
+ <<AND EOLO.REC_STATUS LIKE :recStatus>>
+ <<AND EOLO.COMPANY_CODE LIKE :companyCode>>
+ <<AND EOLO.SITE_CODE LIKE :siteCode>>
+ <<AND EOLO.COMPANY_NAME LIKE :companyName>>
+ <<AND EOLO.SITE_NAME LIKE :siteName>>
+ <<AND EOLO.EOLO_WORK_ORDER_NO LIKE :eoloWorkOrderNo>>
+ <<AND EOLO.EOLO_OPERATE_NAME LIKE :eoloOperateName>>
+ <<AND EOLO.EOLO_OPERATE_CODE LIKE :eoloOperateCode>>
+ <<AND EOLO.EOLO_OPERATE_TYPE_CODE LIKE :eoloOperateTypeCode>>
+ <<AND EOLO.EOLO_OPERATE_TYPE_NAME LIKE :eoloOperateTypeName>>
+ <<AND EOLO.EOLO_OPERATE_TIME LIKE :eoloOperateTime>>
+ <<AND EOLO.EOLO_REMARK LIKE :eoloRemark>>
+ <<AND EOLO.EOLO_ORDER_NO LIKE :eoloOrderNo>>
+ <<AND EOLO.EOLO_NODE_TYPE LIKE :eoloNodeType>>
+ <<AND EOLO.EOLO_LINK_LOGISTIC_NO LIKE :eoloLinkLogisticNo>>
+ <<AND EOLO.EOLO_DOWNSTREAM_NO LIKE :eoloDownstreamNo>>
+ <<AND EOLO.EOLO_OPERATE_QTY LIKE :eoloOperateQty>>
+ <<AND EOLO.EOLO_IS_ALL_HOMEWORK LIKE :eoloIsAllHomework>>
+ <<AND EOLO.EOLO_REVERSE_LOGO LIKE :eoloReverseLogo>>
+ <<AND EOLO.EOLO_WORK_ORDER_NO IN (:eoloWorkOrderNos)>>
+  <<AND EOLO.EOLO_PUSH_FLAG LIKE :eoloPushFlag>>
+ <#if limitRowNum == 'Y'>
+	AND rownum<=:rowNumSize
+</#if>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

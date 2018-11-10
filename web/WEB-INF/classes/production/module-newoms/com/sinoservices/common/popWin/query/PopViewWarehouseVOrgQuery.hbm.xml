@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopViewWarehouseVOrgQuery">
+		<![CDATA[
+SELECT OW.WAREHOUSE_CODE,
+       OW.WAREHOUSE_NAME,
+       OW.OMS_INV_ORG_CODE,
+       OW.OMS_INV_ORG_NAME,
+       OW.OMS_INV_ORG_ID,
+       IC.ANN_CUSTOMER_CODE,
+       IC.ANN_CUSTOMER_NAME
+  FROM OMS_IF_A3_WAREHOUSE_V OW
+  left join  MID_CUSTOMER_CONTROL IC on  ic.cust_customer_code= TO_CHAR(OW.ou_id)
+ WHERE 1=1
+ <if !is_empty(omsInvOrgId,omsInvOrgName)>
+	and (	
+			1=2
+			 << OR  OW.OMS_INV_ORG_ID LIKE '%' || :omsInvOrgId || '%'>>
+ 			 << OR  OW.OMS_INV_ORG_NAME LIKE '%' || :omsInvOrgName || '%'>>
+		) 
+ </if>
+   AND TO_CHAR (OW.EXPORT_ORG_ID) = IC.ENTITY_ID
+       AND EXISTS
+              (SELECT 1
+                 FROM OMS_IF_A3_ACCOUNTING_ORG_V A
+                WHERE A.ORGTYPE = '出口组织'
+                  AND TO_CHAR (A.ORG_ID) = IC.ENTITY_ID
+               ) 
+   << AND IC.ANN_CUSTOMER_CODE = :customerCode >>
+		]]>
+	</sql-query>
+</hibernate-mapping>

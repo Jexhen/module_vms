@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="InsertDeliveryItemUpdate">
+		<![CDATA[
+
+insert into EO_DELIVERY_ITEM
+  (EODI_ID,
+   CREATOR,
+   CREATE_TIME,
+   MODIFIER,
+   MODIFY_TIME,
+   REC_VER,
+   REC_STATUS,
+   ORG_ID,
+   PM_CODE,
+   EODI_WORK_ORDER_NO,
+   EODI_CODE,
+   EODI_NAME,
+   EODI_PACKAGE_TYPE_CODE,
+   EODI_PACKAGE_TYPE_NAME,
+   EODI_PACKAGE_UNIT_CODE,
+   EODI_PACKAGE_UNIT_NAME,
+   EODI_ITEM_TYPE_CODE,
+   EODI_ITEM_TYPE_NAME,
+   EODI_PACKAGE_QUANTITY,
+   EODI_QUANTITY,
+   EODI_GROSS_WEIGHT,
+   EODI_NET_WEIGHT,
+   EODI_VOLUME,
+   EODI_LOT_NO,
+   EODI_PRICE,
+   EODI_AMOUNT,
+   EODI_TEMPERATURE_LEVEL_CODE,
+   EODI_TEMPERATURE_LEVEL_NAME,
+   EODI_TEMPERATURE_FM,
+   EODI_TEMPERATURE_TO,
+   EODI_REMARK)
+  select SEQ_EO_DELIVERY_ITEM.NEXTVAL, /*EODI_ID*/
+         EOWI.CREATOR, /*CREATOR*/
+         SYSDATE, /*CREATE_TIME*/
+         EOWI.MODIFIER, /*MODIFIER*/
+         SYSDATE, /*MODIFY_TIME*/
+         0, /*REC_VER*/
+         0, /*REC_STATUS*/
+         EOWI.ORG_ID, /*ORG_ID*/
+         EOWI.PM_CODE, /*PM_CODE*/
+         EOWI.EOWI_WORK_ORDER_NO, /*EODI_WORK_ORDER_NO*/
+         EOWI.EOWI_CODE,
+         EOWI.EOWI_NAME,
+         EOWI.EOWI_PACKAGE_TYPE_CODE,
+         EOWI.EOWI_PACKAGE_TYPE_NAME,
+         EOWI.EOWI_PACKAGE_UNIT_CODE,
+         EOWI.EOWI_PACKAGE_UNIT_NAME,
+         EOWI.EOWI_ITEM_TYPE_CODE,
+         EOWI.EOWI_ITEM_TYPE_NAME,
+         EOWI.EOWI_PACKAGE_QUANTITY,
+         EOWI.EOWI_QUANTITY,
+         EOWI.EOWI_GROSS_WEIGHT,
+         EOWI.EOWI_NET_WEIGHT,
+         EOWI.EOWI_VOLUME,
+         EOWI.EOWI_LOT_NO,
+         EOWI.EOWI_PRICE,
+         EOWI.EOWI_AMOUNT,
+         EOWI.EOWI_TEMPERATURE_LEVEL_CODE,
+         EOWI.EOWI_TEMPERATURE_LEVEL_NAME,
+         EOWI.EOWI_TEMPERATURE_FM,
+         EOWI.EOWI_TEMPERATURE_TO,
+         EOWI.EOWI_REMARK
+    from EO_WORK_ITEM EOWI
+   where EOWI.EOWI_WORK_ORDER_NO = :eowoWorkOrderNo
+     and EOWI.ORG_ID = :orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

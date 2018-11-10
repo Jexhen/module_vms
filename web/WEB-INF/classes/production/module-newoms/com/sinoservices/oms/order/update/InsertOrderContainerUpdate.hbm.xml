@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="InsertOrderContainerUpdate">
+		<![CDATA[
+
+insert into EO_ORDER_CONTAINER
+  (EOOC_ID,
+   CREATOR,
+   CREATE_TIME,
+   MODIFIER,
+   MODIFY_TIME,
+   REC_VER,
+   REC_STATUS,
+   ORG_ID,
+   PM_CODE,
+   EOOC_ORDER_NO,
+   EOOC_CONTAINER_TYPE_CODE,
+   EOOC_CONTAINER_TYPE_NAME,
+   EOOC_QUANTITY,
+   EOOC_REMARK)
+  select SEQ_EO_ORDER_CONTAINER.NEXTVAL,
+         EOOR.CREATOR, 
+         SYSDATE, 
+         EOOR.MODIFIER, 
+         SYSDATE, 
+         0, 
+         0, 
+         EOOR.ORG_ID, 
+         SYS_GUID(), 
+         :eoorOrderLinkNo, 
+         EOOC.EOOC_CONTAINER_TYPE_CODE,
+         EOOC.EOOC_CONTAINER_TYPE_NAME,
+         EOOC.EOOC_QUANTITY,
+         EOOC.EOOC_REMARK
+    from EO_ORDER_CONTAINER EOOC
+    left join EO_ORDER EOOR
+      on EOOR.EOOR_ORDER_NO = EOOC.EOOC_ORDER_NO
+     and EOOR.ORG_ID = EOOC.ORG_ID
+   where EOOC.EOOC_ORDER_NO in (:eoorOrderNos)
+     and EOOC.ORG_ID = :orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="PopEbShipperQuery">
+		<![CDATA[
+SELECT
+       EBSP_ID,
+       EBSP_QUICK_CODE,
+       EBSP_SHIPPER_NO,
+       EBSP_NAME_CN,
+       EBSP_NAME_EN,
+       EBSP_SHORT_NAME,
+       EBSP_STATUS,
+       EBSP_CONTACT,
+       EBSP_CONTACT_TEL,
+       EBSP_CONTACT_MOBILE,
+       EBSP_CONTACT_EMAIL,
+       EBSP_CONTACT_FAX,
+       EBSP_EBLC_ZIP,
+       EBSP_PM_CODE,
+       EBSP_EBCU_NAME,
+       EBSP_REQ_APPOINTMENT,
+       EBSP_EBLC_LONGITUDE,
+       EBSP_EBLC_LATITUDE,
+       EBSP_SOURCE,
+       EBSP_REMARK,
+       EBSP_SUBSTR1,
+       EBSP_SUBSTR2,
+       EBSP_SUBSTR3,
+       EBSP_SUBSTR4,
+       EBSP_SUBSTR5,
+       EBSP_SUBSTR6,
+       EBSP_SUBSTR7,
+       EBSP_SUBSTR8,
+       EBSP_SUBDATE1,
+       EBSP_SUBDATE2,
+       EBSP_SUBDATE3,
+       EBSP_SUBDATE4,
+       EBSP_SUBDATE8,
+       EBSP_SUBNUM1,
+       EBSP_SUBNUM2,
+       EBSP_SUBNUM3,
+       EBSP.REC_VER,
+       EBSP.CREATE_TIME,
+       EBSP.CREATOR,
+       EBSP.MODIFY_TIME,
+       EBSP.MODIFIER,
+       EBSP.REC_STATUS,
+       EBSP_EBLC_DETAIL_ADDRESS,
+       EBSP_IS_SITE,
+       EBSP_SITE_CODE,
+       EBSP_SITE_NAME,
+       EBSP_TYPE,
+       EBSP_BRANCH_CODE,
+       EBSP_BRANCH_NAME,
+       EBSP_UPSTREAM_CODE,
+       EBSP_UPSTREAM_DETAIL_ADDRESS,
+       EDI_STATUS,
+       EBSP.COMPANY_CODE,
+       EBSP.SITE_CODE,
+       EB.EBLC_COUNTRY_CODE,
+       EB.EBLC_COUNTRY_NAME,
+       EB.EBLC_PROVINCE_NAME,
+       EB.EBLC_PROVINCE_CODE,
+       EB.EBLC_CITY_NAME,
+       EB.EBLC_CITY_CODE,
+       EB.EBLC_COUNTY_NAME,
+       EB.EBLC_COUNTY_CODE,
+       EB.EBLC_TOWN_CODE,
+       EB.EBLC_TOWN_NAME,
+       EB.EBLC_VILLAGE_CODE,
+       EB.EBLC_VILLAGE_NAME,
+       EB.EBLC_DETAIL_ADDRESS,
+       EBSP.EBSP_EBLC_ADDRESS,
+       EBSP.EBSP_EBLC_CODE,
+       EBSP.EBSP_WAREHOUSE_CODE,
+       EBSP.EBSP_IS_CONSIGNOR,
+       EBSP.EBSP_IS_SHIPPER
+  FROM EB_SHIPPER EBSP LEFT JOIN EB_LOCATION EB ON EBSP.EBSP_EBLC_CODE = EB.EBLC_CODE
+ WHERE 1=1
+ <if !is_empty(ebspShipperNo,ebspNameCn,ebspContact,ebspEblcAddress)>
+	and (
+			1 = 2 
+			<< or EBSP.EBSP_SHIPPER_NO LIKE '%'||:ebspShipperNo||'%'>> 
+			<< or EBSP.EBSP_NAME_CN LIKE '%'||:ebspNameCn||'%'>>
+			<< or EBSP.EBSP_CONTACT LIKE '%'||:ebspContact||'%'>> 
+			<< or EBSP.EBSP_EBLC_ADDRESS LIKE '%'||:ebspEblcAddress||'%'>> 
+		) 
+</if>
+ <<AND EBSP_ID LIKE :ebspId>>
+ <<AND EBSP.EBSP_EBLC_DETAIL_ADDRESS IN (:ebspEblcDetailAddresss)>>
+  <<AND EBSP.EBSP_SHIPPER_NO IN (:eoorShipperCode)>>
+ <<AND EBSP_QUICK_CODE LIKE :ebspQuickCode>>
+ <<AND EBSP_NAME_EN LIKE :ebspNameEn>>
+ <<AND EBSP_SHORT_NAME LIKE :ebspShortName>>
+ <<AND EBSP.EBSP_STATUS LIKE :ebspStatus>>
+ <<AND EBSP_CONTACT_TEL LIKE :ebspContactTel>>
+ <<AND EBSP_CONTACT_MOBILE LIKE :ebspContactMobile>>
+ <<AND EBSP_CONTACT_EMAIL LIKE :ebspContactEmail>>
+ <<AND EBSP_CONTACT_FAX LIKE :ebspContactFax>>
+ <<AND EBSP_EBLC_ZIP LIKE :ebspEblcZip>>
+ <<AND EBSP_PM_CODE LIKE :ebspPmCode>>
+ <<AND EBSP_EBCU_NAME LIKE :ebspEbcuName>>
+ <<AND EBSP_REQ_APPOINTMENT LIKE :ebspReqAppointment>>
+ <<AND EBSP_EBLC_LONGITUDE LIKE :ebspEblcLongitude>>
+ <<AND EBSP_EBLC_LATITUDE LIKE :ebspEblcLatitude>>
+ <<AND EBSP_SOURCE LIKE :ebspSource>>
+ <<AND EBSP_REMARK LIKE :ebspRemark>>
+ <<AND EBSP_SUBSTR1 LIKE :ebspSubstr1>>
+ <<AND EBSP_SUBSTR2 LIKE :ebspSubstr2>>
+ <<AND EBSP_SUBSTR3 LIKE :ebspSubstr3>>
+ <<AND EBSP_SUBSTR4 LIKE :ebspSubstr4>>
+ <<AND EBSP_SUBSTR5 LIKE :ebspSubstr5>>
+ <<AND EBSP_SUBSTR6 LIKE :ebspSubstr6>>
+ <<AND EBSP_SUBSTR7 LIKE :ebspSubstr7>>
+ <<AND EBSP_SUBSTR8 LIKE :ebspSubstr8>>
+ <<AND EBSP_SUBDATE1 > :ebspSubdate1From>>
+ <<AND EBSP_SUBDATE1 <= :ebspSubdate1To + 1>>
+ <<AND EBSP_SUBDATE2 > :ebspSubdate2From>>
+ <<AND EBSP_SUBDATE2 <= :ebspSubdate2To + 1>>
+ <<AND EBSP_SUBDATE3 > :ebspSubdate3From>>
+ <<AND EBSP_SUBDATE3 <= :ebspSubdate3To + 1>>
+ <<AND EBSP_SUBDATE4 > :ebspSubdate4From>>
+ <<AND EBSP_SUBDATE4 <= :ebspSubdate4To + 1>>
+ <<AND EBSP_SUBDATE8 > :ebspSubdate8From>>
+ <<AND EBSP_SUBDATE8 <= :ebspSubdate8To + 1>>
+ <<AND EBSP_SUBNUM1 LIKE :ebspSubnum1>>
+ <<AND EBSP_SUBNUM2 LIKE :ebspSubnum2>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND EBSP_SUBNUM3 LIKE :ebspSubnum3>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND EBSP.REC_STATUS LIKE :recStatus>>
+ <<AND EBSP_IS_SITE LIKE :ebspIsSite>>
+ <<AND EBSP_SITE_CODE LIKE :ebspSiteCode>>
+ <<AND EBSP_SITE_NAME LIKE :ebspSiteName>>
+ <<AND EBSP_TYPE LIKE :ebspType>>
+ <<AND EBSP_BRANCH_CODE LIKE :ebspBranchCode>>
+ <<AND EBSP_BRANCH_NAME LIKE :ebspBranchName>>
+ <<AND EBSP_UPSTREAM_CODE LIKE :ebspUpstreamCode>>
+ <<AND EBSP_UPSTREAM_DETAIL_ADDRESS LIKE :ebspUpstreamDetailAddress>>
+ <<AND EDI_STATUS LIKE :ediStatus>>
+ <<AND COMPANY_CODE LIKE :companyCode>>
+ <<AND SITE_CODE LIKE :siteCode>>
+ <<AND EBSP_IS_CONSIGNOR = :ebspIsConsignor>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

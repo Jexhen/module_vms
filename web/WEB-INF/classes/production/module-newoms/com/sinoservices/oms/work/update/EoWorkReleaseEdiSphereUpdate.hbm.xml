@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkReleaseEdiSphereUpdate">
+		<![CDATA[
+
+UPDATE EO_WORK_RELEASE_EDI EWRE SET EWRE.EWRE_SPHERE=:ewreSphere,EWRE.EWRE_STATUS_CODE=:ewreStatusCodeSave,EWRE.EWRE_STATUS_NAME=:ewreStatusName
+WHERE EWRE.EWRE_STATUS_CODE=:ewreStatusCodeQuery AND EWRE.EWRE_SPHERE IS NULL AND EWRE.ORG_ID=:orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

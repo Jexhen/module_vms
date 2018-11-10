@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkRecycleItemQuery">
+		<![CDATA[
+SELECT
+       EWRI_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       COMPANY_CODE,
+       SITE_CODE,
+       COMPANY_NAME,
+       SITE_NAME,
+       EWRI_ORDER_NO,
+       EWRI_WORK_ORDER_NO,
+       EWRI_DOWNSTREAM_NO,
+       EWRI_CODE,
+       EWRI_NAME,
+       EWRI_PACKAGE_TYPE_CODE,
+       EWRI_PACKAGE_TYPE_NAME,
+       EWRI_PACKAGE_UNIT_CODE,
+       EWRI_PACKAGE_UNIT_NAME,
+       EWRI_UNDO_QUANTITY,
+       EWRI_PACKAGE_QUANTITY,
+       EWRI_QUANTITY,
+       EWRI_GROSS_WEIGHT,
+       EWRI_NET_WEIGHT,
+       EWRI_VOLUME,
+       EWRI_REMARK,
+       EWRI_LINK_PM_CODE,
+       EWRI_LOTATT01,
+       EWRI_LOTATT02,
+       EWRI_LOTATT03,
+       EWRI_LOTATT04,
+       EWRI_LOTATT05,
+       EWRI_LOTATT06,
+       EWRI_LOTATT07,
+       EWRI_LOTATT08,
+       EWRI_LOTATT09,
+       EWRI_LOTATT10,
+       EWRI_LOTATT11,
+       EWRI_LOTATT12,
+       EWRI_SCHEDULING_QUANTITY,
+       EWRI_SHIPPING_QUANTITY,
+       EWRI_SIGN_QTY,
+       EWRI_REAL_OUT_QUANTITY,
+       EWRI_REAL_IN_QUANTITY,
+       EWRI_UNIT_QUANTITY,
+       EWRI_UNIT_GROSS_WEIGHT,
+       EWRI_UNIT_VOLUME,
+       EWRI_UPSTREAM_LINE_NO,
+       EWRI_LOC_CODE,
+       EWRI_TRACE_NO,
+       EWRI_MAIN_GOODS_CODE,
+       EWRI_REVERSAL_REASON,
+       EWRI_EXPRESS_NO,
+       EWRI_SUBSTR1,
+       EWRI_SUBSTR2,
+       EWRI_SUBSTR3,
+       EWRI_SUBSTR4,
+       EWRI_SUBDATE1,
+       EWRI_SUBDATE2,
+       EWRI_SUBNUM1,
+       EWRI_SUBNUM2,
+       EWRI_REJECT_QUANTITY,
+       EWRI_CANCEL_QUANTITY
+  FROM EO_WORK_RECYCLE_ITEM
+ WHERE 1=1
+ <<AND EWRI_ID LIKE :ewriId>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND COMPANY_CODE LIKE :companyCode>>
+ <<AND SITE_CODE LIKE :siteCode>>
+ <<AND COMPANY_NAME LIKE :companyName>>
+ <<AND SITE_NAME LIKE :siteName>>
+ <<AND EWRI_ORDER_NO LIKE :ewriOrderNo>>
+ <<AND EWRI_WORK_ORDER_NO LIKE :ewriWorkOrderNo>>
+ <<AND EWRI_DOWNSTREAM_NO LIKE :ewriDownstreamNo>>
+ <<AND EWRI_CODE LIKE :ewriCode>>
+ <<AND EWRI_NAME LIKE :ewriName>>
+ <<AND EWRI_PACKAGE_TYPE_CODE LIKE :ewriPackageTypeCode>>
+ <<AND EWRI_PACKAGE_TYPE_NAME LIKE :ewriPackageTypeName>>
+ <<AND EWRI_PACKAGE_UNIT_CODE LIKE :ewriPackageUnitCode>>
+ <<AND EWRI_PACKAGE_UNIT_NAME LIKE :ewriPackageUnitName>>
+ <<AND EWRI_UNDO_QUANTITY LIKE :ewriUndoQuantity>>
+ <<AND EWRI_PACKAGE_QUANTITY LIKE :ewriPackageQuantity>>
+ <<AND EWRI_QUANTITY LIKE :ewriQuantity>>
+ <<AND EWRI_GROSS_WEIGHT LIKE :ewriGrossWeight>>
+ <<AND EWRI_NET_WEIGHT LIKE :ewriNetWeight>>
+ <<AND EWRI_VOLUME LIKE :ewriVolume>>
+ <<AND EWRI_REMARK LIKE :ewriRemark>>
+ <<AND EWRI_LINK_PM_CODE LIKE :ewriLinkPmCode>>
+ <<AND EWRI_LOTATT01 > :ewriLotatt01From>>
+ <<AND EWRI_LOTATT01 <= :ewriLotatt01To + 1>>
+ <<AND EWRI_LOTATT02 > :ewriLotatt02From>>
+ <<AND EWRI_LOTATT02 <= :ewriLotatt02To + 1>>
+ <<AND EWRI_LOTATT03 > :ewriLotatt03From>>
+ <<AND EWRI_LOTATT03 <= :ewriLotatt03To + 1>>
+ <<AND EWRI_LOTATT04 LIKE :ewriLotatt04>>
+ <<AND EWRI_LOTATT05 LIKE :ewriLotatt05>>
+ <<AND EWRI_LOTATT06 LIKE :ewriLotatt06>>
+ <<AND EWRI_LOTATT07 LIKE :ewriLotatt07>>
+ <<AND EWRI_LOTATT08 LIKE :ewriLotatt08>>
+ <<AND EWRI_LOTATT09 LIKE :ewriLotatt09>>
+ <<AND EWRI_LOTATT10 LIKE :ewriLotatt10>>
+ <<AND EWRI_LOTATT11 LIKE :ewriLotatt11>>
+ <<AND EWRI_LOTATT12 LIKE :ewriLotatt12>>
+ <<AND EWRI_SCHEDULING_QUANTITY LIKE :ewriSchedulingQuantity>>
+ <<AND EWRI_SHIPPING_QUANTITY LIKE :ewriShippingQuantity>>
+ <<AND EWRI_SIGN_QTY LIKE :ewriSignQty>>
+ <<AND EWRI_REAL_OUT_QUANTITY LIKE :ewriRealOutQuantity>>
+ <<AND EWRI_REAL_IN_QUANTITY LIKE :ewriRealInQuantity>>
+ <<AND EWRI_UNIT_QUANTITY LIKE :ewriUnitQuantity>>
+ <<AND EWRI_UNIT_GROSS_WEIGHT LIKE :ewriUnitGrossWeight>>
+ <<AND EWRI_UNIT_VOLUME LIKE :ewriUnitVolume>>
+ <<AND EWRI_UPSTREAM_LINE_NO LIKE :ewriUpstreamLineNo>>
+ <<AND EWRI_LOC_CODE LIKE :ewriLocCode>>
+ <<AND EWRI_TRACE_NO LIKE :ewriTraceNo>>
+ <<AND EWRI_MAIN_GOODS_CODE LIKE :ewriMainGoodsCode>>
+ <<AND EWRI_REVERSAL_REASON LIKE :ewriReversalReason>>
+ <<AND EWRI_EXPRESS_NO LIKE :ewriExpressNo>>
+ <<AND EWRI_SUBSTR1 LIKE :ewriSubstr1>>
+ <<AND EWRI_SUBSTR2 LIKE :ewriSubstr2>>
+ <<AND EWRI_SUBSTR3 LIKE :ewriSubstr3>>
+ <<AND EWRI_SUBSTR4 LIKE :ewriSubstr4>>
+ <<AND EWRI_SUBDATE1 > :ewriSubdate1From>>
+ <<AND EWRI_SUBDATE1 <= :ewriSubdate1To + 1>>
+ <<AND EWRI_SUBDATE2 > :ewriSubdate2From>>
+ <<AND EWRI_SUBDATE2 <= :ewriSubdate2To + 1>>
+ <<AND EWRI_SUBNUM1 LIKE :ewriSubnum1>>
+ <<AND EWRI_SUBNUM2 LIKE :ewriSubnum2>>
+  <<AND EWRI_CANCEL_QUANTITY LIKE :ewriCancelQuantity>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

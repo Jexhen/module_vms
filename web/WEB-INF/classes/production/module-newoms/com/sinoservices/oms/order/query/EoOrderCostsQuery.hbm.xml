@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="EoOrderCostsQuery">
+		<![CDATA[
+SELECT
+       EOOC_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_STATUS,
+       REC_VER,
+       EOOC_SENDING_STATION,
+       EOOC_ARRIVAL,
+       EOOC_BILLING_METHOD,
+       EOOC_FREIGHT,
+       EOOC_PICK_UP_CHARGE,
+       EOOC_DELIVERY_FEE,
+       EOOC_TRANSFER_CHARGE,
+       EOOC_HANDLING_FEE,
+       EOOC_OTHER_CHARGE,
+       EOOC_ORDER_ID
+  FROM EO_ORDER_COSTS
+ WHERE 1=1
+ <<AND EOOC_ID LIKE :eoocId>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND EOOC_SENDING_STATION LIKE :eoocSendingStation>>
+ <<AND EOOC_ARRIVAL LIKE :eoocArrival>>
+ <<AND EOOC_BILLING_METHOD LIKE :eoocBillingMethod>>
+ <<AND EOOC_FREIGHT LIKE :eoocFreight>>
+ <<AND EOOC_PICK_UP_CHARGE LIKE :eoocPickUpCharge>>
+ <<AND EOOC_DELIVERY_FEE LIKE :eoocDeliveryFee>>
+ <<AND EOOC_TRANSFER_CHARGE LIKE :eoocTransferCharge>>
+ <<AND EOOC_HANDLING_FEE LIKE :eoocHandlingFee>>
+ <<AND EOOC_OTHER_CHARGE LIKE :eoocOtherCharge>>
+ <<AND EOOC_ORDER_ID LIKE :eoocOrderId>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

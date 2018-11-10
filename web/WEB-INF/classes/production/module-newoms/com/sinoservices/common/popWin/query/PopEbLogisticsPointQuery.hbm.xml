@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopEbLogisticsPointQuery">
+		<![CDATA[
+SELECT
+       EBRP_ID,
+       EBRP_CODE,
+       EBRP_NAME,
+       EBRP_OWN_ORGANATION,
+       EBRP_TYPE,
+       EBRP_LEVEL_NAME,
+       EBRP_LEVEL,
+       EBRP_EBCU_CODE,
+       EBRP_CLASS,
+       EBRP_STATUS,
+       EBRP_DEPOSIT,
+       EBRP_PARENT_ID,
+       EBRP_PARENT_CODE,
+       EBRP_AREA,
+       EBRP_AREA_UNIT,
+       EBRP_STORAGE_CAPACITY,
+       EBRP_WAREHOUSE_TYPE
+  FROM EB_LOGISTICS_POINT 
+ WHERE 1=1 and EBRP_LOGISTICS_NODE_TYPE in ('GENERAL_WH','PHYSICAL_WH')
+ <if !is_empty(ebrpCode,ebrpName)>
+	and (
+			1 = 2 
+			<< OR EBRP_CODE like '%'||:ebrpCode||'%' >>
+			<< OR EBRP_NAME like '%'||:ebrpName||'%' >> 
+		) 
+ </if>
+  <if !is_empty(ebrpLogisticsNodeType)>
+	 and EBRP_LOGISTICS_NODE_TYPE LIKE :ebrpLogisticsNodeType
+ </if>
+
+ <<AND EBRP_ID LIKE :ebrpId>>
+ <<AND EBRP_STATUS LIKE :ebrpStatus>>
+ <<AND EBRP_TYPE LIKE :ebrpType>>
+ <<AND EBRP_WAREHOUSE_TYPE LIKE :ebrpWarehouseType>>
+ <<AND EBRP_CODE in (:whCodes)>>
+ and <@dataFilter Table="HLS_ES_COMPANY_CODE" field= "COMPANY_CODE"  alias="EB_LOGISTICS_POINT" />
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

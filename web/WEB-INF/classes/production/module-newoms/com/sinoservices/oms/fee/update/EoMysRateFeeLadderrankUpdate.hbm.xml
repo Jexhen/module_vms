@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoMysRateFeeLadderrankUpdate">
+		<![CDATA[
+
+DELETE FROM EO_RATE_FEE_LADDERRANK LAD
+WHERE LAD.ORG_ID=:orgId
+AND LAD.EORL_EORE_NO IN(:eorlEoreNo)
+AND LAD.EORL_PM_CODE=:pmCode
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

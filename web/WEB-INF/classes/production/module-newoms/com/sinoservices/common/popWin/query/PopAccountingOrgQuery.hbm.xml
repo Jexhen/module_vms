@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="PopAccountingOrgQuery">
+		<![CDATA[
+select org_code,
+       org_name,
+       org_id
+from OMS_IF_A3_ACCOUNTING_ORG_V 
+where 1=1 
+<if !is_empty(orgCode,orgName)>
+	and (	
+			1=2
+			 <<OR ORG_CODE LIKE '%' || :orgId || '%'>>
+			 <<OR ORG_NAME LIKE '%' || :orgName || '%'>>
+		) 
+</if>
+<<AND ORGTYPE LIKE  '%' || :orgType || '%'>>
+<<AND STATUS = :status>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

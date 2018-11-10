@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="FindEoWorkOrderByLinkWorkNOQuery">
+		<![CDATA[
+
+	select 
+	   EOWO.EOWO_ID,
+       EOWO.EOWO_STATUS_CODE,
+       EOWO.EOWO_STATUS_NAME,
+       EOWO.EOWO_WORK_ORDER_NO,
+       EOWO.EOWO_SPLIT_FLAG
+  	from EO_WORK_ORDER EOWO
+ 	where EOWO.EOWO_LINK_WORK_NO in (:linkWorkNOs) 
+ 	<<and EOWO.EOWO_SPLIT_FLAG LIKE :eowoSplitFlag>>
+ 	<<and EOWO.ORG_ID=:orgId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

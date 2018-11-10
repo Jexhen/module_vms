@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteEoVirtualInvItemByParamsUpdate">
+		<![CDATA[
+		delete from 
+      EO_VIRTUAL_INV_ITEM EOVI 
+    where EOVI.EOVI_OWNER_CODE =:eoviOwnerCode and EOVI.EOVI_SKU_CODE =:eoviSkuCode and EOVI.EOVI_WH_CODE =:eoviWhCode AND EOVI.ORG_ID=:orgId
+		]]>
+	</sql-query>
+</hibernate-mapping>

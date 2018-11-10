@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoQualityItemQuery">
+		<![CDATA[
+SELECT
+       EOQI_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       TIME_ZONE,
+       PM_CODE,
+       COMPANY_CODE,
+       SITE_CODE,
+       EOQI_ORDER_NO,
+       EOQI_CODE,
+       EOQI_CUSTOMER_ITEM_NO,
+       EOQI_NAME,
+       EOQI_MAIN_GOODS_CODE,
+       EOQI_LINK_PM_CODE,
+       EOQI_UPSTREAM_LINE_NO,
+       EOQI_PACKAGE_TYPE_CODE,
+       EOQI_PACKAGE_TYPE_NAME,
+       EOQI_PACKAGE_UNIT_CODE,
+       EOQI_PACKAGE_UNIT_NAME,
+       EOQI_PACKAGE_QUANTITY,
+       EOQI_QUANTITY,
+       EOQI_GROSS_WEIGHT,
+       EOQI_NET_WEIGHT,
+       EOQI_VOLUME,
+       EOQI_PRICE,
+       EOQI_PRICE_NO_TAX,
+       EOQI_AMOUNT,
+       EOQI_TEMPERATURE_LEVEL_CODE,
+       EOQI_TEMPERATURE_LEVEL_NAME,
+       EOQI_TEMPERATURE_FM,
+       EOQI_TEMPERATURE_TO,
+       EOQI_REMARK,
+       EOQI_ITEM_TYPE_CODE,
+       EOQI_ITEM_TYPE_NAME,
+       EOQI_LOT,
+       EOQI_LOT_NO,
+       EOQI_LOTATT01,
+       EOQI_LOTATT02,
+       EOQI_LOTATT03,
+       EOQI_LOTATT04,
+       EOQI_LOTATT05,
+       EOQI_LOTATT06,
+       EOQI_LOTATT07,
+       EOQI_LOTATT08,
+       EOQI_LOTATT09,
+       EOQI_LOTATT10,
+       EOQI_LOTATT11,
+       EOQI_LOTATT12,
+       EOQI_IS_TEMPERATURE,
+       EOQI_IS_COMBINATION,
+       EOQI_ITEM_SCALE,
+       EOQI_IS_DANGEROUS,
+       EOQI_IN_ITEM_STATUS,
+       EOQI_IN_ITEM_STATUS_NAME,
+       EOQI_REAL_OUT_QUANTITY,
+       EOQI_REAL_IN_QUANTITY,
+       EOQI_UNIT_QUANTITY,
+       EOQI_UNIT_GROSS_WEIGHT,
+       EOQI_UNIT_VOLUME,
+       EOQI_COM_INSPECT_REMARKS,
+       EOQI_ADJUSTMEN_TYPE,
+       EOQI_LOC_CODE,
+       EOQI_TRACE_NO,
+       EOQI_REVERSAL_REASON,
+       EOQI_SUBSTR1,
+       EOQI_SUBSTR2,
+       EOQI_SUBSTR3,
+       EOQI_SUBSTR4,
+       EOQI_SUBSTR5,
+       EOQI_SUBSTR6,
+       EOQI_SUBSTR7,
+       EOQI_SUBSTR8,
+       EOQI_SUBDATE1,
+       EOQI_SUBDATE2,
+       EOQI_SUBDATE3,
+       EOQI_SUBDATE4,
+       EOQI_SUBDATE5,
+       EOQI_SUBNUM1,
+       EOQI_SUBNUM2,
+       EOQI_SUBNUM3
+  FROM EO_QUALITY_ITEM
+ WHERE 1=1
+ <<AND EOQI_ID LIKE :eoqiId>>
+ <<AND EOQI_ORDER_NO IN (:eoqiOrderNos)>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND TIME_ZONE LIKE :timeZone>>
+ <<AND PM_CODE LIKE :pmCode>>
+ <<AND COMPANY_CODE LIKE :companyCode>>
+ <<AND SITE_CODE LIKE :siteCode>>
+ <<AND EOQI_ORDER_NO LIKE :eoqiOrderNo>>
+ <<AND EOQI_CODE LIKE :eoqiCode>>
+ <<AND EOQI_CUSTOMER_ITEM_NO LIKE :eoqiCustomerItemNo>>
+ <<AND EOQI_NAME LIKE :eoqiName>>
+ <<AND EOQI_MAIN_GOODS_CODE LIKE :eoqiMainGoodsCode>>
+ <<AND EOQI_LINK_PM_CODE LIKE :eoqiLinkPmCode>>
+ <<AND EOQI_UPSTREAM_LINE_NO LIKE :eoqiUpstreamLineNo>>
+ <<AND EOQI_PACKAGE_TYPE_CODE LIKE :eoqiPackageTypeCode>>
+ <<AND EOQI_PACKAGE_TYPE_NAME LIKE :eoqiPackageTypeName>>
+ <<AND EOQI_PACKAGE_UNIT_CODE LIKE :eoqiPackageUnitCode>>
+ <<AND EOQI_PACKAGE_UNIT_NAME LIKE :eoqiPackageUnitName>>
+ <<AND EOQI_PACKAGE_QUANTITY LIKE :eoqiPackageQuantity>>
+ <<AND EOQI_QUANTITY LIKE :eoqiQuantity>>
+ <<AND EOQI_GROSS_WEIGHT LIKE :eoqiGrossWeight>>
+ <<AND EOQI_NET_WEIGHT LIKE :eoqiNetWeight>>
+ <<AND EOQI_VOLUME LIKE :eoqiVolume>>
+ <<AND EOQI_PRICE LIKE :eoqiPrice>>
+ <<AND EOQI_PRICE_NO_TAX LIKE :eoqiPriceNoTax>>
+ <<AND EOQI_AMOUNT LIKE :eoqiAmount>>
+ <<AND EOQI_TEMPERATURE_LEVEL_CODE LIKE :eoqiTemperatureLevelCode>>
+ <<AND EOQI_TEMPERATURE_LEVEL_NAME LIKE :eoqiTemperatureLevelName>>
+ <<AND EOQI_TEMPERATURE_FM LIKE :eoqiTemperatureFm>>
+ <<AND EOQI_TEMPERATURE_TO LIKE :eoqiTemperatureTo>>
+ <<AND EOQI_REMARK LIKE :eoqiRemark>>
+ <<AND EOQI_ITEM_TYPE_CODE LIKE :eoqiItemTypeCode>>
+ <<AND EOQI_ITEM_TYPE_NAME LIKE :eoqiItemTypeName>>
+ <<AND EOQI_LOT LIKE :eoqiLot>>
+ <<AND EOQI_LOT_NO LIKE :eoqiLotNo>>
+ <<AND EOQI_LOTATT01 > :eoqiLotatt01From>>
+ <<AND EOQI_LOTATT01 <= :eoqiLotatt01To + 1>>
+ <<AND EOQI_LOTATT02 > :eoqiLotatt02From>>
+ <<AND EOQI_LOTATT02 <= :eoqiLotatt02To + 1>>
+ <<AND EOQI_LOTATT03 > :eoqiLotatt03From>>
+ <<AND EOQI_LOTATT03 <= :eoqiLotatt03To + 1>>
+ <<AND EOQI_LOTATT04 LIKE :eoqiLotatt04>>
+ <<AND EOQI_LOTATT05 LIKE :eoqiLotatt05>>
+ <<AND EOQI_LOTATT06 LIKE :eoqiLotatt06>>
+ <<AND EOQI_LOTATT07 LIKE :eoqiLotatt07>>
+ <<AND EOQI_LOTATT08 LIKE :eoqiLotatt08>>
+ <<AND EOQI_LOTATT09 LIKE :eoqiLotatt09>>
+ <<AND EOQI_LOTATT10 LIKE :eoqiLotatt10>>
+ <<AND EOQI_LOTATT11 LIKE :eoqiLotatt11>>
+ <<AND EOQI_LOTATT12 LIKE :eoqiLotatt12>>
+ <<AND EOQI_IS_TEMPERATURE LIKE :eoqiIsTemperature>>
+ <<AND EOQI_IS_COMBINATION LIKE :eoqiIsCombination>>
+ <<AND EOQI_ITEM_SCALE LIKE :eoqiItemScale>>
+ <<AND EOQI_IS_DANGEROUS LIKE :eoqiIsDangerous>>
+ <<AND EOQI_IN_ITEM_STATUS LIKE :eoqiInItemStatus>>
+ <<AND EOQI_IN_ITEM_STATUS_NAME LIKE :eoqiInItemStatusName>>
+ <<AND EOQI_REAL_OUT_QUANTITY LIKE :eoqiRealOutQuantity>>
+ <<AND EOQI_REAL_IN_QUANTITY LIKE :eoqiRealInQuantity>>
+ <<AND EOQI_UNIT_QUANTITY LIKE :eoqiUnitQuantity>>
+ <<AND EOQI_UNIT_GROSS_WEIGHT LIKE :eoqiUnitGrossWeight>>
+ <<AND EOQI_UNIT_VOLUME LIKE :eoqiUnitVolume>>
+ <<AND EOQI_COM_INSPECT_REMARKS LIKE :eoqiComInspectRemarks>>
+ <<AND EOQI_ADJUSTMEN_TYPE LIKE :eoqiAdjustmenType>>
+ <<AND EOQI_LOC_CODE LIKE :eoqiLocCode>>
+ <<AND EOQI_TRACE_NO LIKE :eoqiTraceNo>>
+ <<AND EOQI_REVERSAL_REASON LIKE :eoqiReversalReason>>
+ <<AND EOQI_SUBSTR1 LIKE :eoqiSubstr1>>
+ <<AND EOQI_SUBSTR2 LIKE :eoqiSubstr2>>
+ <<AND EOQI_SUBSTR3 LIKE :eoqiSubstr3>>
+ <<AND EOQI_SUBSTR4 LIKE :eoqiSubstr4>>
+ <<AND EOQI_SUBSTR5 LIKE :eoqiSubstr5>>
+ <<AND EOQI_SUBSTR6 LIKE :eoqiSubstr6>>
+ <<AND EOQI_SUBSTR7 LIKE :eoqiSubstr7>>
+ <<AND EOQI_SUBSTR8 LIKE :eoqiSubstr8>>
+ <<AND EOQI_SUBDATE1 > :eoqiSubdate1From>>
+ <<AND EOQI_SUBDATE1 <= :eoqiSubdate1To + 1>>
+ <<AND EOQI_SUBDATE2 > :eoqiSubdate2From>>
+ <<AND EOQI_SUBDATE2 <= :eoqiSubdate2To + 1>>
+ <<AND EOQI_SUBDATE3 > :eoqiSubdate3From>>
+ <<AND EOQI_SUBDATE3 <= :eoqiSubdate3To + 1>>
+ <<AND EOQI_SUBDATE4 > :eoqiSubdate4From>>
+ <<AND EOQI_SUBDATE4 <= :eoqiSubdate4To + 1>>
+ <<AND EOQI_SUBDATE5 > :eoqiSubdate5From>>
+ <<AND EOQI_SUBDATE5 <= :eoqiSubdate5To + 1>>
+ <<AND EOQI_SUBNUM1 LIKE :eoqiSubnum1>>
+ <<AND EOQI_SUBNUM2 LIKE :eoqiSubnum2>>
+ <<AND EOQI_SUBNUM3 LIKE :eoqiSubnum3>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

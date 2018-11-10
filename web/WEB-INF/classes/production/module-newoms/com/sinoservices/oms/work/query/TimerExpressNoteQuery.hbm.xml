@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="TimerExpressNoteQuery">
+		<![CDATA[
+		
+select eowo.eowo_work_order_no OMS_TASK_NO,
+       eowo.eowo_order_no      TMS_TASK_NO,
+       eowo.eowo_vamp_no       CONTAINERIZED_NO,
+       eowo.EOWO_LOGISTIC_NO
+  from EO_WORK_ORDER eowo
+ where 1 = 1
+      /*类型*/
+   and eowo.eowo_task_big_type  = 'COURIER'
+      /*已经签收*/
+   and eowo.eowo_status_code = '2110'
+      /*排除穿件异常*/
+   and eowo.eowo_dispose_flag <> '20'
+      /*未通知计费*/
+   and nvl(eowo.eowo_business_state, 0) = 0
+      /*只跑60天的数据*/
+   and eowo.create_time > sysdate - :day
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

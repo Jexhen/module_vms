@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+	<sql-query name="IntefCcsSoOrderQuery">
+ <![CDATA[
+		SELECT
+       INTH_ID,
+       HEAD_ID,
+       INVBILLNO,
+       IMS_INVBILLNO,
+       INVBILLNO_TYPE,
+       ORDER_TYPE,
+       ORGANIZATION_ID,
+       ENTNAME,
+       CUSTOMER_CODE,
+       CUSTOMER_NAME,
+       TAKE_MAN,
+       PHONE_CODE,
+       ADDRESS1,
+       SHIPMODE_ID,
+       PROVINCE,
+       PROVINCE_NAME,
+       CITY,
+       CITY_NAME,
+       AREA,
+       AREA_NAME,
+       STREET,
+       STREET_NAME,
+       WAREHOUSE_CODE,
+       WAREHOUSE_NAME,
+       AUDITING_DATE,
+       CREATION_DATE,
+       ATTRIBUTE1,
+       ATTRIBUTE2,
+       ATTRIBUTE3,
+       ATTRIBUTE4,
+       ATTRIBUTE5,
+       APPFALG,
+       UPDATE_FLAG,
+       CREATE_BY,
+       CREATE_DATE,
+       LAST_CREATE_BY,
+       LAST_UPDATE_DATE,
+       AMOUNT,
+       NOTE,
+       WH_ID,
+       IS_COLLECT_MONEY,
+       PAYMENT_TYPE,
+       ORG_CODE,
+       ORG_NAME,
+       AREA_NAME_CODE,
+       IS_PRINT_PRICE,
+       FEEDBACK_FLAG,
+       EDIERRINFO
+  FROM INTEF_CCS_SO_ORDER
+ WHERE 1=1
+ <<AND INTH_ID LIKE :inthId>>
+ <<AND HEAD_ID LIKE :headId>>
+ <<AND INVBILLNO LIKE :invbillno>>
+ <<AND IMS_INVBILLNO LIKE :imsInvbillno>>
+ <<AND INVBILLNO_TYPE LIKE :invbillnoType>>
+ <<AND ORDER_TYPE LIKE :orderType>>
+ <<AND ORGANIZATION_ID LIKE :organizationId>>
+ <<AND ENTNAME LIKE :entname>>
+ <<AND CUSTOMER_CODE LIKE :customerCode>>
+ <<AND CUSTOMER_NAME LIKE :customerName>>
+ <<AND TAKE_MAN LIKE :takeMan>>
+ <<AND PHONE_CODE LIKE :phoneCode>>
+ <<AND ADDRESS1 LIKE :address1>>
+ <<AND SHIPMODE_ID LIKE :shipmodeId>>
+ <<AND PROVINCE LIKE :province>>
+ <<AND PROVINCE_NAME LIKE :provinceName>>
+ <<AND CITY LIKE :city>>
+ <<AND CITY_NAME LIKE :cityName>>
+ <<AND AREA LIKE :area>>
+ <<AND AREA_NAME LIKE :areaName>>
+ <<AND STREET LIKE :street>>
+ <<AND STREET_NAME LIKE :streetName>>
+ <<AND WAREHOUSE_CODE LIKE :warehouseCode>>
+ <<AND WAREHOUSE_NAME LIKE :warehouseName>>
+ <<AND AUDITING_DATE > :auditingDateFrom>>
+ <<AND AUDITING_DATE <= :auditingDateTo + 1>>
+ <<AND CREATION_DATE > :creationDateFrom>>
+ <<AND CREATION_DATE <= :creationDateTo + 1>>
+ <<AND ATTRIBUTE1 LIKE :attribute1>>
+ <<AND ATTRIBUTE2 LIKE :attribute2>>
+ <<AND ATTRIBUTE3 LIKE :attribute3>>
+ <<AND ATTRIBUTE4 LIKE :attribute4>>
+ <<AND ATTRIBUTE5 LIKE :attribute5>>
+ <<AND APPFALG LIKE :appfalg>>
+ <<AND UPDATE_FLAG LIKE :updateFlag>>
+ <<AND CREATE_BY LIKE :createBy>>
+ <<AND CREATE_DATE > :createDateFrom>>
+ <<AND CREATE_DATE <= :createDateTo + 1>>
+ <<AND LAST_CREATE_BY LIKE :lastCreateBy>>
+ <<AND LAST_UPDATE_DATE > :lastUpdateDateFrom>>
+ <<AND LAST_UPDATE_DATE <= :lastUpdateDateTo + 1>>
+ <<AND AMOUNT LIKE :amount>>
+ <<AND NOTE LIKE :note>>
+ <<AND WH_ID LIKE :whId>>
+ <<AND IS_COLLECT_MONEY LIKE :isCollectMoney>>
+ <<AND PAYMENT_TYPE LIKE :paymentType>>
+ <<AND ORG_CODE LIKE :orgCode>>
+ <<AND ORG_NAME LIKE :orgName>>
+ <<AND AREA_NAME_CODE LIKE :areaNameCode>>
+ <<AND IS_PRINT_PRICE LIKE :isPrintPrice>>
+ <<AND FEEDBACK_FLAG LIKE :feedbackFlag>>
+ <<AND EDIERRINFO LIKE :edierrinfo>> 
+   order by CREATION_DATE desc 
+ ]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<hibernate-mapping>
+	<sql-query name="BatchSetEoRuleIssuedUpdate">
+		<![CDATA[
+
+update EO_RULE_ISSUED eo set eo.EORI_STATUS=:status where
+eo.EORI_ID in (:ids)
+		]]>
+	</sql-query>
+</hibernate-mapping>

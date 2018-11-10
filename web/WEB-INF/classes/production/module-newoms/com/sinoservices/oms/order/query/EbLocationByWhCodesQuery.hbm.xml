@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EbLoactionByWhCodesQuery">
+		<![CDATA[
+
+select distinct ebLc.EBLC_ADDRESS,
+                ebLc.EBLC_CODE,
+                ebLc.EBLC_NAME_CN,
+                ebLc.EBLC_NAME_EN,
+                ebLc.EBLC_NAME_SHORT,
+                CDWH.CDWH_ADDRESS,
+                CDWH.Cdwh_Code
+  from eb_location ebLc,
+       (select cd.CDWH_ADDRESS, cd.Cdwh_Code
+          from cd_warehouse cd
+         where cd.Cdwh_Code in (:cdwhCodes)
+          << and cd.org_id = :orgId>>) CDWH
+ where (ebLc.EBLC_ADDRESS like CDWH.CDWH_ADDRESS and
+       CDWH.CDWH_ADDRESS is not null)
+    or (CDWH.CDWH_ADDRESS like ebLc.EBLC_ADDRESS and
+       CDWH.CDWH_ADDRESS is not null)
+  << and ebLc.Org_Id = :orgId>>
+
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

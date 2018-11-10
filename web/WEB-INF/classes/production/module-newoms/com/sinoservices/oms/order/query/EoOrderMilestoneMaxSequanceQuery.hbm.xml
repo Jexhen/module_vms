@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderMilestoneMaxSequanceQuery">
+		<![CDATA[
+
+		SELECT MAX(NVL(EOOM.EOOM_SEQUENCE, 0)) AS EOOM_SEQUENCE
+		  FROM EO_ORDER_MILESTONE EOOM
+		 WHERE 1 = 1
+		AND EOOM.EOOM_ORDER_NO LIKE :eoomOrderNo
+		]]>
+	</sql-query>
+</hibernate-mapping>

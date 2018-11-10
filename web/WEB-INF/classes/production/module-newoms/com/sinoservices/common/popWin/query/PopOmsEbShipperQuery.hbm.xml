@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+		/**
+		* <p>Description: 根据客户ID查询客户详细信息：客户基本信息、信用、角色
+		* </p>
+		* @author King.Zhang
+		* @version 1.00
+		* <pre>
+		* 修改记录:
+		* 修改后版本     	修改人    	修改内容
+		* 20130311.1     King.Zhang      创建
+		* </pre>
+		*/
+	-->
+<hibernate-mapping>
+	<sql-query name="PopOmsEbShipperQuery">
+		<![CDATA[
+SELECT DISTINCT(VWSP.EBCU_ID),
+       VWSP.EBCU_QUICK_CODE,
+       VWSP.PM_CODE,
+       VWSP.EBCU_INDUSTRY_TYPE,
+       VWSP.EBCU_PLATFORM_NATURE,
+       VWSP.EBCU_NAME_CN,
+       VWSP.EBCU_SHORT_NAME,
+       VWSP.EBCU_NAME_EN,
+       VWSP.EBCU_TEL,
+       VWSP.EBCU_FAX,
+       VWSP.EBCU_URL,
+       VWSP.EBCU_EBPL_COUNTRY_CODE,
+       VWSP.EBCU_EBPL_PROVINCE_CODE,
+       VWSP.EBCU_EBPL_CITY_CODE,
+       VWSP.EBCU_ADDRESS,
+       VWSP.EBCU_FINANCE_CODE,
+       VWSP.EBCU_TAX_REGIST_NO,
+       VWSP.EBCU_BUSINESS_NO,
+       VWSP.EBCU_EBFL_ID,
+       VWSP.EBCU_CUSTOMER_STATUS,
+       VWSP.REC_STATUS,
+       VWSP.EBCU_REGISTRATION_DATE,
+       VWSP.EBCU_MAX_GUARANTEE_AMOUNT,
+       VWSP.EBCU_MAIN_BUSINESS,
+       VWSP.EBCU_IS_SUBSUPPLIER,
+       VWSP.EBCU_IS_CUSTOMER,
+       VWSP.EBCU_IS_SETTLEMENT,
+       VWSP.EBCU_REMARK,
+       VWSP.EBCU_ESCO_ID,
+       VWSP.EBCU_SUBSTR1,
+       VWSP.EBCU_SUBSTR2,
+       VWSP.EBCU_SUBSTR3,
+       VWSP.EBCU_SUBSTR4,
+       VWSP.EBCU_SUBSTR5,
+       VWSP.EBCU_SUBSTR6,
+       VWSP.EBCU_SUBDATE1,
+       VWSP.EBCU_SUBDATE2,
+       VWSP.EBCU_SUBDATE3,
+       VWSP.REC_VER,
+       VWSP.CREATE_TIME,
+       VWSP.MODIFY_TIME,
+       VWSP.MODIFIER,
+       VWSP.CREATOR,
+       VWSP.EBCU_CHANGE_CODE,
+       EBLC.EBLC_ADDRESS
+    FROM VW_ET_SHIPPER VWSP
+  LEFT JOIN EB_LOCATION EBLC ON EBLC.EBLC_CODE = VWSP.EBCU_ADDRESS
+                            AND EBLC.ORG_ID = VWSP.ORG_ID
+  LEFT JOIN CD_TS_CUSTOMER_CONTACT CDCC ON CDCC.cdcc_customer_no=VWSP.EBCU_CUSTOMER_NO and CDCC.ORG_ID=VWSP.ORG_ID
+ where 1 = 1
+<<and VWSP.ORG_ID=:orgId>> 
+<<and VWSP.REC_STATUS=:recStatus>>
+<<and VWSP.EBCU_NAME_CN LIKE   '%' || :ebcuNameCn || '%'  >>
+<< AND VWSP.PM_CODE LIKE   '%' || :pmCode || '%'  >>
+<< AND VWSP.EBCU_TEL LIKE    '%' || :ebcuTel || '%'  >>
+<< AND VWSP.EBCU_ADDRESS LIKE   '%' || :ebcuAddress || '%' >>
+<< AND VWSP.EBCU_IS_SUBSUPPLIER LIKE  '%' || :ebcuIsSubsupplier || '%' >>
+<< AND VWSP.EBCU_IS_CUSTOMER LIKE  '%' || :ebcuIsCustomer || '%' >>
+<< AND (VWSP.EBCU_IS_SUBSUPPLIER =:isSubsupplier OR EBCU.EBCU_IS_SUBSUPPLIER = 'N')>>
+and (##CONDITIONS$VW_ET_SHIPPER$VWSP##) 
+ORDER BY VWSP.MODIFY_TIME DESC
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

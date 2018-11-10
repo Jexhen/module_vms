@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteEoOrderMileStoneCodesUpdate">
+		<![CDATA[
+
+			delete from EO_ORDER_MILESTONE EOOM 
+			 where EOOM.EOOM_ORDER_NO in (:eoorOrderNos)
+			   and EOOM.ORG_ID=:orgId 
+			   and EOOM.EOOM_WORK_NO in (:eoomWorkNos)
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

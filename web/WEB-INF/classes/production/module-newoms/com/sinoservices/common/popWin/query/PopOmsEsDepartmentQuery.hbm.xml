@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsEsDepartmentQuery">
+		<![CDATA[
+			
+			select 
+			ESDE.ESDE_ID,
+			ESDE.ESDE_ESCO_ID,
+			ESDE.ESDE_DEPARTMENT_CODE,
+			ESDE.ESDE_DEPARTMENT_NAME,
+			ESDE.ESDE_CONTACT_NAME,
+			ESDE.ESDE_CONTACT_PHONE,
+			ESDE.ESDE_OFFICE_ADDRESS,
+			ESDE.ESDE_SUBSTR1,
+			ESDE.ESDE_SUBSTR2,
+			ESDE.ESDE_SUBSTR3,
+			ESDE.ESDE_SUBSTR4,
+			ESDE.ESDE_SUBSTR5,
+			ESDE.ESDE_SUBSTR6,
+			ESDE.ESDE_SUBDATE1,
+			ESDE.ESDE_SUBDATE2,
+			ESDE.ESDE_SUBDATE3,
+			ESDE.MODIFIER,
+			ESDE.MODIFY_TIME,
+			ESDE.CREATOR,
+			ESDE.CREATE_TIME,
+			ESDE.REC_VER,
+			ESDE.ESDE_STATUS,
+			ESDE.ESDE_SUBSTR7,
+			ESDE.ESDE_SUBSTR8,
+			ESDE.ESDE_SUBDATE4,
+			ESDE.ESDE_SUBDATE5,
+			ESDE.ESDE_SUBNUM1,
+			ESDE.ESDE_SUBNUM2,
+			ESDE.ESDE_SUBNUM3
+			from ES_DEPARTMENT ESDE
+			where 1=1
+			<<and ESDE.ESDE_ESCO_ID = :orgId>>
+			<<and ESDE.ESDE_DEPARTMENT_CODE like '%' || :esdeDepartmentCode || '%'>>
+			<<and ESDE.ESDE_DEPARTMENT_NAME like '%' || :esdeDepartmentName || '%'>>
+			<<and ESDE.ESDE_CONTACT_NAME like '%' || :esdeContactName || '%'>>
+			<<and ESDE.ESDE_CONTACT_PHONE like '%' || :esdeContactPhone || '%'>>
+			<<and ESDE.ESDE_OFFICE_ADDRESS like '%' || :esdeOfficeAddress || '%'>>
+			order by ESDE.MODIFY_TIME desc
+		]]>
+	</sql-query>
+</hibernate-mapping>

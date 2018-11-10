@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoFeeMgtOrderMinDateQuery">
+		<![CDATA[
+
+select 
+MIN(EOFO.EOFO_RECONCILIATION_DATE) AS EOFO_RECONCILIATION_DATE,
+MIN(EOFO.EOFO_INVOICE_DATE) AS EOFO_INVOICE_DATE,
+MIN(EOFO.EOFO_CHARGEOFF_DATE) AS EOFO_CHARGEOFF_DATE
+ from EO_FEE_MANAGEMENT_ORDER EOFO
+ where 1=1
+ <<AND EOFO.EOFO_PARTY_CODE LIKE :eofoPartyCode>>
+ <<AND EOFO.EOFO_PARTY_NAME LIKE :eofoPartyName>>
+ <<AND EOFO.EOFO_RP_FLAG_CODE LIKE :eofoRpFlagCode>>
+ <<AND EOFO.EOFO_IS_HAVE_CHARGEOFF LIKE :eofoIsHaveChargeoff>>
+ <<AND EOFO.ORG_ID=:orgId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

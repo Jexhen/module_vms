@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderItemBySumQuery">
+		<![CDATA[
+
+SELECT sum(EOOI.EOOI_QUANTITY) as QUANTITY,
+       EOOI.EOOI_ORDER_NO,
+       EOOI.EOOI_CODE,
+       EOOI.EOOI_NAME,
+       EOOI.ORG_ID
+	
+  FROM EO_ORDER_ITEM EOOI
+ WHERE 1=1
+AND EOOI.REC_STATUS=0
+<<AND EOOI.EOOI_ORDER_NO in(:eooiOrderNos)>>
+<<AND EOOI.ORG_ID=:orgId>>
+ group by EOOI.EOOI_ORDER_NO, EOOI.EOOI_CODE, EOOI.EOOI_NAME, EOOI.ORG_ID
+
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

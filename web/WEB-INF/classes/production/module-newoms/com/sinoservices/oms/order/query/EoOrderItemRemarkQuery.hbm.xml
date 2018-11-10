@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderItemRemarkQuery">
+		<![CDATA[
+
+ SELECT
+ EOIR.EOIR_ID,
+  EOIR.EOIR_ORDER_NO,
+  EOIR.EOIR_LINE_NO,
+  EOIR.EOIR_EOOU_CODE,
+  EOIR.ORG_ID,
+  EOIR.REC_VER,
+  EOIR.MODIFY_TIME,
+  EOIR.MODIFIER,
+  EOIR.CREATE_TIME,
+  EOIR.CREATOR,
+  EOIR.REC_STATUS,
+  EOIR.EOIR_EOKC_CODE,
+  EOIR.EOIR_EOKC_NAME,
+  EOIR.EOIR_REMARK_TYPE,
+  EOIR.EOIR_KEY,
+  EOIR.EOIR_IS_MUST_ENTER,
+  EOIR.EOIR_CONTROL,
+  EOIR.EOIR_REMARK_VALUE_CODE,
+  EOIR.EOIR_REMARK_VALUE_NAME 
+  FROM EO_ORDER_ITEM_REMARK EOIR
+   WHERE 1=1
+   << AND EOIR.ORG_ID=:orgId>>
+   << AND EOIR.EOIR_LINE_NO IN (:eoirLineNo)>>
+   << AND EOIR.EOIR_ORDER_NO LIKE :eoirOrderNo>>
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

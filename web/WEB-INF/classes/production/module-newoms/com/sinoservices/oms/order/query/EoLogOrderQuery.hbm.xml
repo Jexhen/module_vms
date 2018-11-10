@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoLogOrderQuery">
+		<![CDATA[
+
+SELECT EOLO.EOLO_ORDER_NO,EOLO.EOLO_LOGISTIC_NO,EOLO.EOLO_OPERATE_NAME,EOLO.EOLO_OPERATE_TYPE_CODE,EOLO.MODIFY_TIME,EOLO.PM_CODE FROM EO_LOG_ORDER EOLO WHERE 1=1
+<< AND EOLO.ORG_ID=:orgId>>
+<< AND EOLO.EOLO_ORDER_NO like :eoloOrderNo >>
+<< AND EOLO.EOLO_LOGISTIC_NO like :eoloLogisticNo >>
+<< AND EOLO.EOLO_OPERATE_CODE LIKE :eoloOperateCode >>
+<< AND EOLO.EOLO_OPERATE_TYPE_CODE LIKE :eoloOperateTypeCode >>
+<< AND EOLO.MODIFY_TIME>=:modifyTimeFm >>
+<< AND EOLO.MODIFY_TIME<=:modifyTimeTo >>
+ORDER BY EOLO.MODIFY_TIME DESC
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

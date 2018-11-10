@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!--
+		/**
+		* <p>Description: 批量更新日历状态 </p>
+		* @author 
+		* @version 1.00
+		* <pre>
+		* 修改记录:
+		* 版本号		修改人	修改说明
+		* 20120413.1	Skip	Create
+		* 
+		* </pre>
+		*/
+	-->
+<hibernate-mapping>
+	<sql-query name="BatchSetEoWmsTmsSiteUpdate">
+		<![CDATA[
+
+update EO_WMS_TMS_SITE EOWT set EOWT.REC_STATUS=:recStatus where
+EOWT.EOWT_ID in (:ids)
+		]]>
+	</sql-query>
+</hibernate-mapping>

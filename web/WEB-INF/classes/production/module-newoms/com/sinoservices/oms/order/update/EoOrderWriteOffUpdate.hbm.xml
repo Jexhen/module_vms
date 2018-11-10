@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderWriteOffUpdate">
+		<![CDATA[
+
+UPDATE EO_ORDER EOOR
+   SET EOOR.EOOR_STATUS_CODE   = :eoorStatusCode,
+       EOOR.EOOR_STATUS_NAME   = :eoorStatusName,
+       EOOR.EOOR_STATUS_REMARK = :eoorStatusRemark,
+       EOOR.EOOR_OFFSET_REASON = :eoorOffsetReason,
+       EOOR.EOOR_UNDO_QUANTITY = :eoorUndoQuantity,
+       eoor.Eoor_Undo_Volume =  :eoorUndoVolume,
+       eoor.Eoor_Undo_Gross_Weight = :eoorUndoGrossWeight
+
+ WHERE EOOR.EOOR_ID IN (:eoorIds)
+		]]>
+	</sql-query>
+</hibernate-mapping>

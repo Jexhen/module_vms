@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoInterfaceWorkQuery">
+		<![CDATA[
+SELECT
+       EOIW_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       COMPANY_CODE,
+       SITE_CODE,
+       EOIW_INTERFACE_TYPE,
+       EOIW_INTERFACE_NAME,
+       EOIW_USE_SYS,
+       EOIW_PROVIDER_SYS,
+       EOIW_STATUS,
+       EOIW_ABNORMAL_INFO,
+       EOIW_DESC,
+       EOIW_REMARK,
+       EOIW_DISPOSE_DATE,
+       EOIW_DISPOSE_PERSON,
+       EOIW_CLOSE_DATE,
+       EOIW_CLOSE_PERSON,
+       EOIW_PARAM,
+       EOIW_INTERFACE_NO,
+       EOIW_BILLS_NO,
+       EOIW_RESEND_COUNT,
+       EOIW_ABNORMAL_NUM,
+       EOIW_TYPE,
+       EOIW_CURRENT_TIME_LONG,
+       EOIW_CURRENT_TIME
+  FROM EO_INTERFACE_WORK
+ WHERE 1=1 
+ <<AND EOIW_ID LIKE :eoiwId>>
+ <<AND EOIW_ID in (:eoiwIds)>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND COMPANY_CODE LIKE :companyCode>>
+ <<AND SITE_CODE LIKE :siteCode>>
+ <<AND EOIW_INTERFACE_TYPE LIKE :eoiwInterfaceType>>
+ <<AND EOIW_INTERFACE_NAME LIKE :eoiwInterfaceName>>
+ <<AND EOIW_USE_SYS LIKE :eoiwUseSys>>
+ <<AND EOIW_PROVIDER_SYS LIKE :eoiwProviderSys>>
+ <<AND EOIW_STATUS LIKE :eoiwStatus>>
+ <<AND EOIW_ABNORMAL_INFO LIKE :eoiwAbnormalInfo>>
+ <<AND EOIW_DESC LIKE :eoiwDesc>>
+ <<AND EOIW_REMARK LIKE :eoiwRemark>>
+ <<AND EOIW_DISPOSE_DATE > :eoiwDisposeDateFrom>>
+ <<AND EOIW_DISPOSE_DATE <= :eoiwDisposeDateTo + 1>>
+ <<AND EOIW_DISPOSE_PERSON LIKE :eoiwDisposePerson>>
+ <<AND EOIW_CLOSE_DATE > :eoiwCloseDateFrom>>
+ <<AND EOIW_CLOSE_DATE <= :eoiwCloseDateTo + 1>>
+ <<AND EOIW_CLOSE_PERSON LIKE :eoiwClosePerson>>
+ <<AND EOIW_PARAM LIKE :eoiwParam>>
+ <<AND EOIW_INTERFACE_NO LIKE :eoiwInterfaceNo>>
+ <<AND EOIW_BILLS_NO LIKE :eoiwBillsNo>>
+ <<AND EOIW_RESEND_COUNT LIKE :eoiwResendCount>>
+ <<AND EOIW_ABNORMAL_NUM LIKE :eoiwAbnormalNum>>
+ <<AND EOIW_TYPE LIKE :eoiwType>>
+ <<AND EOIW_CURRENT_TIME_LONG LIKE :eoiwCurrentTimeLong>>
+ <<AND EOIW_CURRENT_TIME > :eoiwCurrentTimeFrom>>
+ <<AND EOIW_CURRENT_TIME <= :eoiwCurrentTimeTo + 1>>
+ 
+ <if isStatus == 'Y'>
+   and EOIW_STATUS <> '20'
+ </if>
+ 
+  ORDER BY MODIFY_TIME DESC
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

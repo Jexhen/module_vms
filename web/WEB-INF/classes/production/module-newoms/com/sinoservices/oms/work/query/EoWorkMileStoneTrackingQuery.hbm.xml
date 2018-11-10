@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkMileStoneTrackingQuery">
+		<![CDATA[
+
+SELECT 
+     EOWO.EOWO_WORK_ORDER_NO,
+     EOWO.EOWO_WORK_NO,
+     EOWS.CREATE_TIME,
+     EOWO.EOWO_STATUS_CODE,
+     EOWO.EOWO_STATUS_NAME,
+     EOWO.EOWO_PROVIDER_NAME,
+     EOWO.EOWO_WORK_TYPE_NAME,
+     EOWO.ORG_ID,
+     EOWO.EOWO_CUSTOMER_CODE,
+     EOWO.EOWO_CUSTOMER_NAME,
+     EOWO.MODIFY_TIME,
+     EOWO.EOWO_SHIPPER_CODE,
+     EOWO.EOWO_SHIPPER_NAME,
+     EOWO.EOWO_CONSIGNEE_CODE,
+     EOWO.EOWO_CONSIGNEE_NAME,
+     EOWO.EOWO_ORDER_NO,
+     EOWS.EOWA_STATUS_CODE,
+     EOWS.EOWA_STATUS_NAME,
+     EOWS.EOWA_ACTUAL_TIME,
+     /*VSSC.VSSC_COLOR AS EOWA_STATUS_COLOR,*/
+     EOWO.EOWO_LOGISTIC_NO,
+     EOWS.EOWA_OPERATE_DATE,
+     sum(nvl(EOWI.EOWI_REAL_OUT_QUANTITY,0)) as EOWI_REAL_OUT_QUANTITY
+  FROM EO_WORK_ORDER EOWO
+  LEFT JOIN EO_WORK_ITEM EOWI
+    ON EOWO.EOWO_WORK_ORDER_NO = EOWI.EOWI_WORK_ORDER_NO
+   AND EOWO.ORG_ID = EOWI.ORG_ID
+   AND EOWI.REC_STATUS = 0
+   LEFT JOIN EO_WORK_STATUS EOWS
+    ON EOWO.EOWO_WORK_ORDER_NO = EOWS.EOWA_WORK_NO
+   AND EOWO.ORG_ID=EOWS.ORG_ID
+   AND EOWS.REC_STATUS = 0
+   /*LEFT JOIN VS_STATUS_CODE VSSC ON EOWS.EOWA_EVENT_STATUS_CODE=VSSC.VSSC_STATUS_CODE_NAME AND EOWS.ORG_ID=VSSC.ORG_ID*/
+ WHERE 1 = 1
+  AND <@dataFilter Table="EO_WORK_ORDER" fiEld= "COMPANY_CODE" aLias="EOWO" />
+ AND 
+(
+<@dataFilter tAble="EO_WORK_ORDER" fiEld= "SITE_CODE" aLias="EOWO" />
+OR
+<@dataFilter tAble="EO_WORK_ORDER" fiEld= "TMS_SITE_CODE" aLias="EOWO" />
+)
+ AND <@dataFilter Table="EO_WORK_ORDER" fiEld= "EOWO_CUSTOMER_CODE" aLias="EOWO" />
+ and EOWO.REC_STATUS = 0
+ /*and nvl(EOWO.EOWO_SPLIT_FLAG, 'N') = 'N' 过滤掉被拆分的作业订单*/
+ /*and nvl(EOWO.EOWO_MERGER_FLAG, 'N') = 'N' 过滤掉被合并的作业订单*/
+ <<and EOWO.EOWO_ID LIKE :eowoId>>
+ <<and EOWO.ORG_ID=:orgId>>
+ <<and EOWO.EOWO_WORK_ORDER_NO like :eowoWorkOrderNo>>
+ <<and EOWO.EOWO_WORK_NO like :eowoWorkNo>>
+ <<and EOWO.EOWO_ORDER_NO like :eowoOrderNo>>
+ <<and EOWO.EOWO_LOGISTIC_NO like :eowoLogisticNo>>
+ <<and EOWO.EOWO_WORK_TYPE_CODE =:eowoWorkTypeCode>>
+ <<and EOWO.EOWO_WORK_TYPE_NAME LIKE :eowoWorkTypeName>>
+ <<and EOWO.EOWO_STATUS_CODE =:eowoStatusCode>>
+ <<and EOWO.EOWO_STATUS_NAME LIKE :eowoStatusName>>
+ <<and EOWO.EOWO_CUSTOMER_CODE =:eowoCustomerCode>>
+ <<and (EOWO.EOWO_REQUIRE_SHIPPER_TIME_FM >=:eowoRequireShipperTimeFrom OR EOWO.EOWO_REQUIRE_SHIPPER_TIME_TO>=:eowoRequireShipperTimeFrom)>>
+ <<and (EOWO.EOWO_REQUIRE_SHIPPER_TIME_FM <=:eowoRequireShipperTimeTo OR EOWO.EOWO_REQUIRE_SHIPPER_TIME_TO<=:eowoRequireShipperTimeTo)>>
+ <<and (EOWO.EOWO_REQUIRE_CONSIGNEE_TIME_FM >=:eowoRequireConsigneeTimeFrom OR EOWO.EOWO_REQUIRE_CONSIGNEE_TIME_TO>=:eowoRequireConsigneeTimeFrom)>>
+ <<and (EOWO.EOWO_REQUIRE_CONSIGNEE_TIME_FM <=:eowoRequireConsigneeTimeTo OR EOWO.EOWO_REQUIRE_CONSIGNEE_TIME_TO<=:eowoRequireConsigneeTimeTo)>>
+ <<and EOWO.EOWO_PRIORITY_CODE LIKE :eowoPriorityCode>>
+ <<and EOWO.EOWO_SHIPPER_LOCATION_CODE LIKE :eowoShipperLocationCode>>
+ <<and EOWO.EOWO_CONSIGNEE_LOCATION_CODE LIKE:eowoConsigneeLocationCode>>
+ <<and EOWO.EOWO_PROVIDER_CODE LIKE:eowoProviderCode>>
+ <<and EOWO.EOWO_WHETHER_RELEASE LIKE:eowoWhetherRelease>>
+ <<and EOWO.EOWO_RELEASE_SYSTEM_CODE LIKE:eowoReleaseSystem>>
+ <<and EOWO.EOWO_REQUIREMENT like :eowoRequirement>>
+ <<and EOWO.EOWO_REMARK like :eowoRemark>>
+ <<and EOWO.EOWO_CARRIERS_CODE like :eowoCarriersCode>>
+ <<and EOWI.EOWI_CODE LIKE:eowiCode>>
+ <<and EOWI.EOWI_TEMPERATURE_LEVEL_CODE LIKE :eowiTemperatureLevelCode>>
+ <<and EOWI.EOWI_LOT_NO like :eowiLotNo>>
+ <<and EOWI.EOWI_REMARK like :eowiRemark>>
+ <<and EOWO.EOWO_WORK_ORDER_NO in (:eowoNos)>>
+ <<and EOWO.EOWO_UPPER_TASK_NO != :eowoUpperTaskNo>>
+ <<and EOWO.CREATE_TIME >= :createTimeFrom >>
+ <<and EOWO.CREATE_TIME <= :createTimeTo>>
+ <#if eowoUpperTask == '-1'>
+    AND EOWO.EOWO_UPPER_TASK_NO != '-1' 
+ </#if>
+ 
+ <#if packageQuantity == '1'>
+	and EOWO.EOWO_PACKAGE_QUANTITY > 0
+ </#if>
+ 
+ GROUP BY EOWO.EOWO_WORK_ORDER_NO,
+     EOWO.EOWO_WORK_NO,
+     EOWO.EOWO_LOGISTIC_NO,
+     EOWS.CREATE_TIME,
+     EOWO.EOWO_STATUS_CODE,
+     EOWO.EOWO_STATUS_NAME,
+     EOWS.EOWA_ACTUAL_TIME,
+     EOWO.ORG_ID,
+     EOWO.EOWO_CUSTOMER_CODE,
+     EOWO.EOWO_CUSTOMER_NAME,
+     EOWO.MODIFY_TIME,
+     EOWO.EOWO_ORDER_NO,
+     EOWO.EOWO_SHIPPER_CODE,
+     EOWO.EOWO_SHIPPER_NAME,
+     EOWO.EOWO_CONSIGNEE_CODE,
+     EOWO.EOWO_CONSIGNEE_NAME,
+     EOWS.EOWA_STATUS_CODE,
+     EOWS.EOWA_STATUS_NAME,
+     EOWO.EOWO_PROVIDER_NAME,
+     EOWO.EOWO_WORK_TYPE_NAME,
+     EOWS.EOWA_SEQUENCE,
+     EOWS.EOWA_OPERATE_DATE
+     /*,VSSC.VSSC_COLOR*/
+ORDER BY NVL(EOWS.EOWA_ACTUAL_TIME, (SYSDATE + 9999 + NVL(EOWS.EOWA_SEQUENCE, 0))),EOWS.EOWA_OPERATE_DATE,EOWS.EOWA_SEQUENCE,EOWS.EOWA_STATUS_CODE
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

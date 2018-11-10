@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteBatchAllEoLtlStrategyUpdate">
+		<![CDATA[
+begin
+
+/**删除零担策略**/
+DELETE FROM EO_LTL_STRATEGY EOLT WHERE EOLT.EOLS_ID IN(:ids);
+
+/**删除零担策略**/
+DELETE FROM EO_LTL_CONDITION EOLC WHERE EOLC.EOLC_EOLS_PM_CODE IN
+       (SELECT EOLT.PM_CODE FROM EO_LTL_STRATEGY EOLT WHERE EOLT.EOLS_ID IN(:ids));
+       
+
+end;
+		]]>
+	</sql-query>
+</hibernate-mapping>

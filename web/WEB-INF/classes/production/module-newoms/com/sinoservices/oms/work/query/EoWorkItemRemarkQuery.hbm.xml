@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkItemRemarkQuery">
+		<![CDATA[
+  SELECT 
+  EWIR.EWIR_ID,
+  EWIR.EWIR_WORK_ORDER_NO,
+  EWIR.EWIR_LINE_NO,
+  EWIR.EWIR_EOOU_CODE,
+  EWIR.ORG_ID,
+  EWIR.REC_VER,
+  EWIR.MODIFY_TIME ,
+  EWIR.MODIFIER,
+  EWIR.CREATE_TIME ,
+  EWIR.CREATOR ,
+  EWIR.REC_STATUS ,
+  EWIR.EWIR_EOKC_CODE ,
+  EWIR.EWIR_EOKC_NAME ,
+  EWIR.EWIR_REMARK_TYPE ,
+  EWIR.EWIR_KEY,
+  EWIR.EWIR_IS_MUST_ENTER ,
+  EWIR.EWIR_CONTROL ,
+  EWIR.EWIR_REMARK_VALUE_CODE ,
+  EWIR.EWIR_REMARK_VALUE_NAME ,
+  EWIR.EWIR_ORDER_NO
+  FROM EO_WORK_ITEM_REMARK EWIR
+  WHERE 1=1
+  <<AND EWIR.ORG_ID=:orgId>>
+  <<AND EWIR.EWIR_LINE_NO IN (:ewirLineNo)>>
+  <<AND EWIR.EWIR_WORK_ORDER_NO LIKE :ewirWorkOrderNo>>
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderMileStoneTrackingQuery">
+		<![CDATA[
+
+SELECT  EOOR.EOOR_ORDER_NO AS EOOR_ORDER_NO,
+       EOOR.EOOR_LOGISTIC_NO AS EOOR_LOGISTIC_NO,
+       EOOM.CREATE_TIME AS CREATE_TIME,
+       EOOR.EOOR_STATUS_CODE AS EOOR_STATUS_CODE,
+       EOOR.EOOR_STATUS_NAME AS EOOR_STATUS_NAME,
+       EOOR.ORG_ID AS ORG_ID,
+       EOOR.EOOR_CUSTOMER_CODE AS EOOR_CUSTOMER_CODE,
+       EOOR.EOOR_CUSTOMER_NAME AS EOOR_CUSTOMER_NAME,
+       EOOR.MODIFY_TIME AS MODIFY_TIME,
+       EOOR.EOOR_SHIPPER_CODE AS EOOR_SHIPPER_CODE,
+       EOOR.EOOR_SHIPPER_NAME AS EOOR_SHIPPER_NAME,
+       EOOR.EOOR_CONSIGNEE_CODE AS EOOR_CONSIGNEE_CODE,
+       EOOR.EOOR_CONSIGNEE_NAME AS EOOR_CONSIGNEE_NAME,
+       EOOM.EOOM_STATUS_CODE AS EOOM_STATUS_CODE,
+       EOOM.EOOM_STATUS_NAME AS EOOM_STATUS_NAME,
+       EOOM.EOOM_PLAN_TIME AS EOOM_PLAN_TIME,
+       EOOM.EOOM_ACTUAL_TIME AS EOOM_ACTUAL_TIME,
+       EOOM.EOOM_MILESTONE_CODE AS EOOM_MILESTONE_CODE,
+       NVL((CASE WHEN 'EN'=:showLanguage THEN EBCM.EBCD_NAME_EN WHEN 'ZH'=:showLanguage THEN EBCM.EBCD_NAME_CN ELSE EOOM.EOOM_MILESTONE_CODE END),EOOM.EOOM_MILESTONE_CODE) AS EOOM_MILESTONE_NAME,
+       /*VSSC.VSSC_COLOR AS EOOM_STATUS_COLOR,*/
+       EOOM.EOOM_SEQUENCE AS EOOM_SEQUENCE
+  FROM EO_ORDER EOOR
+ <if is_not_empty(eooiCode) || is_not_empty(eooiName) || is_not_empty(eooiLotNo) || is_not_empty(eooiRemark) || is_not_empty(eooiTemperatureLevelCode)>
+  LEFT JOIN (SELECT EOOI.EOOI_ORDER_NO AS EOOI_ORDER_NO,EOOI.ORG_ID AS ORG_ID, COUNT(*) AS EOOI_COUNT FROM EO_ORDER_ITEM EOOI WHERE EOOI.REC_STATUS=0
+  << AND EOOI.EOOI_CODE LIKE :eooiCode >>
+  << AND EOOI.EOOI_NAME like :eooiName >>
+  << AND EOOI.EOOI_LOT_NO like :eooiLotNo >>
+  << AND EOOI.EOOI_REMARK LIKE :eooiRemark >>
+  << AND EOOI.EOOI_TEMPERATURE_LEVEL_CODE LIKE :eooiTemperatureLevelCode >>
+  << AND EOOI.EOOI_ORDER_NO LIKE :eoorOrderNo >>
+  << AND EOOI.ORG_ID=:orgId >>
+  << AND EOOI.EOOI_ORDER_NO IN (:eoorOrderNos) >>
+  GROUP BY EOOI.EOOI_ORDER_NO,EOOI.ORG_ID
+  ) EOOI ON EOOR.EOOR_ORDER_NO=EOOI.EOOI_ORDER_NO AND EOOR.ORG_ID=EOOI.ORG_ID
+ </if>
+  LEFT JOIN EO_ORDER_MILESTONE EOOM
+    ON EOOR.EOOR_ORDER_NO = EOOM.EOOM_ORDER_NO
+   AND EOOR.ORG_ID = EOOM.ORG_ID
+   AND EOOM.REC_STATUS = 0
+/*LEFT JOIN VS_STATUS_CODE VSSC ON EOOM.EOOM_EVENT_STATUS_CODE=VSSC.VSSC_STATUS_CODE_NAME AND EOOM.ORG_ID=VSSC.ORG_ID*/
+  LEFT JOIN EB_CODE_MASTER EBCM ON EBCM.EBCD_CODE=EOOM.EOOM_MILESTONE_CODE AND  EBCM.EBCD_DICTIONARY_TYPE='SYS_OMS_DIVIDE_ORDER_STATUS'
+ WHERE 1 = 1
+AND <@dataFilter Table="EO_ORDER" fiEld= "COMPANY_CODE" aLias="EOOR" />
+  AND 
+(
+<@dataFilter tAble="EO_ORDER" fiEld= "SITE_CODE" aLias="EOOR" />
+OR
+<@dataFilter tAble="EO_ORDER" fiEld= "TMS_SITE_CODE" aLias="EOOR" />
+)
+ AND <@dataFilter Table="EO_ORDER" fiEld= "EOOR_CUSTOMER_CODE" aLias="EOOR" />
+AND EOOR.REC_STATUS=0
+<< AND EOOR.ORG_ID =:orgId >>
+<< AND EOOR.EOOR_ID =:eoorId >>
+<#if showOriginalOrder == 'N'>
+   AND NVL(EOOR.EOOR_MEGER_FLAG, 'N') != 'Y'
+   AND NVL(EOOR.EOOR_SPLIT_FLAG, 'N') != 'Y'
+</#if>
+<< AND EOOR.EOOR_ORDER_NO LIKE :eoorOrderNo >>
+<< AND EOOR.EOOR_LOGISTIC_NO LIKE :eoorLogisticNo >>
+<< AND EOOR.EOOR_SO_NO LIKE :eoorSoNo >>
+<< AND EOOR.EOOR_DO_NO LIKE :eoorDoNo >>
+<< AND EOOR.EOOR_PO_NO LIKE :eoorPoNo >>
+<< AND EOOR.EOOR_REQUIREMENT LIKE :eoorRequirement >>
+<< AND EOOR.EOOR_REMARK LIKE :eoorRemark >>
+<< AND EOOR.EOOR_ORDER_TYPE_CODE LIKE :eoorOrderTypeCode >>
+<< AND EOOR.EOOR_ORDER_TYPE_NAME like :eoorOrderTypeName >>
+<< AND EOOR.EOOR_PRIORITY_CODE LIKE:eoorPriority >>
+<< AND EOOR.EOOR_TRANS_TYPE_CODE LIKE :eoorTransTypeCode >>
+<< AND EOOR.EOOR_STATUS_CODE LIKE :eoorStatusCode >>
+<< AND EOOR.EOOR_CUSTOMER_CODE LIKE :eoorCustomerCode >>
+<< AND EOOR.EOOR_CUSTOMER_NAME like :eoorCustomerName >>
+<< AND EOOR.EOOR_CUSTOMER_CONTACT_CODE LIKE :eoorCustomerContactCode >>
+<< AND EOOR.EOOR_CUSTOMER_CONTACT_NAME like :eoorCustomerContactName >>
+<< AND EOOR.EOOR_CUSTOMER_CONTACT_PHONE LIKE :eoorCustomerContactPhone >>
+<< AND EOOR.EOOR_ORDER_TIME >= :eoorOrderTimeFrom >>
+<< AND EOOR.EOOR_ORDER_TIME <= :eoorOrderTimeTo >>
+<< AND EOOR.EOOR_SOURCE_CODE LIKE :eoorSourceCode >>
+<< AND EOOR.EOOR_REQUIRE_SHIPPER_TIME_TO >= :eoorRequireShipperTimeFrom >>
+<< AND EOOR.EOOR_REQUIRE_SHIPPER_TIME_FM <= :eoorRequireShipperTimeTo >>
+<< AND EOOR.EOOR_REQUIRE_CONSIGNEE_TIME_TO >= :eoorRequireConsigneeTimeFrom >>
+<< AND EOOR.EOOR_REQUIRE_CONSIGNEE_TIME_FM <= :eoorRequireConsigneeTimeTo >>
+<< AND EOOR.EOOR_ORDER_DEPARTMENT_CODE LIKE :eoorOrderDepartmentCode >>
+<< AND EOOR.EOOR_ORDER_DEPARTMENT_NAME like :eoorOrderDepartmentName >>
+<< AND EOOR.EOOR_OPERATE_DEPARTMENT_CODE LIKE:eoorOperateDepartmentCode >>
+<< AND EOOR.EOOR_OPERATE_DEPARTMENT_NAME like :eoorOperateDepartmentName >>
+<< AND EOOR.EOOR_DIVIDE_CODE LIKE :eoorDivideCode >>
+<< AND EOOR.EOOR_DIVIDE_NAME like :eoorDivideName >>
+<< AND EOOR.EOOR_BARCODE LIKE :eoorBarCode >>
+<< AND EOOR.EOOR_SHIPPER_CODE LIKE :eoorShipperCode >>
+<< AND EOOR.EOOR_SHIPPER_NAME like :eoorShipperName >>
+<< AND EOOR.EOOR_SHIPPER_CONTACT_CODE LIKE :eoorShipperContactCode >>
+<< AND EOOR.EOOR_SHIPPER_CONTACT_NAME like :eoorShipperContactName >>
+<< AND EOOR.EOOR_SHIPPER_CONTACT_PHONE LIKE :eoorShipperContactPhone >>
+<< AND EOOR.EOOR_SHIPPER_LOCATION_CODE LIKE :eoorShipperLocationCode >>
+<< AND EOOR.EOOR_SHIPPER_LOCATION_NAME like :eoorShipperLocationName >>
+<< AND EOOR.EOOR_SHIPPER_REGION_CODE LIKE :eoorShipperRegionCode >>
+<< AND EOOR.EOOR_SHIPPER_REGION_NAME like :eoorShipperRegionName >>
+<< AND EOOR.EOOR_CONSIGNEE_CODE LIKE :eoorConsigneeCode >>
+<< AND EOOR.EOOR_CONSIGNEE_NAME like :eoorConsigneeName >>
+<< AND EOOR.EOOR_CONSIGNEE_CONTACT_CODE LIKE:eoorConsigneeContactCode >>
+<< AND EOOR.EOOR_CONSIGNEE_CONTACT_NAME like :eoorConsigneeContactName >>
+<< AND EOOR.EOOR_CONSIGNEE_CONTACT_PHONE LIKE :eoorConsigneeContactPhone >>
+<< AND EOOR.EOOR_CONSIGNEE_LOCATION_CODE LIKE :eoorConsigneeLocationCode >>
+<< AND EOOR.EOOR_CONSIGNEE_LOCATION_NAME like :eoorConsigneeLocationName >>
+<< AND EOOR.EOOR_CONSIGNEE_REGION_CODE LIKE :eoorConsigneeRegionCode >>
+<< AND EOOR.EOOR_CONSIGNEE_REGION_NAME like :eoorConsigneeRegionName >>
+<< AND EOOR.EOOR_EXPIRATION_TIME>=:eoorExpirationTimeFrom>>
+<< AND EOOR.EOOR_EXPIRATION_TIME<=:eoorExpirationTimeTo>>
+<< AND EOOR.EOOR_RESERVATION like :eoorReservation >>
+<< AND EOOR.EOOR_SALESMAN_CODE like :eoorSalesmanCode >>
+<< AND EOOR.EOOR_SALESMAN_NAME like :eoorSalesmanName >>
+
+<if is_not_empty(eooiCode) || is_not_empty(eooiName) || is_not_empty(eooiLotNo) || is_not_empty(eooiRemark) || is_not_empty(eooiTemperatureLevelCode)>
+  AND EOOI.EOOI_COUNT>0
+ </if>
+<< AND EOOR.EOOR_ORDER_NO IN (:eoorOrderNos) >>
+AND (##CONDITIONS$EO_ORDER_MILESTONE$EOOM##)
+ORDER BY EOOR.EOOR_ORDER_NO desc,EOOM.EOOM_SEQUENCE,EOOM.EOOM_ACTUAL_TIME       
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

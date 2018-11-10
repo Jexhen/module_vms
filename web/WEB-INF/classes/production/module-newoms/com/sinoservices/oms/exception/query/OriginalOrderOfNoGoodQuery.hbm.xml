@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="OriginalOrderOfNoGoodQuery">
+		<![CDATA[
+	select t.job_id
+	  from MID_EO_ORDER_B2B t
+	 where not exists (select 1
+	          from MID_EO_ORDER_B2B_ITEM a
+	         where a.edi_trans_id = t.edi_trans_id)
+	  <<and t.job_id in (:jobIds)>>
+	  <<and t.job_id = :jobId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

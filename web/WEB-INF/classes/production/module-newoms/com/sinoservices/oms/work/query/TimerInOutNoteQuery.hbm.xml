@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="TimerInOutNoteQuery">
+		<![CDATA[
+		
+select eowo.eowo_work_order_no OMS_TASK_NO,
+       eowo.eowo_order_no      TMS_TASK_NO,
+       eowo.eowo_vamp_no       CONTAINERIZED_NO,
+       eowo.EOWO_LOGISTIC_NO
+  from EO_WORK_ORDER eowo
+ where 1 = 1
+      /*类型*/
+   and eowo.eowo_task_big_type in ('IN', 'OUT')
+      /*-1代表的是主任务*/
+   and eowo.eowo_upper_task_no <> '-1'
+      /*入库物理仓为非空。*/
+   and (eowo.eowo_is_already_in_wh = 1 or eowo.eowo_is_already_out_wh = 1)
+      /*订单已经关闭*/
+   and eowo.eowo_status_code like '99'
+      /*排除穿件异常*/
+   and eowo.eowo_dispose_flag <> '20'
+      /*未通知计费*/
+   and nvl(eowo.eowo_business_state, 0) = 0
+      /*只跑60天的数据*/
+   and eowo.create_time > sysdate - :day
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

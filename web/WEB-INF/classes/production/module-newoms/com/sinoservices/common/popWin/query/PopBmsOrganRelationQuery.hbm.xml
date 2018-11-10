@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopBmsOrganRelationQuery">
+<!-- 
+/**
+ * <p>Description:  </p>
+ * @author Dylan.He
+ * @version 1.00
+ * <pre>
+ * 修改记录:
+ * 修改后版本			修改人			修改日期		修改内容	
+ * 2015-06-17.1		Dylan.He		2015-06-17		create
+ * 
+ *</pre>
+ */
+ -->
+		<![CDATA[
+
+	select 
+		JOB_.JOB_ID,
+		JOB_.PARENT_ID,
+		JOB_.EBPL_CITY_ID,
+		JOB_.COMPANY_NO,
+		JOB_.COMPANY_NAME_EN,
+		JOB_.SEND_CODE,
+		JOB_.ADDRESS_CN,
+		JOB_.ADDRESS_EN,
+		JOB_.POSTALCODE,
+		JOB_.FAX,
+		JOB_.URL,
+		JOB_.BUSINESS_NO,
+		JOB_.PHONE,
+		JOB_.TAX_NO,
+		JOB_.CURRENCY,
+		JOB_.FINANCE_CODE,
+		JOB_.STATUS,
+		JOB_.CDH_CODE,
+		JOB_.REC_VER,
+		JOB_.CREATE_TIME,
+		JOB_.CREATOR,
+		JOB_.MODIFY_TIME,
+		JOB_.MODIFIER,
+		JOB_.PATH,
+		JOB_.EBPL_CITY_CODE,
+		JOB_.REC_STATUS,
+		JOB_.ENABLED_FLAG,
+		JOB_.ORG_ID,
+		JOB_.BUS_DEPT_CODE,
+		JOB_.BUS_DEPT_NAME,
+		JOB_.LEDGER_ID,
+		JOB_.LEDGER_NAME,
+		JOB_.LEGAL_ENTITY_ID,
+		JOB_.LEGAL_ENTITY_NAME,
+		JOB_.OPERATING_UNIT_ID,
+		JOB_.OPERATING_UNIT_NAME,
+		JOB_.COMPANY_CODE,
+		JOB_.COMPANY_NAME,
+		JOB_.OPERATING_UNIT_END_DATE
+	from 
+		EF_ORGAN_RELATION JOB_
+	where 1 = 1
+		<<and JOB_.JOB_ID LIKE '%' || :jobId || '%'>>
+		<<and JOB_.PARENT_ID LIKE '%' || :parentId || '%'>>
+		<<and JOB_.EBPL_CITY_ID LIKE '%' || :ebplCityId || '%'>>
+		<<and JOB_.COMPANY_NO LIKE '%' || :companyNo  || '%'>>
+		<<and JOB_.COMPANY_NAME_EN LIKE '%' || :companyNameEn || '%'>>
+		<<and JOB_.SEND_CODE LIKE '%' || :sendCode || '%'>>
+		<<and JOB_.ADDRESS_CN LIKE '%' || :addressCn || '%'>>
+		<<and JOB_.ADDRESS_EN LIKE '%' || :addressEn || '%'>>
+		<<and JOB_.POSTALCODE LIKE '%' || :postalcode || '%'>>
+		<<and JOB_.FAX LIKE '%' || :fax || '%'>>
+		<<and JOB_.URL LIKE '%' || :url || '%'>>
+		<<and JOB_.BUSINESS_NO LIKE '%' || :businessNo || '%'>>
+		<<and JOB_.PHONE LIKE '%' || :phone || '%'>>
+		<<and JOB_.TAX_NO LIKE '%' || :taxNo || '%'>>
+		<<and JOB_.CURRENCY LIKE '%' || :currency || '%'>>
+		<<and JOB_.FINANCE_CODE LIKE '%' || :financeCode || '%'>>
+		<<and JOB_.STATUS LIKE '%' || :status || '%'>>
+		<<and JOB_.CDH_CODE LIKE '%' || :cdhCode || '%' >>
+		<<and JOB_.REC_VER LIKE '%' || :recVer || '%' >>
+		<<and JOB_.CREATE_TIME=:createTime>>
+		<<and JOB_.CREATOR LIKE '%' || :creator || '%' >>
+		<<and JOB_.MODIFY_TIME=:modifyTime>>
+		<<and JOB_.MODIFIER LIKE '%' || :modifier || '%' >>
+		<<and JOB_.PATH LIKE '%' || :path || '%' >>
+		<<and JOB_.EBPL_CITY_CODE LIKE '%' || :ebplCityCode || '%' >>
+		<<and JOB_.REC_STATUS LIKE '%' || :recStatus>>
+		<<and JOB_.ENABLED_FLAG LIKE '%' || :enabledFlag || '%' >>
+		<<and JOB_.ORG_ID=:orgId >>
+		<<and JOB_.BUS_DEPT_CODE LIKE '%' || :busDeptCode || '%' >>
+		<<and JOB_.BUS_DEPT_NAME LIKE '%' || :busDeptName || '%' >>
+		<<and JOB_.LEDGER_ID LIKE '%' || :ledgerId || '%' >>
+		<<and JOB_.LEDGER_NAME LIKE '%' || :ledgerName || '%' >>
+		<<and JOB_.LEGAL_ENTITY_ID LIKE '%' || :legalEntityId || '%'>>
+		<<and JOB_.LEGAL_ENTITY_NAME LIKE '%' ||  :legalEntityName || '%'>>
+		<<and JOB_.OPERATING_UNIT_ID LIKE '%' || :operatingUnitId || '%'>>
+		<<and JOB_.OPERATING_UNIT_NAME LIKE '%' || :operatingUnitName || '%'>>
+		<<and JOB_.COMPANY_CODE LIKE '%' || :companyCode || '%'>>
+		<<and JOB_.COMPANY_NAME LIKE '%' ||  :companyName || '%'  >>
+		<<and JOB_.OPERATING_UNIT_END_DATE LIKE '%' || :operatingUnitEndDate || '%' >>
+		]]>
+	</sql-query>
+</hibernate-mapping>

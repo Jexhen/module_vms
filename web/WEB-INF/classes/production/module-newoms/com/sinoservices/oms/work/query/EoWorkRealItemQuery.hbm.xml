@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkRealItemQuery">
+		<![CDATA[
+SELECT
+       EOWI_ID,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       ORG_ID,
+       PM_CODE,
+       COMPANY_CODE,
+       SITE_CODE,
+       EOWI_WORK_ORDER_NO,
+       EOWI_CODE,
+       EOWI_NAME,
+       EOWI_PACKAGE_TYPE_CODE,
+       EOWI_PACKAGE_TYPE_NAME,
+       EOWI_PACKAGE_UNIT_CODE,
+       EOWI_PACKAGE_UNIT_NAME,
+       EOWI_ITEM_TYPE_CODE,
+       EOWI_ITEM_TYPE_NAME,
+       EOWI_PACKAGE_QUANTITY,
+       EOWI_QUANTITY,
+       EOWI_GROSS_WEIGHT,
+       EOWI_NET_WEIGHT,
+       EOWI_VOLUME,
+       EOWI_LOT_NO,
+       EOWI_PRICE,
+       EOWI_AMOUNT,
+       EOWI_TEMPERATURE_LEVEL_CODE,
+       EOWI_TEMPERATURE_LEVEL_NAME,
+       EOWI_TEMPERATURE_FM,
+       EOWI_TEMPERATURE_TO,
+       EOWI_REMARK,
+       EOWI_LINK_PM_CODE,
+       EOWI_PRODUCTION_DATE,
+       EOWI_SHELF_LIFE,
+       EOWI_SHELF_LIFE_UNIT,
+       EOWI_LOTATT01,
+       EOWI_LOTATT02,
+       EOWI_LOTATT03,
+       EOWI_LOTATT04,
+       EOWI_LOTATT05,
+       EOWI_LOTATT06,
+       EOWI_LOTATT07,
+       EOWI_LOTATT08,
+       EOWI_LOTATT09,
+       EOWI_LOTATT10,
+       EOWI_LOTATT11,
+       EOWI_LOTATT12,
+       EOWI_ITEM_DENSITY,
+       EOWI_ITEM_STATUS,
+       EOWI_PRODUCT_MODEL,
+       EOWI_CHARGE_STANDARD,
+       EOWI_IS_TEMPERATURE,
+       EOWI_IS_COMBINATION,
+       EOWI_ITEM_SCALE,
+       EOWI_IS_DANGEROUS,
+       EOWI_IN_ITEM_STATUS,
+       EOWI_SALESMAN_CODE,
+       EOWI_SALESMAN_NAME,
+       EOWI_SOURCE_DATA_NO,
+       EOWI_JOB_NO,
+       EOWI_INVOICE_RECOVER_STATUS,
+       EOWI_INVOICE_LINE,
+       EOWI_UNIT_QUANTITY,
+       EOWI_UNIT_GROSS_WEIGHT,
+       EOWI_UNIT_VOLUME,
+       EOWI_UPSTREAM_LINE_NO,
+       EOWI_COM_INSPECT_REMARKS,
+       EOWI_SOURCE_SUBINV_CODE,
+       EOWI_TARGET_SUBINV_CODE,
+       EOWI_PALLET_ID,
+       EOWI_SCAN_QUANTITY,
+       EOWI_ORDER_NO,
+       EOWI_PRICE_NO_TAX,
+       EOWI_CUSTOMER_ITEM_NO,
+       EOWI_LOC_CODE,
+       EOWI_TRACE_NO,
+       EOWI_LINE_NO,
+       EOWI_MAIN_GOODS_CODE,
+       EOWI_LOT_LINE_NO,
+       EOWI_ADJUSTMEN_TYPE,
+       EOWI_WMS_ID
+  FROM EO_WORK_REAL_ITEM
+ WHERE 1=1
+ <<AND EOWI_WORK_ORDER_NO  LIKE:eowiWorkOrderNo>>
+ <<AND EOWI_WORK_ORDER_NO  in(:eowiWorkOrderNos)>>
+ <<AND EOWI_CODE  LIKE :eowiCode>>
+ <<AND EOWI_LINK_PM_CODE  LIKE:eowiLinkPmCode>>
+ <<AND EOWI_LINK_PM_CODE  in(:eowiLinkPmCodes)>>
+ <<AND EOWI_JOB_NO  LIKE :eowiJobNo>>
+ <<AND EOWI_JOB_NO  in(:eowiJobNos)>>
+ <<AND EOWI_UPSTREAM_LINE_NO  LIKE :eowiUpstreamLineNo>>
+ <<AND EOWI_UPSTREAM_LINE_NO  in(:eowiUpstreamLineNos)>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DuplicateOrderQuery">
+		<![CDATA[
+		SELECT 1 AS ORDERS
+		  FROM EO_ORDER EOOR
+		 WHERE 1 = 1
+		 <<AND EOOR.EOOR_LOGISTIC_NO LIKE :eoorLogisticNo>>
+		 <<AND EOOR.EOOR_CUSTOMER_CODE LIKE :eoorCustomerCode>>
+		 <<AND EOOR.EOOR_CONSIGNEE_CODE LIKE :eoorConsigneeCode>>
+		 <<AND EOOR.ORG_ID = :orgId>>
+		 <<and (eoor.eoor_meger_flag = nvl(:eoorMegerFlag,'') or eoor.eoor_meger_flag is null)>>
+		 <<and eoor.eoor_split_flag is not null and eoor.eoor_id != :eoorId>>
+		]]>
+	</sql-query>
+</hibernate-mapping>

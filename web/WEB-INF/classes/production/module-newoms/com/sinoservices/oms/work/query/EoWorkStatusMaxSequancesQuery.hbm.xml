@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoWorkStatusMaxSequancesQuery">
+		<![CDATA[ 
+
+		SELECT EOWS.EOWA_WORK_NO,MAX(NVL(EOWS.EOWA_SEQUENCE, 0)) AS EOWA_SEQUENCE   FROM EO_WORK_STATUS EOWS 
+  			WHERE 1 = 1
+	         << AND EOWS.EOWA_WORK_NO in :eowaWorkNos >>
+	         << AND EOWS.ORG_ID = :orgId >>
+	         group by  EOWA_WORK_NO
+		]]>
+	</sql-query>
+</hibernate-mapping>

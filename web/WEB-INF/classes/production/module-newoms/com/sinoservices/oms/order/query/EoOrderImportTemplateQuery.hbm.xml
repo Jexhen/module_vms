@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderImportTemplateQuery">
+<!-- 
+/**
+ * <p>Description:  </p>
+ * @author yoky
+ * @version 1.00
+ * <pre>
+ * 修改记录:
+ * 修改后版本		             修改人			修改日期		修改内容	
+ * 2015-07-07.1		yoky		2015-07-07	create
+ * 
+ *</pre>
+ */
+ -->
+		<![CDATA[
+	select 
+	    EOIT.JOB_ID,
+	    EOIT.JOB_CODE,
+	    EOIT.NAME,
+	    EOIT.NAME_CN,
+	    EOIT.CUSTOMER_CODE,
+	    EOIT.CUSTOMER_NAME,
+	    EOIT.STATUS,
+	    EOIT.REMARK,
+	    EOIT.ORG_ID,
+	    U1.ESUS_USER_NAME_CN CREATOR_NAME,
+	    EOIT.CREATE_TIME,
+	    EOIT.MODIFIER,
+	    U2.ESUS_USER_NAME_CN MODIFIER_NAME,
+	    EOIT.MODIFY_TIME,
+	    EOIT.TIME_ZONE,
+	    EOIT.REC_VER,
+	    EOIT.REC_STATUS,
+	    EOIT.ENABLED_FLAG,
+	    EOIT.ORDER_TYPE
+	  from EO_ORDER_IMPORT_TEMPLATE EOIT
+	  left join ES_USER U1 ON EOIT.CREATOR = U1.ESUS_ID
+	  left join ES_USER U2 ON EOIT.MODIFIER = U2.ESUS_ID
+	  where 1 = 1
+	  	<<and eoit.order_type in (:orderTypes)>>
+		<<and EOIT.JOB_ID=:jobId>>
+		<<and EOIT.JOB_CODE=:jobCode>>
+		<<and EOIT.NAME like :name>>
+		<<and EOIT.NAME_CN like :nameCn>>
+		<<and EOIT.CUSTOMER_CODE=:customerCode>>
+		<<and EOIT.CUSTOMER_NAME like :customerName>>
+		<<and EOIT.STATUS=:status>>
+		<<and EOIT.REMARK=:remark>>
+		<<and EOIT.ORG_ID=:orgId>>
+		<<and EOIT.CREATOR=:creator>>
+		<<and EOIT.CREATE_TIME=:createTime>>
+		<<and EOIT.MODIFIER=:modifier>>
+		<<and EOIT.MODIFY_TIME=:modifyTime>>
+		<<and EOIT.TIME_ZONE=:timeZone>>
+		<<and EOIT.REC_VER=:recVer>>
+		<<and EOIT.REC_STATUS=:recStatus>>
+		<<and EOIT.ENABLED_FLAG=:enabledFlag>>
+		ORDER BY EOIT.CREATE_TIME DESC
+		]]>
+	</sql-query>
+</hibernate-mapping>

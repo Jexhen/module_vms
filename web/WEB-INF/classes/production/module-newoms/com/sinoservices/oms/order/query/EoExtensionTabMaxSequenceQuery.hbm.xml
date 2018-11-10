@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoExtensionTabMaxSequenceQuery">
+		<![CDATA[
+
+select NVL(MAX(eoet.eoet_tab_sequence), 0) AS EOET_SEQUENCE
+FROM eo_extension_tab eoet
+   WHERE 1 = 1 
+  << and eoet.eoet_module_code LIKE :eoetModuleCode >>
+   <<and eoet.eoet_module_type_code LIKE :eoetModuleType>>
+   <<and eoet.org_id =:orgId>>
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

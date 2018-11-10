@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsPackageUnitQuery">
+		<![CDATA[
+			
+select CDPR.CDPR_RELATION_ID,
+			CDPR.CDPR_CDPA_PM_CODE,
+			CDPR.CDPR_UNIT,
+			CDPR.CDPR_UNIT_RATE,
+			CDPR.CDPR_IS_MAIN,
+			CDPR.CDPR_SEQUENCES_NO,
+			CDPR.CDPR_UNIT_LEVEL,
+			CDPR.CDPR_QUANTITY,
+			CDPR.CDPR_DESC,
+			CDPR.CDPR_MATERIAL,
+			CDPR.CDPR_IS_PACK_BOX,
+			CDPR.CDPR_IS_LABLE_IN,
+			CDPR.CDPR_IS_LABLE_OUT,
+			CDPR.CDPR_LENGTH,
+			CDPR.CDPR_WIDTH,
+			CDPR.CDPR_HIGHTH,
+			CDPR.CDPR_VOLUME,
+			CDPR.CDPR_WEIGHT,
+			CDPR.CDPR_WH_CODE,
+			CDPR.REC_VER,
+			CDPR.CREATOR,
+			CDPR.CREATE_TIME,
+			CDPR.MODIFIER,
+			CDPR.MODIFY_TIME,
+			CDPR.REC_STATUS,
+			CDPR.ORG_ID,
+			CDPR.CDPR_TI,
+			CDPR.CDPR_HI,
+			CDPR.TIME_ZONE,
+			CDPA.CDPA_CODE,
+			CDPA.CDPA_FORMAT
+		  FROM CD_WH_PACKAGE_RELATION CDPR
+		  LEFT JOIN CD_WH_PACKAGE CDPA
+		    ON CDPR.CDPR_PA_ID = CDPA.CDPA_ID
+		   AND CDPR.ORG_ID = CDPA.ORG_ID
+		 WHERE 1 = 1
+       <if !is_empty(cdprUnit,cdprQuantity,cdprDesc)>
+			and (	
+					1=2
+					<<OR CDPR.CDPR_DESC LIKE '%' || :cdprUnit || '%'>>
+					<<OR CDPR.CDPR_DESC like '%' || :cdprDesc || '%'>>
+				) 
+ 		</if>
+      AND CDPR.CDPR_QUANTITY>0
+      <<AND CDPA.CDPA_CODE LIKE '%' || :cdpaCode || '%'>>
+			<<AND CDPR.ORG_ID LIKE :orgId>>
+			<<AND CDPR.rec_status=:recStatus>>
+			<<AND CDPR.CDPR_UNIT IN (:cdprUnits)>>
+			order by CDPR.CDPR_SEQUENCES_NO
+		]]>
+	</sql-query>
+</hibernate-mapping>

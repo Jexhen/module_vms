@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- 为接口添加自动虚拟登录 
+		在pointcut列举出需要虚拟登录的接口
+		举例：OMS2C execution(* *..rpc.service.*.*(..))
+	-->
+	<aop:config> 
+		<aop:advisor advice-ref="InterfaceAdvice" pointcut="execution(* *..owtservices.service.*InInterface.*(..))" order="100" />
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* *..service.*Interface.*(..))" order="100"/> 
+	</aop:config>	
+	
+</beans>

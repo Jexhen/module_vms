@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteEoDivideProcedureIdsUpdate">
+		<![CDATA[
+
+DELETE FROM EO_DIVIDE_PROCEDURE EODR WHERE EODR.EODR_EODP_PM_CODE IN
+       (SELECT EODP.EODP_CODE FROM EO_DIVIDE_PARAM EODP WHERE EODP.EODP_ID IN(:ids))
+       AND EODR.ORG_ID=:orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoTemplateOrderContainerQuery">
+		<![CDATA[
+		select 
+			EOTC.EOTC_ID as EOOC_ID,
+			EOTC.CREATOR as CREATOR,
+			EOTC.CREATE_TIME as CREATE_TIME,
+			EOTC.MODIFIER as MODIFIER,
+			EOTC.MODIFY_TIME as MODIFY_TIME,
+			EOTC.REC_VER as REC_VER,
+			EOTC.REC_STATUS as REC_STATUS,
+			EOTC.ORG_ID as ORG_ID,
+			EOTC.PM_CODE as PM_CODE,
+			EOTC.EOTC_CONTAINER_TYPE_CODE as EOOC_CONTAINER_TYPE_CODE,
+			EOTC.EOTC_CONTAINER_TYPE_NAME as EOOC_CONTAINER_TYPE_NAME,
+			EOTC.EOTC_QUANTITY as EOOC_QUANTITY,
+			EOTC.EOTC_REMARK as EOOC_REMARK
+		from EO_TEMPLATE_ORDER_CONTAINER EOTC
+		where 1=1
+		<< AND EOTC.EOTC_EOTO_CODE LIKE :code>>
+		<< AND EOTC.ORG_ID =:orgId >>
+		]]>
+	</sql-query>
+</hibernate-mapping>

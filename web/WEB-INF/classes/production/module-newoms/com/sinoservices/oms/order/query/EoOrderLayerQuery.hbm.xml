@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderLayerQuery">
+		<![CDATA[
+SELECT
+       JOB_ID,
+       ORDER_NO,
+       ITEM_NO,
+       LAYER,
+       AREA_NAME,
+       API_JSON,
+       FIELD3,
+       FIELD4,
+       FIELD5,
+       FIELD6,
+       FIELD7,
+       FIELD8,
+       FIELD9,
+       CREATOR,
+       CREATE_TIME,
+       MODIFIER,
+       MODIFY_TIME,
+       REC_VER,
+       REC_STATUS,
+       ORG_ID
+  FROM EO_ORDER_LAYER
+ WHERE 1=1
+ <<AND JOB_ID LIKE :jobId>>
+ <<AND ORDER_NO LIKE :orderNo>>
+ <<AND ITEM_NO LIKE :itemNo>>
+ <<AND LAYER LIKE :layer>>
+ <<AND AREA_NAME LIKE :areaName>>
+ <<AND API_JSON LIKE :apiJson>>
+ <<AND FIELD3 LIKE :field3>>
+ <<AND FIELD4 LIKE :field4>>
+ <<AND FIELD5 LIKE :field5>>
+ <<AND FIELD6 LIKE :field6>>
+ <<AND FIELD7 LIKE :field7>>
+ <<AND FIELD8 LIKE :field8>>
+ <<AND FIELD9 LIKE :field9>>
+ <<AND CREATOR LIKE :creator>>
+ <<AND CREATE_TIME > :createTimeFrom>>
+ <<AND CREATE_TIME <= :createTimeTo + 1>>
+ <<AND MODIFIER LIKE :modifier>>
+ <<AND MODIFY_TIME > :modifyTimeFrom>>
+ <<AND MODIFY_TIME <= :modifyTimeTo + 1>>
+ <<AND REC_VER LIKE :recVer>>
+ <<AND REC_STATUS LIKE :recStatus>>
+ <<AND ORG_ID LIKE :orgId>>
+ ${queryPlanDefinedSql}
+ ${queryPlanSortSql}
+		]]>
+	</sql-query>
+</hibernate-mapping>

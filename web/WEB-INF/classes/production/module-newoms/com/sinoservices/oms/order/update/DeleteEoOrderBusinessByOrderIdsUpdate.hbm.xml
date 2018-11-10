@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteEoOrderBusinessByOrderIdsUpdate">
+		<![CDATA[
+
+DELETE FROM EO_ORDER_BUSINESS EOOB WHERE 
+EOOB.EOOR_ORDER_NO IN (SELECT EOOR.EOOR_ORDER_NO FROM EO_ORDER EOOR WHERE EOOR.EOOR_ID IN (:ids))
+AND EOOB.ORG_ID=:orgId
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

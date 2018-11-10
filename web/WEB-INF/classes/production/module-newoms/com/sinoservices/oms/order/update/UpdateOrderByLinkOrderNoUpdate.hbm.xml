@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="UpdateOrderByLinkOrderNoUpdate">
+		<![CDATA[
+		update EO_ORDER EOOR
+		set
+			EOOR.EOOR_STATUS_COLOR=:statusColor
+		where EOOR.EOOR_LINK_ORDER_NO in (:linkOrderNos)
+		and EOOR.ORG_ID=:orgId
+		]]>
+	</sql-query>
+</hibernate-mapping>

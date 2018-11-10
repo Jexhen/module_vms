@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- DEMO -->
+	<!-- 
+		<bean id="selectCode.ALL_USERS" parent="selectCodeDefinition">
+		<property name="queryType" value="SysUserModel" />
+		<property name="queryFields">
+		<list>tractorCard
+		<bean parent="queryField">
+		<property name="fieldName" value="nvl(usrIsDeleted, '0')" />
+		<property name="operator" value="&lt;&gt;" />
+		<property name="fieldValue" value="1" />
+		</bean>
+		<bean parent="queryField">
+		<property name="fieldName" value="orgId" />
+		<property name="operator" value="=" />
+		<property name="fieldStringValue" value="orgId" />
+		<property name="fieldType" value="session" />
+		</bean>
+		</list>
+		</property>
+		<property name="orderBy" value="usrRealName" />
+		<property name="keyFieldName" value="usrUserName" />
+		<property name="labelFieldName" value="usrRealName" />
+		<property name="localedLabelFieldNames">
+		<map>
+		<entry key="zh_CN" value="usrChineseName" />
+		</map>
+		</property>
+		</bean>
+	-->
+	
+	
+	
+	<!--运输订单类型 -->
+	<bean id="selectCode.omsOrderType" parent="selectCodeDefinition">
+		<property name="queryType" value="PopGetOrderTypeEfficeTimeQuery"></property>
+		<property name="keyFieldName" value="ctotCode"></property>
+		<property name="labelFieldName" value="ctotName"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 客户 -->
+	<bean id="selectCode.omsCustomer" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbCustomerQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="ebcuNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebcrRoleCode" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	
+	<!--下单联系人 -->
+	<bean id="selectCode.omsCustomerContact" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsCdCustomerContactQuery"></property>
+		<property name="keyFieldName" value="ebccContactNo"></property>
+		<property name="labelFieldName" value="ebccContactName"></property>
+	</bean>
+	<!-- 发货人 -->
+	<bean id="selectCode.omsShipper" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbCustomerQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="ebcuNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebcrRoleCode" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="SHIPPER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 业务员 -->
+	<bean id="selectCode.omsSales" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsSalesManQuery"></property>
+		<property name="keyFieldName" value="esusLoginName"></property>
+		<property name="labelFieldName" value="esusUserNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 创建人 -->
+	<bean id="selectCode.omsCreator" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsSalesManQuery"></property>
+		<property name="keyFieldName" value="esusId"></property>
+		<property name="labelFieldName" value="esusUserNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 提送货地址 -->
+	<bean id="selectCode.omsPickDeliveryAddress" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsCdCustomerContactQuery"></property>
+		<property name="keyFieldName" value="eblcCode"></property>
+		<property name="labelFieldName" value="eblcAddress"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 送提货地址 New -->
+	<bean id="selectCode.omsPickDeliverySiteAddress" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsPickDeliveryAddressQuery"></property>
+		<property name="keyFieldName" value="eblcCode"></property>
+		<property name="labelFieldName" value="eblcAddress"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 区域 -->
+	<bean id="selectCode.omsRegion" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbRegionQuery"></property>
+		<property name="keyFieldName" value="ebrgNo"></property>
+		<property name="labelFieldName" value="ebrgNameCn"></property>
+		<property name="queryFields">
+			<list>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 收货人 -->
+	<bean id="selectCode.omsConsignee" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbCustomerQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="ebcuNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebcrRoleCode" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="CONSIGNEE" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 国家省市 -->
+	<bean id="selectCode.tesPlaceCountry" parent="selectCodeDefinition">
+		<property name="queryType" value="EbPlaceModel"></property>
+		<property name="keyFieldName" value="ebplCode"></property>
+		<property name="labelFieldName" value="ebplNameCn"></property>
+		<property name="queryFields">
+			<list>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebplType" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="PLACE_COUNTRY"></property>
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebplIsAble" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="ENABLE"></property>
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 省 -->
+	<bean id="selectCode.tesPlaceProvince" parent="selectCodeDefinition">
+		<property name="queryType" value="LrmsGetProvinceByCountryTSQuery"></property>
+		<property name="keyFieldName" value="ebplCode"></property>
+		<property name="labelFieldName" value="ebplNameCn"></property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+
+	<!-- 市 -->
+	<bean id="selectCode.omsPlaceCity" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsGetCityByCtyAndProvinceQuery"></property>
+		<property name="keyFieldName" value="ebplCode"></property>
+		<property name="labelFieldName" value="ebplNameCn"></property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	
+	<!-- 县 -->
+	<bean id="selectCode.omsPlaceDisTrict" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsGetDistrictQuery"></property>
+		<property name="keyFieldName" value="ebplCode"></property>
+		<property name="labelFieldName" value="ebplNameCn"></property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 部门 -->
+	<bean id="selectCode.omsDepartment" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEsDepartmentQuery"></property>
+		<property name="keyFieldName" value="esdeDepartmentCode"></property>
+		<property name="labelFieldName" value="esdeDepartmentName"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 商品  -->
+	<bean id="selectCode.omsItem" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbMaterialQuery"></property>
+		<property name="keyFieldName" value="cdcmMaterialNo"></property>
+		<property name="labelFieldName" value="cdcmNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 包装类型-包装规格 -->
+	<bean id="selectCode.omsPackageType" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsCdWhPackageQuery"></property>
+		<property name="keyFieldName" value="cdpaCode"></property>
+		<property name="labelFieldName" value="cdpaFormat"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 包装单位 -->
+	<bean id="selectCode.omsPackageUnit" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsPackageUnitQuery"></property>
+		<property name="keyFieldName" value="cdprUnit"></property>
+		<property name="labelFieldName" value="cdprDesc"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 服务供应商 -->
+	<bean id="selectCode.omsServiceSupplier" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsServiceSupplierQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="ebcuNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- 备注配置 -->
+	<bean id="selectCode.omsRemarkConfig" parent="selectCodeDefinition">
+		<property name="queryType" value="EtRemarkConfigModel"></property>
+		<property name="keyFieldName" value="etkcRemarkCode"></property>
+		<property name="labelFieldName" value="etkcRemarkName"></property>
+		<property name="queryFields">
+			<list>
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId"/>
+					<property name="operator" value="="/>
+					<property name="fieldStringValue" value="orgId"/>
+					<property name="fieldType" value="session"/>
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="projectId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="projectId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="etkcRemarkNo desc"/>
+	</bean>
+		<!-- 费用名称 -->
+	<bean id="selectCode.omsFeeHead" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbFeeHeadQuery"></property>
+		<property name="keyFieldName" value="ebfhCode"></property>
+		<property name="labelFieldName" value="ebfhNameCn"></property>
+		<property name="queryFields">
+			<list>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebfhEscoId"/>
+					<property name="operator" value="="/>
+					<property name="fieldStringValue" value="orgId"/>
+					<property name="fieldType" value="session"/>
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebfhStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="ebfhCode desc"/>
+	</bean>
+	<!-- 结算对象 -->
+	<bean id="selectCode.omsSettlementObject" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEbCustomerQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="ebcuNameCn"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="ebcrRoleCode" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="SETTLEMENT" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 作业类型 -->
+	<bean id="selectCode.omsWorkType" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsEoWorkTypeQuery"></property>
+		<property name="keyFieldName" value="eowtCode"></property>
+		<property name="labelFieldName" value="eowtName"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 分解策略 -->
+	<bean id="selectCode.omsDivideParam" parent="selectCodeDefinition">
+		<property name="queryType" value="PopOmsDivideParamQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="eodpName"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+		<property name="orderBy" value="modifyTime desc"/>
+	</bean>
+	<!-- 订单模版 -->
+	<bean id="selectCode.omsOrderTemplate" parent="selectCodeDefinition">
+		<property name="queryType" value="PopEoTemplateCodeQuery"></property>
+		<property name="keyFieldName" value="eotoCode"></property>
+		<property name="labelFieldName" value="eotoName"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="esusLoginName"/>
+					<property name="operator" value="="/>
+					<property name="fieldStringValue" value="username"/>
+					<property name="fieldType" value="session"/>
+				</bean>	
+			</list>
+		</property>
+	</bean>
+	<!-- 作业订单新增 弹出框 查询物流订单 -->
+	<bean id="selectCode.omsOrder" parent="selectCodeDefinition">
+		<property name="queryType" value="PopEoOrderQuery"></property>
+		<property name="keyFieldName" value="eoorOrderNo"></property>
+		<property name="labelFieldName" value="eoorOrderNo"></property>
+		<property name="queryFields">
+			<list>
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 作业订单新增 弹出框 查询物流订单 -->
+	<bean id="selectCode.omsIssuedStrategy" parent="selectCodeDefinition">
+		<property name="queryType" value="PopEoIssuedParamQuery"></property>
+		<property name="keyFieldName" value="eoipName"></property>
+		<property name="labelFieldName" value="eoipName"></property>
+		<property name="queryFields">
+			<list>
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 店铺 -->
+	<bean id="selectCode.omsStore" parent="selectCodeDefinition">
+		<property name="queryType" value="PopEoStoreQuery"></property>
+		<property name="keyFieldName" value="pmCode"></property>
+		<property name="labelFieldName" value="eosmName"></property>
+		<property name="queryFields">
+			<list>				
+				<bean parent="queryField">
+					<property name="fieldName" value="orgId" />
+					<property name="operator" value="=" />
+					<property name="fieldStringValue" value="orgId" />
+					<property name="fieldType" value="session" />
+				</bean>
+				<bean parent="queryField">
+					<property name="fieldName" value="recStatus" />
+					<property name="operator" value="=" />
+					<property name="fieldValue" value="0" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+</beans>
+

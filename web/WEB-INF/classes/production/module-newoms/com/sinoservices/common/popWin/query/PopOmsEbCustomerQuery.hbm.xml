@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+		/**
+		* <p>Description: 根据客户ID查询客户详细信息：客户基本信息、信用、角色
+		* </p>
+		* @author King.Zhang
+		* @version 1.00
+		* <pre>
+		* 修改记录:
+		* 修改后版本     	修改人    	修改内容
+		* 20130311.1     King.Zhang      创建
+		* </pre>
+		*/
+-->
+<hibernate-mapping>
+	<sql-query name="PopOmsEbCustomerQuery">
+		<![CDATA[
+
+SELECT DISTINCT (EBCU.EBCU_ID),
+                EBCU.EBCU_QUICK_CODE,
+                EBCU.EBCU_CUSTOMER_NO,
+                EBCU.EBCU_INDUSTRY_TYPE,
+                EBCU.EBCU_PLATFORM_NATURE,
+                EBCU.EBCU_NAME_CN,
+                EBCU.EBCU_SHORT_NAME,
+                EBCU.EBCU_NAME_EN,
+                EBCU.EBCU_TEL,
+                EBCU.EBCU_FAX,
+                EBCU.EBCU_URL,
+                EBCU.EBCU_EBPL_COUNTRY_CODE,
+                EBCU.EBCU_EBPL_PROVINCE_CODE,
+                EBCU.EBCU_EBPL_CITY_CODE,
+                EBCU.EBCU_ADDRESS,
+                EBCU.EBCU_FINANCE_CODE,
+                EBCU.EBCU_TAX_REGIST_NO,
+                EBCU.EBCU_BUSINESS_NO,
+                EBCU.EBCU_EBFL_ID,
+                EBCU.EBCU_CUSTOMER_STATUS,
+                EBCU.REC_STATUS,
+                EBCU.EBCU_REGISTRATION_DATE,
+                EBCU.EBCU_MAX_GUARANTEE_AMOUNT,
+                EBCU.EBCU_MAIN_BUSINESS,
+               
+               
+                EBCU.EBCU_IS_SETTLEMENT,
+                EBCU.EBCU_CUSTOMER_GROUP_NAME,
+                EBCU.EBCU_REMARK,
+                
+                EBCU.EBCU_SUBSTR1,
+                EBCU.EBCU_SUBSTR2,
+                EBCU.EBCU_SUBSTR3,
+                EBCU.EBCU_SUBSTR4,
+                EBCU.EBCU_SUBSTR5,
+                EBCU.EBCU_SUBSTR6,
+                EBCU.EBCU_SUBDATE1,
+                EBCU.EBCU_SUBDATE2,
+                EBCU.EBCU_SUBDATE3,
+                EBCU.REC_VER,
+                EBCU.CREATE_TIME,
+                EBCU.MODIFY_TIME,
+                EBCU.MODIFIER,
+                EBCU.CREATOR,
+                
+                
+                EBCU.EBCU_IS_VIRTUAL_CUSTOMER,
+                EBLC.EBLC_ADDRESS,
+                EBLC.EBLC_CODE,
+                EBLC.EBLC_DETAIL_ADDRESS,
+                EBCC.EBCC_CONTACT_NAME,
+                EBCC.EBCC_CONTACT_NO,
+                EBCC.EBCC_MOBILE,
+                EBCC.EBCC_IS_DEFAULT,
+                EBCC.EBCC_TEL
+  FROM EB_CUSTOMER EBCU
+  LEFT JOIN EB_LOCATION EBLC ON EBLC.EBLC_CODE = EBCU.EBCU_ADDRESS AND EBLC.ORG_ID = EBCU.COMPANY_CODE
+  LEFT JOIN EB_CUSTOMER_ROLE EBCR ON EBCR.EBCR_EBCU_PM_CODE = EBCU.EBCU_CUSTOMER_NO AND EBCU.COMPANY_CODE = EBCR.ORG_ID AND EBCU.COMPANY_CODE = EBCR.ORG_ID
+  LEFT JOIN EB_CUSTOMER_CONTACT EBCC ON EBCC.EBCC_EBCU_PM_CODE = EBCU.EBCU_CUSTOMER_NO AND EBCC.EBCC_IS_DEFAULT = 'Y' AND EBCC.ORG_ID=EBCU.COMPANY_CODE
+ where 1 = 1
+ <if ebcuCustomerStatus != '0'>
+ and EBCU.EBCU_APPROVAL_STATUS = '0'
+ </if>
+ AND <@dataFilter Table="EB_CUSTOMER" fiEld= "EBCU_CUSTOMER_NO" aLias="EBCU" />
+/*<< AND EXISTS(SELECT 1 FROM EB_CUSTOMER_ROLE EBCR WHERE EBCU.EBCU_CUSTOMER_NO = EBCR.EBCR_EBCU_PM_CODE AND EBCR.ORG_ID=EBCU.COMPANY_CODE AND EBCR.EBCR_ROLE_CODE IN (:roleCodes)) >>*/
+ <if !is_empty(ebcuCustomerNo,ebcuNameCn,ebcuTel,eblcDetailAddress)>
+	and (	
+			1=2
+			<< OR EBCU.EBCU_CUSTOMER_NO LIKE   '%' || :ebcuCustomerNo  || '%' >>
+			<< OR EBCU.EBCU_NAME_CN LIKE   '%' || :ebcuNameCn  || '%' >>
+			<< OR EBCU.EBCU_TEL LIKE   '%' || :ebcuTel  || '%' >>
+			<< OR EBLC.EBLC_DETAIL_ADDRESS LIKE  '%' || :eblcDetailAddress || '%' >>
+		) 
+ </if>
+<< AND EXISTS(SELECT 1 FROM EB_CUSTOMER_ROLE EBCR WHERE EBCU.EBCU_CUSTOMER_NO = EBCR.EBCR_EBCU_PM_CODE AND EBCR.ORG_ID=EBCU.COMPANY_CODE AND EBCR.EBCR_ROLE_CODE IN (:roleCodes)) >>
+<<and EBCU.COMPANY_CODE=:companyCode>> 
+<<and EBCU.REC_STATUS=:recStatus>>
+<<and EBCR.EBCR_ROLE_CODE LIKE  '%' || :ebcrRoleCode || '%'>>
+and <@dataFilter Table="HLS_EB_CUSTOMER" field= "EBCU_CUSTOMER_NO" alias="EBCU" />
+
+<< AND EBCU.EBCU_NAME_CN IN (:ebcuNameCns)>>
+<< AND EBCU.EBCU_CUSTOMER_NO IN (:ebcuCustomerNos)>>
+<< AND EBCU.EBCU_IS_GROUP_CUSTOMER LIKE  '%' || :isGroupCustomer || '%' >>
+AND (##CONDITIONS$EB_CUSTOMER$EBCU##)
+ORDER BY EBCU.MODIFY_TIME DESC
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

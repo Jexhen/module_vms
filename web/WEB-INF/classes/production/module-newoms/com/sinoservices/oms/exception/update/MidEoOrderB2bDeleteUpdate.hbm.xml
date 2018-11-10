@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="MidEoOrderB2bDeleteUpdate">
+		<![CDATA[
+  	declare
+	begin
+	  delete from MID_EO_ORDER_B2B_ITEM t
+	   where t.edi_trans_id in (select a.edi_trans_id
+	                              from MID_EO_ORDER_B2B a
+	                             where a.job_id in (:jobIds));
+	
+	  delete from MID_EO_ORDER_B2B t where t.job_id in (:jobIds);
+	end;
+		]]>
+	</sql-query>
+</hibernate-mapping>

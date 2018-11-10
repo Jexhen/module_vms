@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoItemBatchAddQuery">
+		<![CDATA[
+
+SELECT distinct CDCM.CDCM_ID,
+                CDCM.CDCM_MATERIAL_NO,
+                CDCM.CDCM_NAME_CN,
+                CDCM.CDCM_NAME_EN,
+                CDCM.CDCM_SHORT_NAME,
+                CDCM.CDCM_BARCODE,
+                CDCM.CDCM_TYPE_CODE,
+                CDCM.CDCM_PACKAGE_CODE,
+                CDCM.CDCM_CUBE,
+                CDCM.CDCM_LENGTH,
+                CDCM.CDCM_WIDTH,
+                CDCM.CDCM_HEIGHT,
+                CDCM.CDCM_WEIGHT,
+                CDCM.CDCM_NET_WEIGHT,
+                CDCM.CDCM_IS_DG,
+                CDCM.CDCM_DG_CLASS,
+                CDCM.CDCM_IS_COLD,
+                CDCM.CDCM_MIN_TEMP,
+                CDCM.CDCM_MAX_TEMP,
+                CDCM.CDCM_REMARK,
+                CDCM.REC_STATUS,
+                CDCM.REC_VER,
+                CDCM.CREATOR,
+                CDCM.CREATE_TIME,
+                CDCM.MODIFIER,
+                CDCM.MODIFY_TIME,
+                CDCM.ORG_ID,
+                CDCM.CDCM_TEMP_LEVEL,
+                CDCM.CDCM_STOCK_UNIT_PRICE,
+                CDCM.CDCM_PROVIDE_CUST_CODE,
+                CDCM.CDCM_PERIOD_OF_VALIDITY,
+                CDCM.CDCM_VALIDITY_UNIT,
+                '' AS MAX_ROW,
+                EBCU.EBCU_NAME_CN AS CDCM_PROVIDE_CUST_NAME,
+                CDWP.CDPA_CODE,
+                CDWP.CDPA_FORMAT,
+                CDPR.CDPR_UNIT,
+                CDPR.CDPR_DESC,
+                CDPR.CDPR_QUANTITY,
+                NVL(EOVI.EOVI_QTY, 0) - NVL(EOVI.ONWAY_QTY, 0) AS AVAI_QTY,
+                EOVI.EOVI_OWNER_NAME AS EOVI_OWNER_NAME,
+                EOVI.EOVI_OWNER_CODE AS EOVI_OWNER_CODE,
+                EOVI.PRODUCT_DATE AS PRODUCT_DATE,
+                EOVI.EOVI_WH_CODE AS WH_CODE,
+                (CASE
+                  WHEN EOVI.EOVI_SKU_CODE IS NULL THEN
+                   'N'
+                  ELSE
+                   'Y'
+                END) IS_INV_ITEM
+  FROM CD_COMMON_MATERIAL CDCM
+  LEFT JOIN CD_WH_PACKAGE CDWP
+    ON CDCM.CDCM_PACKAGE_CODE = CDWP.CDPA_CODE
+   AND CDWP.REC_STATUS = 0
+   AND CDCM.ORG_ID = CDWP.ORG_ID
+  LEFT JOIN CD_TS_PACKAGE_RELATION CDPS
+    ON CDPS.CDPS_CDPA_CODE = CDWP.CDPA_CODE
+   AND CDPS.ORG_ID = CDWP.ORG_ID
+   AND CDPS.CDPS_IS_DEFAULT = 'Y'
+  LEFT JOIN CD_WH_PACKAGE_RELATION CDPR
+    ON CDPS.CDPS_UNIT = CDPR.CDPR_UNIT
+   AND CDPR.ORG_ID = CDPS.ORG_ID
+   AND CDPR.CDPR_CDPA_PM_CODE = CDWP.PM_CODE
+   AND CDPR.REC_STATUS = 0
+  LEFT JOIN EB_CUSTOMER EBCU
+    ON CDCM.CDCM_PROVIDE_CUST_CODE = EBCU.PM_CODE
+   AND EBCU.REC_STATUS = 0
+   AND CDCM.ORG_ID = EBCU.ORG_ID
+  LEFT JOIN (SELECT EOVI.EOVI_OWNER_CODE,
+                    EOVI.EOVI_OWNER_NAME,
+                    EOVI.EOVI_SKU_CODE,
+                    EOVI.EOVI_SKU_NAME,
+                    EOVI.ORG_ID,
+                    EOVI.EOVI_WH_CODE,
+                    PRODUCT_DATE,
+                    EOVI_QTY,
+                    EOVI_ALLOCATED_QTY,
+                    EOVI_ONHOLD_QTY,
+                    ONWAY_QTY
+               FROM (SELECT EOVI.EOVI_OWNER_CODE,
+                            EOVI.EOVI_OWNER_NAME,
+                            EOVI.EOVI_SKU_CODE,
+                            EOVI.EOVI_SKU_NAME,
+                            EOVI.ORG_ID,
+                            EOVI.EOVI_WH_CODE,
+                            EOVI.EOVI_LOTATT01 AS PRODUCT_DATE,
+                            SUM(EOVI.EOVI_QTY) AS EOVI_QTY,
+                            SUM(EOVI.EOVI_ALLOCATED_QTY) AS EOVI_ALLOCATED_QTY,
+                            SUM(EOVI.EOVI_ONHOLD_QTY) AS EOVI_ONHOLD_QTY
+                      FROM CD_COMMON_MATERIAL CDCM
+                    LEFT JOIN EO_VIRTUAL_INV_ITEM EOVI
+                      ON CDCM.CDCM_MATERIAL_NO = EOVI.EOVI_SKU_CODE
+                     AND CDCM.ORG_ID = EOVI.ORG_ID
+                     AND CDCM.CDCM_CUSTOMER_CODE = EOVI.EOVI_OWNER_CODE 
+                     AND EOVI.REC_STATUS = 0
+                      WHERE 1 = 1
+                        
+                      GROUP BY EOVI.EOVI_OWNER_CODE,
+                               EOVI.EOVI_OWNER_NAME,
+                               EOVI.EOVI_SKU_CODE,
+                               EOVI.EOVI_SKU_NAME,
+                               EOVI.ORG_ID,
+                               EOVI.EOVI_WH_CODE,
+                               EOVI.EOVI_LOTATT01) EOVI
+               LEFT JOIN (SELECT OITEM.EOII_CUSTOMER_CODE,
+                                OITEM.EOII_CUSTOMER_NAME,
+                                OITEM.EOII_SKU_CODE,
+                                OITEM.EOII_SKU_NAME,
+                                OITEM.ORG_ID,
+                                OITEM.EOII_WH_CODE,
+                                OITEM.EOII_LOTATT01,
+                                SUM(DECODE(OITEM.EOII_EXPECTED_TYPE,
+                                           'O',
+                                           OITEM.EOII_EXPECTED_QTY,
+                                           -1 * OITEM.EOII_EXPECTED_QTY)) AS ONWAY_QTY 
+                           FROM CD_COMMON_MATERIAL CDCM
+                          LEFT JOIN EO_ONWAY_INV_ITEM OITEM
+                            ON CDCM.CDCM_MATERIAL_NO = OITEM.EOII_SKU_CODE
+                           AND CDCM.ORG_ID = OITEM.ORG_ID
+                           AND CDCM.CDCM_CUSTOMER_CODE = OITEM.EOII_CUSTOMER_CODE
+                          WHERE 1 = 1
+                            AND OITEM.REC_STATUS = 0
+                          GROUP BY OITEM.EOII_CUSTOMER_CODE,
+                                   OITEM.EOII_CUSTOMER_NAME,
+                                   OITEM.EOII_SKU_CODE,
+                                   OITEM.EOII_SKU_NAME,
+                                   OITEM.ORG_ID,
+                                   OITEM.EOII_WH_CODE,
+                                   OITEM.EOII_LOTATT01
+                         
+                         ) OITEM
+                 ON EOVI.EOVI_OWNER_CODE = OITEM.EOII_CUSTOMER_CODE
+                AND EOVI.EOVI_OWNER_NAME = OITEM.EOII_CUSTOMER_NAME
+                AND EOVI.EOVI_SKU_CODE = OITEM.EOII_SKU_CODE
+                AND EOVI.EOVI_SKU_NAME = OITEM.EOII_SKU_NAME
+                AND EOVI.ORG_ID = OITEM.ORG_ID
+                AND EOVI.EOVI_WH_CODE = OITEM.EOII_WH_CODE
+                AND NVL(EOVI.PRODUCT_DATE, '0') =
+                    NVL(OITEM.EOII_LOTATT01, '0')
+             
+             ) EOVI
+    ON CDCM.CDCM_MATERIAL_NO = EOVI.EOVI_SKU_CODE
+   AND CDCM.ORG_ID = EOVI.ORG_ID
+ WHERE 1 = 1
+   AND (NVL(EOVI.EOVI_QTY, 0) - NVL(EOVI.ONWAY_QTY, 0)) > 0
+	<< AND CDCM.CDCM_MATERIAL_NO LIKE :cdcmMaterialNo >>
+	<< AND CDCM.CDCM_NAME_CN LIKE :cdcmNameCn >>
+	<< AND CDCM.CDCM_NAME_EN LIKE :cdcmNameEn >>
+	<< AND CDCM.CDCM_SHORT_NAME LIKE :cdcmShortName >>
+	<< AND CDCM.CDCM_TYPE_CODE LIKE :cdcmTypeCode >>
+	<< AND CDCM.CDCM_BARCODE LIKE :cdcmBarcode >>
+	<< AND CDCM.REC_STATUS LIKE :recStatus >>
+	<< AND CDCM.CDCM_IS_COLD LIKE :cdcmIsCold >>
+	<< AND TO_NUMBER(CDCM.CDCM_MIN_TEMP) >= :cdcmMinTemp >>
+	<< AND TO_NUMBER(CDCM.CDCM_MAX_TEMP) <= :cdcmMaxTemp >>
+	<< AND CDCM.CDCM_IS_DG LIKE :cdcmIsDg >>
+	<< AND CDCM.CDCM_DG_CLASS LIKE:cdcmDgClass >>
+	<< AND CDCM.CDCM_PACKAGE_CODE LIKE :cdcmPackageCode >>
+	<< AND CDCM.CDCM_REMARK LIKE :cdcmRemark >>
+	<< AND CDCM.ORG_ID = :orgId >>
+	<< AND CDWP.CDPA_FORMAT LIKE :cdpaFormat >>
+	<< AND CDCM.CDCM_MATERIAL_NO IN (:cdcmMaterialNos) >>
+	<< AND CDCM.CDCM_NAME_CN IN (:cdcmNameCns) >>
+	<< AND EOVI.EOVI_OWNER_NAME LIKE :eoviOwnerName >>
+	<< AND EOVI.EOVI_OWNER_CODE LIKE :eoviOwnerCode >>
+	<if isInvItem == 'N'>
+	      AND EOVI.EOVI_SKU_CODE IS NULL
+	</if>
+	<if isInvItem == 'Y'>
+	      AND EOVI.EOVI_SKU_CODE IS NOT NULL
+	</if>
+ ORDER BY CDCM.MODIFY_TIME DESC
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

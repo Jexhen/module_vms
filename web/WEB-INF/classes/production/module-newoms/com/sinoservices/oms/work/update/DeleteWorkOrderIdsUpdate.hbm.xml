@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteWorkOrderIdsUpdate">
+		<![CDATA[
+
+DELETE FROM EO_WORK_ORDER EOWO WHERE EOWO.EOWO_WORK_ORDER_NO IN (:ids) AND EOWO.ORG_ID=:orgId
+
+		]]> 
+	</sql-query>
+</hibernate-mapping>

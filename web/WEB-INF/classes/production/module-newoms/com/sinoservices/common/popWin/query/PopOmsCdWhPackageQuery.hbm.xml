@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsCdWhPackageQuery">
+		<![CDATA[
+		
+			SELECT 
+			 CDPA.CDPA_ID,
+			 CDPA.CDPA_CODE,
+			 CDPA.CDPA_TYPE,
+			 CDPA.CDPA_FORMAT,
+			 CDPA.CDPA_DESC,
+			 CDPA.CDPA_IS_USE,
+			 CDPA.CDPA_FORMAT_EN,
+			 CDPA.CDPA_WH_CODE,
+			 CDPA.REC_VER,
+			 CDPA.CREATOR,
+			 CDPA.CREATE_TIME,
+			 CDPA.MODIFIER,
+			 CDPA.MODIFY_TIME,
+			 CDPA.REC_STATUS,
+			 CDPA.TIME_ZONE,
+			 CDPA.ORG_ID,
+			 CDPR.CDPR_UNIT,
+			 CDPR.CDPR_DESC,
+			 CDPR.CDPR_QUANTITY,
+			 CDPR.CDPR_LENGTH,
+			 CDPR.CDPR_WIDTH,
+			 CDPR.CDPR_HIGHTH,
+			 CDPR.CDPR_VOLUME,
+			 CDPR.CDPR_WEIGHT
+			FROM CD_WH_PACKAGE CDPA
+			LEFT JOIN CD_TS_PACKAGE_RELATION CDPS ON CDPS.CDPS_CDPA_CODE = CDPA.CDPA_CODE AND CDPS.ORG_ID = CDPA.ORG_ID AND CDPS.CDPS_IS_DEFAULT = 'Y'
+			LEFT JOIN CD_WH_PACKAGE_RELATION CDPR ON CDPS.CDPS_UNIT = CDPR.CDPR_UNIT AND CDPR.CDPR_CDPA_PM_CODE = CDPA.PM_CODE AND CDPS.ORG_ID = CDPR.ORG_ID
+			WHERE 1 = 1
+			<if !is_empty(cdpaCode,cdpaFormat,cdpaType)>
+ 			and (
+   				1=2
+  				<< OR CDPA.CDPA_CODE LIKE  '%' || :cdpaCode || '%' >>
+  				<< OR CDPA.CDPA_FORMAT LIKE '%' || :cdpaFormat || '%' >>
+  				<< OR CDPA.CDPA_TYPE LIKE '%' || :cdpaType || '%' >>
+  				)
+			</if>
+			<< AND CDPA.CDPA_ID LIKE  '%' || :cdpaId || '%'  >>
+			<< AND CDPA.ORG_ID = :orgId >>
+			<< AND CDPA.REC_STATUS = :recStatus >>
+			<< AND CDPA.CDPA_CODE IN (:cdpaCodes)>>
+			ORDER BY CDPA.MODIFY_TIME
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="EoOrderWhGetSkuCountQuery">
+		<![CDATA[
+
+SELECT VALUE_TEMP.EOVI_SKU_CODE AS SKU_CODE,SUM(VALUE_TEMP.EOVI_SKU_COUNT) AS SKU_COUNT  FROM 
+((SELECT EVII.EOVI_SKU_CODE AS EOVI_SKU_CODE,(EVII.EOVI_QTY-EVII.EOVI_ONHOLD_QTY) AS EOVI_SKU_COUNT
+FROM EO_VIRTUAL_INV_ITEM EVII
+WHERE EVII.REC_STATUS=0
+<< AND EVII.EOVI_OWNER_CODE LIKE :eoviOwnerCode  >>
+<< AND EVII.EOVI_WH_CODE IN(:eoviWhCodes) >>
+<< AND EVII.ORG_ID=:orgId >>
+<< AND EVII.EOVI_SKU_CODE IN(:eoviSkuCodes) >>
+)
+UNION
+
+(SELECT EOII.EOII_SKU_CODE,(CASE WHEN EOII.EOII_EXPECTED_TYPE='I' THEN EOII.EOII_EXPECTED_QTY ELSE EOII.EOII_EXPECTED_QTY*-1 END)
+FROM EO_ONWAY_INV_ITEM EOII
+WHERE EOII.REC_STATUS=0
+<< AND EOII.ORG_ID=:orgId >>
+<< AND EOII.EOII_SKU_CODE IN(:eoviSkuCodes) >>
+<< AND EOII.EOII_CUSTOMER_CODE LIKE :eoviOwnerCode  >>
+<< AND EOII.EOII_WH_CODE IN(:eoviWhCodes) >>
+)) VALUE_TEMP GROUP BY VALUE_TEMP.EOVI_SKU_CODE
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="DeleteEoOrderSplitRuleByCodeUpdate">
+		<![CDATA[
+		delete from EO_ORDER_SPLIT_RULE EOSR where EOSR.EOSR_SPLIT_CODE =:code and EOSR.ORG_ID =:orgId
+		]]>
+	</sql-query>
+</hibernate-mapping>

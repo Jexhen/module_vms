@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="SelectEoOrderOffQuery">
+		<![CDATA[
+		
+		SELECT count(EOOR_ID) AS COUNT_OFF
+		  FROM EO_ORDER
+		 where EOOR_LOGISTIC_NO = :eoorLogisticNos
+		   AND EOOR_CUSTOMER_CODE = :eoorCustomerCodes
+		   AND EOOR_ORDER_BIG_TYPE = :eoorOrderBigType
+		   AND EOOR_STATUS_CODE = :eoorStatusCode
+		   
+		]]>
+	</sql-query>
+</hibernate-mapping>

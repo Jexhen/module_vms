@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<sql-query name="PopOmsEbMaterialQuery">
+		<![CDATA[
+			
+	SELECT DISTINCT 
+                CDCM.JOB_ID,
+                CDCM.CDWS_CUST_MATERIAL_NO,
+                CDCM.CDWS_SKU_NAME,
+                CDCM.CDWS_FOREIGN_NAME,
+                CDCM.CDWS_SHORT_NAME,
+                CDCM.CDWS_BAR_CODE,
+                CDCM.CDWS_TYPE_CODE,
+                CDCM.CDWS_PACK_CODE,
+                CDCM.CDWS_CUBIC,
+                CDCM.CDWS_LENGTH,
+                CDCM.CDWS_WIDTH,
+                CDCM.CDWS_HEIGHT,
+                CDCM.CDWS_GROSS_WEIGHT,
+                CDCM.CDWS_NET_WEIGHT,
+                CDCM.CDWS_IS_DG,
+                CDCM.CDWS_DG_CLASS,
+                 '' AS CDCM_IS_COLD,
+             '' AS CDCM_MIN_TEMP,
+              '' AS CDCM_MAX_TEMP,
+               CDCM.Cdws_Sku_Code AS CDWS_MATERIAL_NO,
+                CDCM.REMARK,
+                CDCM.REC_STATUS,
+                CDCM.REC_VER,
+                CDCM.CREATOR,
+                CDCM.CREATE_TIME,
+                CDCM.MODIFIER,
+                CDCM.MODIFY_TIME,
+                CDCM.ORG_ID,
+                CDCM.CDCM_ITEM_GROUP_CODE,
+                CDCM.CDWS_TEMP_LEVEL,
+                CDCM.CDCM_STOCK_UNIT_PRICE,
+                CDCM.CDWS_PROVIDE_CUST_CODE,
+                CDCM.CDWS_PERIOD_OF_VALIDITY,
+                CDCM.CDWS_VALIDITY_UNIT,
+                EBCU.EBCU_NAME_CN AS CDCM_PROVIDE_CUST_NAME,
+                CDWP.CDPA_CODE,
+                CDWP.CDPA_FORMAT,
+                CDPR.CDPR_CDPA_PM_CODE CDPR_UNIT,
+                CDPR.CDPR_DESC,
+                CDPR.CDPR_QUANTITY,
+                EBMG.EBMG_NAME_CN, /*商品类型名称*/
+                CDCM.CDWS_IS_PARENT, /**是否套件**/
+                EBMG.EBMG_CODE, /*商品类型编码*/
+                CDCM.CDWS_LOT_CODE /**商品批次号**/
+  FROM CD_WH_SKU CDCM
+/*通过商品包装规格代码关联包装规格表*/
+  LEFT JOIN CD_WH_PACKAGE CDWP
+    ON CDCM.CDWS_PACK_CODE = CDWP.CDPA_CODE
+   AND CDWP.REC_STATUS = 0
+   AND CDCM.ORG_ID = CDWP.ORG_ID
+   
+/*通过包装规格表的包装规格代码关联 包装规格换算关系子表1*/
+  LEFT JOIN CD_TS_PACKAGE_RELATION CDPS
+    ON CDPS.CDPS_CDPA_CODE = CDWP.CDPA_CODE
+   AND CDPS.ORG_ID = CDWP.ORG_ID
+   AND CDPS.CDPS_IS_DEFAULT = 'Y'
+/*通过包装规格换算关系子表1的单位代码 关联 包装规格换算关系子表2的单位代码
+通过包装规格换算关系子表1的包装规格PM_CODE 关联 包装规格表的PM_CODE*/
+
+  LEFT JOIN CD_WH_PACKAGE_RELATION CDPR
+    ON CDPR.CDPR_PA_ID = CDWP.CDPA_ID
+   AND CDPR.ORG_ID = CDCM.ORG_ID
+
+   
+  LEFT JOIN EB_MATERIAL_CLASSIFICATION EBMG
+    ON CDCM.CDWS_TYPE_CODE = EBMG.EBMG_CODE
+   AND CDPR.REC_STATUS = 0
+  LEFT JOIN EB_CUSTOMER EBCU
+    ON CDCM.CDWS_PROVIDE_CUST_CODE = EBCU.EBCU_CUSTOMER_NO
+      
+   AND EBCU.REC_STATUS = 0
+ WHERE 1 = 1
+   AND CDCM.CDWS_STATUS = '0'
+   AND CDCM.CDWS_AUDIT_STATUS = '4'
+<< AND CDCM.CDCM_TYPE_CODE LIKE  '%' || :cdcmTypeCode >>
+  << AND CDCM.REC_STATUS = :recStatus >>
+  << AND CDCM.CDCM_IS_COLD LIKE  '%' || :cdcmIsCold || '%'>>
+  << AND TO_NUMBER(CDCM.CDCM_MIN_TEMP) >= :cdcmMinTemp >>
+  << AND TO_NUMBER(CDCM.CDCM_MAX_TEMP) <= :cdcmMaxTemp >>
+  << AND CDCM.CDCM_IS_DG LIKE '%' || :cdcmIsDg || '%' >>
+  << AND CDCM.CDCM_DG_CLASS LIKE '%' || :cdcmDgClass  || '%'>>
+  << AND CDCM.CDCM_REMARK LIKE '%' || :cdcmRemark || '%' >>
+  << AND CDCM.ORG_ID = :orgId >>
+  << AND CDCM.CDCM_MATERIAL_NO IN (:cdcmMaterialNos) >>
+  << AND CDCM.CDCM_WEIGHT LIKE '%' || :cdcmWeight  || '%'>>
+  << AND CDCM.CDCM_CUBE LIKE '%' || :cdcmCube  || '%'>>
+  << AND CDCM.CDCM_CUSTOMER_CODE LIKE '%' || :cdcmCustomerCode  || '%'>>
+  <if is_empty(cdcmBarcode,cdpaFormat,cdcmMaterialNo,cdcmNameCn,cdcmNameEn,cdcmShortName,cdcmPackageCode,cdcmCustMaterialNo) == false >
+  AND
+ ( 1=2
+  << OR CDCM.CDCM_BARCODE LIKE '%' || :cdcmBarcode || '%' >>
+  << OR CDWP.CDPA_FORMAT LIKE '%' || :cdpaFormat || '%' >>
+  << OR CDCM.CDCM_MATERIAL_NO LIKE '%' || :cdcmMaterialNo || '%' >>
+    << OR CDCM.CDCM_NAME_CN LIKE '%' || :cdcmNameCn || '%' >>
+    << OR CDCM.CDCM_NAME_EN LIKE '%' || :cdcmNameEn || '%' >>
+    << OR CDCM.CDCM_SHORT_NAME LIKE '%' || :cdcmShortName || '%' >>
+    << OR CDCM.CDCM_PACKAGE_CODE LIKE '%' || :cdcmPackageCode || '%' >>
+    << OR CDCM.CDCM_NAME_CN IN (:cdcmNameCns) >>
+    << OR CDCM.CDCM_CUST_MATERIAL_NO LIKE '%' || :cdcmCustMaterialNo || '%' >>
+ )
+</if>
+<if is_not_empty(customerCode)>
+   /*通过客户代码查询客户所属商品*/
+   AND CDCM.CDWS_OWNER_GROUP_CODE IN
+     (SELECT CDOG.OWNER_GROUP_CODE
+        FROM CD_OWNER_GROUP CDOG
+       WHERE CDOG.STATUS = 0
+         AND CDOG.OWNER_GROUP_CODE IN
+             (SELECT CDGD.OWNER_GROUP_CODE
+                FROM CD_OWNER_GROUP_DETAIL CDGD
+               WHERE CDGD.OWNER_CODE = :customerCode
+             )
+     )
+ </if>
+ <if is_not_empty(customerCodes)>
+   /*通过客户代码集合查询客户所属商品*/
+   AND CDCM.CDWS_OWNER_GROUP_CODE IN
+     (SELECT CDOG.OWNER_GROUP_CODE
+        FROM CD_OWNER_GROUP CDOG
+       WHERE CDOG.STATUS = 0
+         AND CDOG.OWNER_GROUP_CODE IN
+             (SELECT CDGD.OWNER_GROUP_CODE
+                FROM CD_OWNER_GROUP_DETAIL CDGD
+               WHERE CDGD.OWNER_CODE IN (:customerCodes)
+             )
+     )
+ </if>
+ ORDER BY CDCM.MODIFY_TIME DESC
+
+
+
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<!--
+		/**
+		* <p>Description: 批量更新日历状态 </p>
+		* @author 
+		* @version 1.00
+		* <pre>
+		* 修改记录:
+		* 版本号		修改人	修改说明
+		* 20120413.1	Skip	Create
+		* 
+		* </pre>
+		*/
+	-->
+<hibernate-mapping>
+	<sql-query name="BatchSetEoCarrierRuleUpdate">
+		<![CDATA[
+
+update EO_CARRIER_RULE EOCR SET EOCR.EOCR_STATUS = :eocrStatus where EOCR.EOCR_ID in (:eocrIds)
+		]]>
+	</sql-query>
+</hibernate-mapping>
