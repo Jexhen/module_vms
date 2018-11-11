@@ -25,8 +25,11 @@
             LEFT JOIN mv_user m ON mvrl.modifier = m.mvus_id
         WHERE
             1 = 1
-            <if test="id != null">
-                AND mvrl.mvrl_id = #{id}
+            <if test="example.mvrlId != null">
+                AND mvrl.mvrl_id = #{example.mvrlId}
+            </if>
+            <if test="example.mvrlName!=null and example.mvrlName!=''">
+                AND mvrl.mvrl_name like concat('%',#{example.mvrlName},'%')
             </if>
     </select>
 

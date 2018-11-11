@@ -8,10 +8,10 @@ public interface MvRoleService {
 
     /**
      * 查询角色
-     * @param id
+     * @param model 查询条件
      * @return
      */
-    List<MvRoleModel> getRoles(Long id);
+    List<MvRoleModel> getRoles(MvRoleModel model);
 
     /**
      * 修改角色

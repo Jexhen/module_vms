@@ -14,6 +14,7 @@ import xin.liaozhixing.service.role.MvRoleService;
 import xin.liaozhixing.utils.EmptyUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -29,32 +30,22 @@ public class MvRoleController {
      * @return
      */
     @RequestMapping("/getRoles")
-    public @ResponseBody BaseTableResponse getRoles(Model model) {
+    public @ResponseBody BaseTableResponse getRoles(MvRoleModel model) {
         BaseTableResponse response = new BaseTableResponse();
-        List<MvRoleModel> roles = roleService.getRoles(null);
+        // 解决lay ui get方式请求中文乱码问题
+        if (model!=null && EmptyUtils.isNotEmpty(model.getMvrlName())) {
+            try {
+                String decodeMvrlName = new String(model.getMvrlName().getBytes("ISO-8859-1"),"UTF-8");
+                model.setMvrlName(decodeMvrlName);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        List<MvRoleModel> roles = roleService.getRoles(model);
         response.setCode(0);// 成功
         response.setCount(roles.size());
         response.setMsg("");
         response.setData(roles);
-        return response;
-    }
-
-    /**
-     * 查询角色
-     * @param roleId
-     * @return
-     */
-    @RequestMapping("/getRoleById")
-    public @ResponseBody BaseResponse getRoleById(Long roleId) {
-        BaseResponse response = new BaseResponse();
-        List<MvRoleModel> roles = roleService.getRoles(roleId);
-        if (EmptyUtils.isNotEmpty(roles)) {
-            response.setSuccess(true);
-            response.setData(roles.get(0));
-        } else {
-            response.setSuccess(false);
-            response.setMessage("没有数据！");
-        }
         return response;
     }
 

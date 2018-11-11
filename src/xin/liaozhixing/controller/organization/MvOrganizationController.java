@@ -16,6 +16,8 @@ import xin.liaozhixing.service.organization.MvOrganizationService;
 import xin.liaozhixing.utils.EmptyUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.BorderUIResource;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -28,6 +30,15 @@ public class MvOrganizationController {
     @RequestMapping("/getOrganization")
     public @ResponseBody BaseTableResponse getOrganization(MvOrganizationModel model) {
         BaseTableResponse response = new BaseTableResponse();
+        if (null!=model && EmptyUtils.isNotEmpty(model.getMogzName())) {
+            // layui默认以get方式提交请求，中文会出现乱码问题，此处如果有组织名称，则对名称重新编码
+            try {
+                String decodeMogzName = new String(model.getMogzName().getBytes("ISO-8859-1"),"UTF-8");
+                model.setMogzName(decodeMogzName);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
         List<MvOrganizationModel> existOrganization = service.getOrganizationByExample(model);
         response.setCode(0);// 成功
         response.setMsg("");

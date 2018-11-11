@@ -5,7 +5,7 @@
   Time: 13:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
@@ -36,11 +36,11 @@
         <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon">&#x1002;</i></a>
     </span>
     <span class="fr">
-        <span class="layui-form-label">搜索条件：</span>
+        <span class="layui-form-label">角色名称：</span>
         <div class="layui-input-inline">
-            <input type="text" autocomplete="off" placeholder="请输入搜索条件" class="layui-input">
+            <input type="text" id="query-mvrlName" autocomplete="off" placeholder="请输入搜索条件" class="layui-input">
         </div>
-        <button class="layui-btn mgl-20">查询</button>
+        <div class="layui-btn mgl-20" id="btn-search">查询</div>
     </span>
 </div>
 
@@ -51,6 +51,34 @@
     <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
 </script>
 
+<!--表单-->
+<div id="roleForm" hidden="hidden">
+
+    <div class="layui-form-item" hidden="hidden">
+        <label class="layui-form-label">角色ID</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mvrlId" name="mvrlId" autocomplete="off"
+                   class="layui-input" disabled="disabled">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色名称</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mvrlName" name="mvrlName" lay-verify="required" placeholder="请输入角色名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <div class="layui-btn" lay-submit lay-filter="*" id="btn-sumbit">立即提交</div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="<%=basePath%>/vmsweb/frame/layui/layui.all.js"></script>
 <script type="text/javascript">
     var $ = layui.jquery,
@@ -58,9 +86,10 @@
 
     layui.use('table', function(){
         var table = layui.table;
+        var layerIndex = 0;
 
         //第一个实例
-        table.render({
+        var roleTable = table.render({
             elem: '#roleTable'
             ,height: 500
             ,url: '${pageContext.request.contextPath}/role/getRoles.shtml' //数据接口
@@ -100,81 +129,102 @@
             }
         });
 
+        // 添加
+        $('#btn-add').on('click',function(){
+            $('#mvrlId').val('');// 防止浏览器缓存
+            $('#mvrlName').val('');
+            layerIndex = layer.open({
+                type: 1,
+                title: '编辑',
+                content: $('#roleForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+        });
+
         // 刷新
         $('#btn-refresh').on('click', function () {
-            table.reload();
+            roleTable.reload();
         });
-    });
 
-    /**
-     * 编辑角色
-     * @param data 行内容
-     */
-    function editRole(data) {
-        $('#mvrlId').val(data.mvrlId);
-        $('#mvrlName').val(data.mvrlName);
-        layer.open({
-            type: 1,
-            title: '编辑',
-            content: $('#roleForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+        // 提交
+        $('#btn-sumbit').on('click',function() {
+            submitRole();
         });
-    }
 
-    /**
-     * 增加角色
-     */
-    function addRole() {
-        $('#mvrlId').val('');// 防止浏览器缓存
-        $('#mvrlName').val('');
-        layer.open({
-            type: 1,
-            title: '编辑',
-            content: $('#roleForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+        // 查询
+        $('#btn-search').on('click',function () {
+            roleTable.reload({
+                where : {
+                    'mvrlName' : $('#query-mvrlName').val()
+                }
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         });
-    }
 
-    /**
-     * 提交表单
-     */
-    function submitRole() {
-        var roleId = $('#mvrlId').val();
-        var url = '';
-        if (roleId) {
-            url = '${pageContext.request.contextPath}/role/modifyRole.shtml'
-        } else {
-            url = '${pageContext.request.contextPath}/role/addRole.shtml'
+        /**
+         * 编辑角色
+         * @param data 行内容
+         */
+        function editRole(data) {
+            $('#mvrlId').val(data.mvrlId);
+            $('#mvrlName').val(data.mvrlName);
+            layerIndex = layer.open({
+                type: 1,
+                title: '编辑',
+                content: $('#roleForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
         }
-        var mvrlName = $('#mvrlName').val();
-        $.ajax({
-            url : url,
-            method : 'POST',
-            data : {'mvrlId': roleId, 'mvrlName' : mvrlName},
-            success : function(result) {
-                layer.alert(result.message);
-            },
-            dataType : 'json'
-        });
-    }
 
-    /**
-     * 批量删除
-     * @param roleIds 角色ID集
-     */
-    function deleteRoles(roleIds) {
-        if (roleIds && roleIds.length) {
+        /**
+         * 提交表单
+         */
+        function submitRole() {
+            var roleId = $('#mvrlId').val();
+            var url = '';
+            if (roleId) {
+                url = '${pageContext.request.contextPath}/role/modifyRole.shtml'
+            } else {
+                url = '${pageContext.request.contextPath}/role/addRole.shtml'
+            }
+            var mvrlName = $('#mvrlName').val();
             $.ajax({
-                url : '${pageContext.request.contextPath}/role/deleteRoles.shtml',
-                type : 'post',
-                data : {
-                    'roleIds' : roleIds
-                },
+                url : url,
+                method : 'POST',
+                data : {'mvrlId': roleId, 'mvrlName' : mvrlName},
                 success : function(result) {
                     layer.alert(result.message);
+                    if (result.success) {
+                        layer.close(layerIndex);
+                        roleTable.reload();
+                    }
                 },
                 dataType : 'json'
             });
         }
-    }
+
+        /**
+         * 批量删除
+         * @param roleIds 角色ID集
+         */
+        function deleteRoles(roleIds) {
+            if (roleIds && roleIds.length) {
+                $.ajax({
+                    url : '${pageContext.request.contextPath}/role/deleteRoles.shtml',
+                    type : 'post',
+                    data : {
+                        'roleIds' : roleIds
+                    },
+                    success : function(result) {
+                        layer.alert(result.message);
+                        roleTable.reload();
+                    },
+                    dataType : 'json'
+                });
+            }
+        }
+    });
+
 </script>
 <!-- 表格操作按钮集 -->
 <script type="text/html" id="barOption">
@@ -183,32 +233,5 @@
     <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
 </script>
 </body>
-<!--表单-->
-<div id="roleForm" hidden="hidden">
 
-    <div class="layui-form-item" hidden="hidden">
-        <label class="layui-form-label">角色ID</label>
-
-        <div class="layui-input-inline">
-            <input type="text" id="mvrlId" name="mvrlId" autocomplete="off"
-                   class="layui-input" disabled="disabled">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">角色名称</label>
-
-        <div class="layui-input-inline">
-            <input type="text" id="mvrlName" name="mvrlName" lay-verify="required" placeholder="请输入角色名称" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="*" onclick="submitRole()">立即提交</button>
-        </div>
-    </div>
-</div>
 </html>
