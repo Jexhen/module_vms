@@ -32,7 +32,7 @@
 <div class="my-btn-box">
     <span class="fl">
         <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-all">批量删除</a>
-        <a class="layui-btn btn-add btn-default" id="btn-add" onclick="addRole()">添加</a>
+        <a class="layui-btn btn-add btn-default" id="btn-add">添加</a>
         <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon">&#x1002;</i></a>
     </span>
     <span class="fr">
@@ -98,6 +98,11 @@
                 }
                 deleteRoles(roleIds);
             }
+        });
+
+        // 刷新
+        $('#btn-refresh').on('click', function () {
+            table.reload();
         });
     });
 
@@ -179,7 +184,7 @@
 </script>
 </body>
 <!--表单-->
-<form class="layui-form layui-form-pane"  method="post" id="roleForm" hidden="hidden">
+<div id="roleForm" hidden="hidden">
 
     <div class="layui-form-item" hidden="hidden">
         <label class="layui-form-label">角色ID</label>
@@ -205,5 +210,5 @@
             <button class="layui-btn" lay-submit lay-filter="*" onclick="submitRole()">立即提交</button>
         </div>
     </div>
-</form>
+</div>
 </html>

@@ -111,14 +111,11 @@
             });
         });
 
-        // 提交按钮绑定点击事件
-        $('#submitBtn').on('click', function () {
-            submitOrganization();
+        // 刷新
+        $('#btn-refresh').on('click', function () {
+            table.reload();
         });
-
-
     });
-
     /**
      * 编辑组织
      */
@@ -167,6 +164,7 @@
             dataType : 'json'
         });
     }
+
 </script>
 <!-- 表格操作按钮集 -->
 <script type="text/html" id="barOption">
@@ -176,7 +174,7 @@
 </script>
 </body>
 <!--表单-->
-<form class="layui-form layui-form-pane"  method="post" id="organizationForm" hidden="hidden">
+<div id="organizationForm" hidden="hidden">
 
     <div class="layui-form-item" hidden="hidden">
         <label class="layui-form-label">组织ID</label>
@@ -202,5 +200,5 @@
             <button class="layui-btn" lay-filter="*" onclick="submitOrganization()" id="submitBtn">立即提交</button>
         </div>
     </div>
-</form>
+</div>
 </html>
