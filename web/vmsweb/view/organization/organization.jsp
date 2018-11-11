@@ -44,74 +44,129 @@
 </div>
 
 <!-- 表格 -->
-<div id="organizationTable"></div>
+<div id="organizationTable" lay-filter="organizationTable"></div>
+<!-- 工具条 -->
+<script type="text/html" id="operaitonBar">
+    <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+</script>
 
-<script type="text/javascript" src="<%=basePath%>/vmsweb/frame/layui/layui.js"></script>
+<script type="text/javascript" src="<%=basePath%>/vmsweb/frame/layui/layui.all.js"></script>
 <script type="text/javascript" src="<%=basePath%>/vmsweb/js/index.js"></script>
 <script type="text/javascript">
+    var $ = layui.jquery,
+        layer = layui.layer;
+    layui.use('table', function(){
 
-    // layui方法
-    layui.use(['table', 'form', 'layer', 'vip_table'], function () {
+        var table = layui.table;
 
-        // 操作对象
-        var form = layui.form
-            , table = layui.table
-            , layer = layui.layer
-            , vipTable = layui.vip_table
-            , $ = layui.jquery;
-
-        // 表格渲染
-        var tableIns = table.render({
-            elem: '#organizationTable'                  //指定原始表格元素选择器（推荐id选择器）
-            , height: vipTable.getFullHeight()    //容器高度
-            , cols: [[                  //标题栏
+        //第一个实例
+        table.render({
+            elem: '#organizationTable'
+            ,height: 500
+            ,url: '${pageContext.request.contextPath}/organization/getOrganization.shtml' //数据接口
+            ,page: true //开启分页
+            ,cols: [[                  //标题栏
                 {checkbox: true, sort: true, fixed: true, space: true}
-                , {field: 'id', title: 'ID', width: 80}
-                , {field: 'account', title: '用户名', width: 120}
-                , {field: 'auth_group_name', title: '权限组', width: 120}
-                , {field: 'last_login_time', title: '最后登录时间', width: 180}
-                , {field: 'last_login_ip', title: '最后登录IP', width: 180}
-                , {field: 'create_time', title: '创建时间', width: 180}
-                , {field: 'status', title: '状态', width: 70}
-                , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
-            ]]
-            , id: 'dataCheck'
-            , url: '${pageContext.request.contextPath}/organization/getOrganization.shtml'
-            , method: 'get'
-            , page: true
-            , limits: [30, 60, 90, 150, 300]
-            , limit: 30 //默认采用30
-            , loading: false
-            , done: function (res, curr, count) {
-                //如果是异步请求数据方式，res即为你接口返回的信息。
-                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                console.log(res);
+                , {field: 'mogzId', title: 'ID', width: 80}
+                , {field: 'mogzName', title: '组织名称', width: 120}
+                , {field: 'creator', title: '创建者', width:150}
+                , {field: 'createTime', title: '创建时间', width:200, sort: true}
+                , {field: 'modifier', title: '修改者', width:150}
+                , {field: 'modifyTime', title: '修改时间', width:200, sort: true}
+                , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#operaitonBar'} //这里的toolbar值是模板元素的选择器
+            ]],
+            id: 'organizationTableId'
+        });
 
-                //得到当前页码
-                console.log(curr);
-
-                //得到数据总量
-                console.log(count);
+        //监听工具条
+        table.on('tool(organizationTable)', function(obj){ // tool工具条 参数为表格layer-filter的值
+            var data = obj.data;
+            if(obj.event === 'edit'){
+                editOrganization(data);
             }
         });
 
-        // 获取选中行
-        table.on('checkbox(dataCheck)', function (obj) {
-            layer.msg('123');
-            console.log(obj.checked); //当前是否选中状态
-            console.log(obj.data); //选中行的相关数据
-            console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+        // 批量删除
+        $('#btn-delete-all').on('click', function(){
+            var checkStatus = table.checkStatus('organizationTableId'); //organizationTableId 即为基础参数 id 对应的值
+
+            if (checkStatus.data.length) {
+                var organizations = checkStatus.data;
+                var ids = [];
+                for (var i = 0; i < organizations.length; i++) {
+                    ids.push(organizations[i].mogzId);
+                }
+                removeOrganization(ids);
+            }
         });
 
-        // 刷新
-        $('#btn-refresh').on('click', function () {
-            tableIns.reload();
+        // 添加
+        $('#btn-add').on('click', function () {
+            $('#mogzId').val('');
+            $('#mogzName').val('');
+            layer.open({
+                type: 1,
+                title: '编辑',
+                content: $('#organizationForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
         });
 
+        // 提交按钮绑定点击事件
+        $('#submitBtn').on('click', function () {
+            submitOrganization();
+        });
 
-        // you code ...
 
     });
+
+    /**
+     * 编辑组织
+     */
+    function editOrganization(organization) {
+        $('#mogzId').val(organization.mogzId);
+        $('#mogzName').val(organization.mogzName);
+        layer.open({
+            type: 1,
+            title: '编辑',
+            content: $('#organizationForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+        });
+    }
+
+    /**
+     * 提交表单
+     */
+    function submitOrganization() {
+        var mogzId = $('#mogzId').val();
+        var url = '';
+        if (mogzId) {
+            url = '${pageContext.request.contextPath}/organization/modifyOrganization.shtml';
+        } else {
+            url = '${pageContext.request.contextPath}/organization/addOrganization.shtml';
+        }
+        var mogzName = $('#mogzName').val();
+        $.ajax({
+            url : url,
+            method : 'POST',
+            data : {'mogzId': mogzId, 'mogzName' : mogzName},
+            success : function(result) {
+                layer.alert(result.message);
+            },
+            dataType : 'json'
+        });
+    }
+
+    function removeOrganization(ids) {
+        var url = '${pageContext.request.contextPath}/organization/removeOrganization.shtml'
+        $.ajax({
+            url : url,
+            method : 'POST',
+            data : {'ids' : ids},
+            success : function(result) {
+                layer.alert(result.message);
+            },
+            dataType : 'json'
+        });
+    }
 </script>
 <!-- 表格操作按钮集 -->
 <script type="text/html" id="barOption">
@@ -120,4 +175,32 @@
     <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
 </script>
 </body>
+<!--表单-->
+<form class="layui-form layui-form-pane"  method="post" id="organizationForm" hidden="hidden">
+
+    <div class="layui-form-item" hidden="hidden">
+        <label class="layui-form-label">组织ID</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mogzId" name="mogzId" autocomplete="off"
+                   class="layui-input" disabled="disabled">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">组织名称</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mogzName" name="mogzName" lay-verify="required" placeholder="请输入组织名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="*" onclick="submitOrganization()" id="submitBtn">立即提交</button>
+        </div>
+    </div>
+</form>
 </html>

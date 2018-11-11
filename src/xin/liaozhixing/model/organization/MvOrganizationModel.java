@@ -8,13 +8,13 @@ public class MvOrganizationModel {
 
     private String mogzName;
 
-    private Long creator;
+    private String creator;
 
-    private Date createTime;
+    private String createTime;
 
-    private Long modifier;
+    private String modifier;
 
-    private Date modifyTime;
+    private String modifyTime;
 
     public Long getMogzId() {
         return mogzId;
@@ -32,35 +32,35 @@ public class MvOrganizationModel {
         this.mogzName = mogzName;
     }
 
-    public Long getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Long getModifier() {
+    public String getModifier() {
         return modifier;
     }
 
-    public void setModifier(Long modifier) {
+    public void setModifier(String modifier) {
         this.modifier = modifier;
     }
 
-    public Date getModifyTime() {
+    public String getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Date modifyTime) {
+    public void setModifyTime(String modifyTime) {
         this.modifyTime = modifyTime;
     }
 }

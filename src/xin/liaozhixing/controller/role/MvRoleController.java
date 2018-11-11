@@ -28,7 +28,7 @@ public class MvRoleController {
      * @param model
      * @return
      */
-    @RequestMapping("/getRoles.shtml")
+    @RequestMapping("/getRoles")
     public @ResponseBody BaseTableResponse getRoles(Model model) {
         BaseTableResponse response = new BaseTableResponse();
         List<MvRoleModel> roles = roleService.getRoles(null);
@@ -44,7 +44,7 @@ public class MvRoleController {
      * @param roleId
      * @return
      */
-    @RequestMapping("/getRoleById.shtml")
+    @RequestMapping("/getRoleById")
     public @ResponseBody BaseResponse getRoleById(Long roleId) {
         BaseResponse response = new BaseResponse();
         List<MvRoleModel> roles = roleService.getRoles(roleId);
@@ -63,7 +63,7 @@ public class MvRoleController {
      * @param role
      * @return
      */
-    @RequestMapping("/modifyRole.shtml")
+    @RequestMapping("/modifyRole")
     public @ResponseBody BaseResponse modifyRole(MvRoleModel role, HttpServletRequest request) {
         BaseResponse response = new BaseResponse();
         if (role != null) {
@@ -88,10 +88,10 @@ public class MvRoleController {
         return response;
     }
 
-    @RequestMapping("/addRole.shtml")
+    @RequestMapping("/addRole")
     public @ResponseBody BaseResponse addRole(MvRoleModel role, HttpServletRequest request) {
         BaseResponse response = new BaseResponse();
-        if (EmptyUtils.isNotEmpty(role.getMvrlName())) {
+        if (role!=null && EmptyUtils.isNotEmpty(role.getMvrlName())) {
             MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
             role.setCreator(loginUser.getMvusId().toString());
             role.setModifier(loginUser.getMvusId().toString());
