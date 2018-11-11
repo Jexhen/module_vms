@@ -44,7 +44,7 @@
 </div>
 
 <!-- 表格 -->
-<div id="dateTable"></div>
+<div id="organizationTable"></div>
 
 <script type="text/javascript" src="<%=basePath%>/vmsweb/frame/layui/layui.js"></script>
 <script type="text/javascript" src="<%=basePath%>/vmsweb/js/index.js"></script>
@@ -62,7 +62,7 @@
 
         // 表格渲染
         var tableIns = table.render({
-            elem: '#dateTable'                  //指定原始表格元素选择器（推荐id选择器）
+            elem: '#organizationTable'                  //指定原始表格元素选择器（推荐id选择器）
             , height: vipTable.getFullHeight()    //容器高度
             , cols: [[                  //标题栏
                 {checkbox: true, sort: true, fixed: true, space: true}
@@ -76,7 +76,7 @@
                 , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
             ]]
             , id: 'dataCheck'
-            , url: './../json/data_table.json'
+            , url: '${pageContext.request.contextPath}/organization/getOrganization.shtml'
             , method: 'get'
             , page: true
             , limits: [30, 60, 90, 150, 300]
