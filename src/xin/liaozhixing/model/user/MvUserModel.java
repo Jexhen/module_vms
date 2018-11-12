@@ -30,13 +30,13 @@ public class MvUserModel {
 
     private String hostName;
 
-    private Long creator;
+    private String creator;
 
-    private Date createTime;
+    private String createTime;
 
-    private Long modifier;
+    private String modifier;
 
-    private Date modifyTime;
+    private String modifyTime;
 
     public Long getMvusId() {
         return mvusId;
@@ -118,38 +118,6 @@ public class MvUserModel {
         this.mvusFamilyId = mvusFamilyId;
     }
 
-    public Long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Long creator) {
-        this.creator = creator;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(Long modifier) {
-        this.modifier = modifier;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
     public String getMogzName() {
         return mogzName;
     }
@@ -172,5 +140,37 @@ public class MvUserModel {
 
     public void setHostName(String hostName) {
         this.hostName = hostName;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public String getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(String modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

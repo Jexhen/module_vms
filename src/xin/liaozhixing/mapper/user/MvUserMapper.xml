@@ -16,6 +16,18 @@
         <result column="mogz_name" property="mogzName"></result>
     </resultMap>
 
+    <resultMap id="userQueryModel" type="xin.liaozhixing.model.user.MvUserQueryModel">
+        <result property="mvusId" column="mvus_id"></result>
+        <result property="mvusName" column="mvus_name"></result>
+        <result property="mvusLoginName" column="mvus_login_name"></result>
+        <result property="mvusGender" column="mvus_gender"></result>
+        <result property="mvusMobile" column="mvus_mobile"></result>
+        <result property="mvusMail" column="mvusMail"></result>
+        <result property="mvusOrganizationName" column="mvus_organization_name"></result>
+        <result property="mvusRoleName" column="mvus_role_name"></result>
+        <result property="mvusFamilyHostName" column="mvus_family_host_name"></result>
+    </resultMap>
+
     <select id="getUser" resultMap="userModel">
         SELECT
             mvus.mvus_id,
@@ -45,5 +57,35 @@
             </if>
     </select>
 
+    <select id="getUserByExample" resultMap="userQueryModel">
+        SELECT
+            mvus.mvus_id,
+            mvus.mvus_name,
+            mvus.mvus_login_name,
+            mvus.mvus_gender,
+            mvus.mvus_mobile,
+            mvus.mvus_mail,
+            mogz.mogz_name AS mvus_organization_name,
+            mvrl.mvrl_name AS mvus_role_name,
+            u.mvus_name AS mvus_family_host_name
+        FROM
+            mv_user mvus
+        LEFT JOIN mv_organization mogz ON mogz.mogz_id = mvus.mvus_organization_id
+        LEFT JOIN mv_role mvrl ON mvrl.mvrl_id = mvus.mvus_role_id
+        LEFT JOIN mv_family mfml ON mfml.mfml_id = mvus.mvus_family_id
+        LEFT JOIN mv_user u ON u.mvus_id = mfml.mfml_host_user_id
+        WHERE
+            1 = 1
+            <if test="example.mvusName!=null and example.mvusName!=''">
+                AND mvus.mvus_name LIKE CONCAT( '%', #{example.mvusName}, '%' )
+            </if>
+            <if test="example.mvusOrganizationName!=null and example.mvusOrganizationName!=''">
+                AND mogz.mogz_name LIKE CONCAT( '%', #{example.mvusOrganizationName}, '%' )
+            </if>
+            <if test="example.mvusRoleName!=null and example.mvusRoleName!=''">
+                AND mvrl.mvrl_name LIKE CONCAT( '%', #{example.mvusRoleName}, '%' )
+            </if>
+
+    </select>
 
 </mapper>
