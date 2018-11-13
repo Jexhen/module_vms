@@ -57,7 +57,7 @@
 </script>
 
 <!--表单-->
-<div id="organizationForm" hidden="hidden">
+<div id="userForm" class="layui-form" hidden="hidden">
 
     <div class="layui-form-item" hidden="hidden">
         <label class="layui-form-label">用户ID</label>
@@ -69,14 +69,76 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">组织名称</label>
+        <label class="layui-form-label">姓名</label>
 
         <div class="layui-input-inline">
-            <input type="text" id="mogzName" name="mogzName" lay-verify="required" placeholder="请输入组织名称" autocomplete="off"
+            <input type="text" id="mvusName" name="mvusName" lay-verify="required" placeholder="请输入姓名" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">登陆名</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mvusLoginName" name="mvusLoginName" lay-verify="required" placeholder="请输入登陆名" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="mvusGender" id="genderMale" value="M" title="男">
+            <input type="radio" name="mvusGender" id="genderFemale" value="F" title="女" checked>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mvusMobile" name="mvusMobile" lay-verify="required" placeholder="请输入手机" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mvusMail" name="mvusMail" lay-verify="required" placeholder="请输入邮箱" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属组织</label>
+        <div class="layui-input-block">
+            <select name="mvusOrganizationId" id="mvusOrganizationId" lay-verify="required">
+                <option value=""></option>
+                <option value="0">北京</option>
+                <option value="1">上海</option>
+                <option value="2">广州</option>
+                <option value="3">深圳</option>
+                <option value="4">杭州</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属角色</label>
+        <div class="layui-input-block">
+            <select name="mvusRoleId" id="mvusRoleId" lay-verify="required">
+                <option value=""></option>
+                <option value="0">北京</option>
+                <option value="1">上海</option>
+                <option value="2">广州</option>
+                <option value="3">深圳</option>
+                <option value="4">杭州</option>
+            </select>
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -111,17 +173,16 @@
                 , {field: 'mvusMail', title: '邮箱', width:200}
                 , {field: 'mvusOrganizationName', title: '所属组织', width:200}
                 , {field: 'mvusRoleName', title: '所属角色', width:150}
-                , {field: 'mvusFamilyHostName', title: '所在家庭户主', width:200}
                 , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#operaitonBar'} //这里的toolbar值是模板元素的选择器
             ]],
             id: 'userTableId'
         });
 
         //监听工具条
-        table.on('tool(organizationTable)', function(obj){ // tool工具条 参数为表格layer-filter的值
+        table.on('tool(userTable)', function(obj){ // tool工具条 参数为表格layer-filter的值
             var data = obj.data;
             if(obj.event === 'edit'){
-                editOrganization(data);
+                editUser(data);
             }
         });
 
@@ -141,12 +202,15 @@
 
         // 添加
         $('#btn-add').on('click', function () {
-            $('#mogzId').val('');
-            $('#mogzName').val('');
+            $('#mvusId').val('');
+            $('#mvusName').val('');
+            $('#mvusLoginName').val('');
+            $('#mvusMobile').val('');
+            $('#mvusMail').val('');
             layerIndex = layer.open({
                 type: 1,
                 title: '编辑',
-                content: $('#organizationForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                content: $('#userForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         });
 
@@ -157,7 +221,7 @@
 
         // 表单提交
         $('#btn-submit').on('click',function () {
-            submitOrganization();
+            submitUser();
         });
 
         // 查询
@@ -174,26 +238,37 @@
             });
         });
 
+
         /**
          * 编辑组织
          */
-        function editOrganization(organization) {
-            $('#mogzId').val(organization.mogzId);
-            $('#mogzName').val(organization.mogzName);
+        function editUser(user) {
+            $('#mvusId').val(user.mvusId);
+            $('#mvusName').val(user.mvusName);
+            $('#mvusLoginName').val(user.mvusLoginName);
+            if (user.mvusGender==='M') {
+                $('#genderMale').attr("checked","checked");
+            } else {
+                $('#genderFemale').attr("checked","checked");
+            }
+            $('#mvusMobile').val(user.mvusMobile);
+            $('#mvusMail').val(user.mvusMail);
+            $('#mvusOrganizationId').val(user.mvusOrganizationName);
+            $('#mvusRoleId').val(user.mvusRoleName);
             layerIndex = layer.open({
                 type: 1,
                 title: '编辑',
-                content: $('#organizationForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                content: $('#userForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         }
 
         /**
          * 提交表单
          */
-        function submitOrganization() {
-            var mogzId = $('#mogzId').val();
+        function submitUser() {
+            var mvusId = $('#mvusId').val('');
             var url = '';
-            if (mogzId) {
+            if (mvusId) {
                 url = '${pageContext.request.contextPath}/organization/modifyOrganization.shtml';
             } else {
                 url = '${pageContext.request.contextPath}/organization/addOrganization.shtml';
@@ -222,19 +297,31 @@
                 data : {'ids' : ids},
                 success : function(result) {
                     layer.alert(result.message);
-                    organizationTable.reload();
+                    userTable.reload();
                 },
                 dataType : 'json'
             });
         }
+
+        var form = layui.form;
+        $('#mvusOrganizationId').on('click',function(){
+            $.ajax({
+                url : '${pageContext.request.contextPath}/common/options/getOrganizationOption.shtml',
+                type : 'post',
+                success : function(result) {
+                    var options = result.options;
+                    for (var option in options) {
+                        $('#mvusOrganizationId').append(new Option(option.value,option.key));//往下拉菜单里添加元素
+                    }
+                    form.render();//菜单渲染 把内容加载进去
+                },
+                dataType : 'json'
+            });
+        });
+        form.render('select'); //刷新select选择框渲染
     });
 
-</script>
-<!-- 表格操作按钮集 -->
-<script type="text/html" id="barOption">
-    <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del">删除</a>
+
 </script>
 </body>
 </html>
