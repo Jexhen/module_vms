@@ -24,4 +24,14 @@ public class MvUserServiceImpl implements MvUserService {
     public List<MvUserQueryModel> getUserByExample(MvUserQueryModel user) {
         return userMapper.getUserByExample(user);
     }
+
+    @Override
+    public void addUser(MvUserModel user) {
+        userMapper.addUser(user);
+    }
+
+    @Override
+    public void removeUser(Long[] ids) {
+        userMapper.removeUser(ids);
+    }
 }

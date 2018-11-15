@@ -1,13 +1,16 @@
 package xin.liaozhixing.controller.user;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sun.invoke.empty.Empty;
+import xin.liaozhixing.model.base.BaseResponse;
 import xin.liaozhixing.model.base.BaseTableResponse;
 import xin.liaozhixing.model.user.MvUserModel;
 import xin.liaozhixing.model.user.MvUserQueryModel;
@@ -81,6 +84,63 @@ public class MvUserController {
         response.setMsg("");
         response.setData(existUsers);
         response.setCount(existUsers.size());
+        return response;
+    }
+
+    @RequestMapping("/addUser")
+    public @ResponseBody BaseResponse addUser(MvUserModel user, HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        if (user!=null) {
+            if (EmptyUtils.isNotEmpty(user.getMvusName())) {
+                if (EmptyUtils.isNotEmpty(user.getMvusLoginName())) {
+                    if (EmptyUtils.isNotEmpty(user.getMvusMail())) {
+                        if (user.getMvusOrganizationId()!=null) {
+                            if (user.getMvusRoleId()!=null) {
+                                MvUserQueryModel example = new MvUserQueryModel();
+                                example.setMvusLoginName(user.getMvusName());
+                                List<MvUserQueryModel> existUsers = userService.getUserByExample(example);
+                                if (EmptyUtils.isNotEmpty(existUsers)) {
+                                    response.setSuccess(false);
+                                    response.setMessage("登陆名不能重复");
+                                } else {
+                                    MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+                                    user.setCreator(loginUser.getMvusId().toString());
+                                    user.setModifier(loginUser.getMvusId().toString());
+                                    userService.addUser(user);
+                                    response.setSuccess(true);
+                                    response.setMessage("增加成功！");
+                                }
+                            } else {
+                                response.setSuccess(false);
+                                response.setMessage("角色不能为空");
+                            }
+                        } else {
+                            response.setSuccess(false);
+                            response.setMessage("组织不能为空");
+                        }
+                    } else {
+                        response.setSuccess(false);
+                        response.setMessage("身份证号不能为空");
+                    }
+                } else {
+                    response.setSuccess(false);
+                    response.setMessage("登陆名不能为空");
+                }
+            } else {
+                response.setSuccess(false);
+                response.setMessage("姓名不能为空");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("参数不能为空");
+        }
+        return response;
+    }
+
+    @RequestMapping("/removeUser")
+    public @ResponseBody BaseResponse removeUser(@RequestParam("ids[]") Long[]ids) {
+        BaseResponse response = new BaseResponse();
+        userService.removeUser(ids);
         return response;
     }
 }

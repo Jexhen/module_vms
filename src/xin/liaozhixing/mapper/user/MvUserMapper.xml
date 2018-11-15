@@ -22,7 +22,7 @@
         <result property="mvusLoginName" column="mvus_login_name"></result>
         <result property="mvusGender" column="mvus_gender"></result>
         <result property="mvusMobile" column="mvus_mobile"></result>
-        <result property="mvusMail" column="mvusMail"></result>
+        <result property="mvusMail" column="mvus_mail"></result>
         <result property="mvusOrganizationName" column="mvus_organization_name"></result>
         <result property="mvusRoleName" column="mvus_role_name"></result>
         <result property="mvusFamilyHostName" column="mvus_family_host_name"></result>
@@ -85,7 +85,41 @@
             <if test="example.mvusRoleName!=null and example.mvusRoleName!=''">
                 AND mvrl.mvrl_name LIKE CONCAT( '%', #{example.mvusRoleName}, '%' )
             </if>
+            <if test="example.mvusLoginName!=null and example.mvusLoginName!=''">
+                AND mvus.mvus_login_name LIKE CONCAT( '%', #{example.mvusLoginName}, '%' )
+            </if>
 
     </select>
+
+    <insert id="addUser">
+        INSERT INTO mv_user ( mvus_name, mvus_login_name, mvus_password, mvus_mail, mvus_mobile, mvus_gender, mvus_organization_id, mvus_role_id, creator, create_time, modifier, modify_time )
+        VALUES
+            (
+                #{user.mvusName},
+                #{user.mvusLoginName},
+                '111111',
+                #{user.mvusMail},
+                #{user.mvusMobile},
+                #{user.mvusGender},
+                #{user.mvusOrganizationId},
+                #{user.mvusRoleId},
+                #{user.creator},
+                SYSDATE( ),
+                #{user.modifier},
+                SYSDATE( )
+            )
+    </insert>
+
+    <delete id="removeUser">
+        DELETE
+        FROM
+        mv_user
+        WHERE
+        1 = 1
+        AND mvus_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

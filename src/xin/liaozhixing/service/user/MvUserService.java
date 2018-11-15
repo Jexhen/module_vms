@@ -9,4 +9,8 @@ public interface MvUserService {
     List<MvUserModel> getUesr(MvUserModel user);
 
     List<MvUserQueryModel> getUserByExample(MvUserQueryModel user);
+
+    void addUser(MvUserModel user);
+
+    void removeUser(Long[] ids);
 }

@@ -57,7 +57,7 @@
 </script>
 
 <!--表单-->
-<div id="userForm" class="layui-form" hidden="hidden">
+<div id="userForm" hidden="hidden">
 
     <div class="layui-form-item" hidden="hidden">
         <label class="layui-form-label">用户ID</label>
@@ -87,10 +87,19 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="mvusMobile" name="mvusMobile" lay-verify="required" placeholder="请输入身份证号" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
-        <div class="layui-input-block">
-            <input type="radio" name="mvusGender" id="genderMale" value="M" title="男">
-            <input type="radio" name="mvusGender" id="genderFemale" value="F" title="女" checked>
+        <div class="layui-input-inline">
+            男<input type="radio" name="mvusGender" id="genderMale" value="M">
+            女<input type="radio" name="mvusGender" id="genderFemale" value="F" checked>
         </div>
     </div>
 
@@ -98,44 +107,25 @@
         <label class="layui-form-label">手机</label>
 
         <div class="layui-input-inline">
-            <input type="text" id="mvusMobile" name="mvusMobile" lay-verify="required" placeholder="请输入手机" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-
-        <div class="layui-input-inline">
-            <input type="text" id="mvusMail" name="mvusMail" lay-verify="required" placeholder="请输入邮箱" autocomplete="off"
+            <input type="text" id="mvusMail" name="mvusMail" lay-verify="required" placeholder="请输入手机" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">所属组织</label>
-        <div class="layui-input-block">
-            <select name="mvusOrganizationId" id="mvusOrganizationId" lay-verify="required">
+        <div class="layui-input-inline">
+            <select name="mvusOrganizationId" id="mvusOrganizationId" lay-verify="required" class="layui-input">
                 <option value=""></option>
-                <option value="0">北京</option>
-                <option value="1">上海</option>
-                <option value="2">广州</option>
-                <option value="3">深圳</option>
-                <option value="4">杭州</option>
             </select>
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">所属角色</label>
-        <div class="layui-input-block">
-            <select name="mvusRoleId" id="mvusRoleId" lay-verify="required">
+        <div class="layui-input-inline">
+            <select name="mvusRoleId" id="mvusRoleId" lay-verify="required" class="layui-input">
                 <option value=""></option>
-                <option value="0">北京</option>
-                <option value="1">上海</option>
-                <option value="2">广州</option>
-                <option value="3">深圳</option>
-                <option value="4">杭州</option>
             </select>
         </div>
     </div>
@@ -152,6 +142,42 @@
 <script type="text/javascript">
     var $ = layui.jquery,
         layer = layui.layer;
+    $(function () {
+        // 加载组织下拉框
+        $.ajax({
+            url : '${pageContext.request.contextPath}/common/options/getOrganizationOption.shtml',
+            type : 'post',
+            success : function(result) {
+                var options = result.options;
+                var option = null;
+                var optionHtml = null;
+                for (var i = 0; i < options.length; i++) {
+                    option = options[i];
+                    optionHtml = '<option value="'+ option.key +'">'+ option.value + '</option>'
+                    $('#mvusOrganizationId').append(optionHtml);// 往下拉菜单里添加元素
+                }
+            },
+            dataType : 'json'
+        });
+
+        // 加载角色下拉框
+        $.ajax({
+            url : '${pageContext.request.contextPath}/common/options/getRoleOption.shtml',
+            type : 'post',
+            success : function(result) {
+                var options = result.options;
+                var option = null;
+                var optionHtml = null;
+                for (var i = 0; i < options.length; i++) {
+                    option = options[i];
+                    optionHtml = '<option value="'+ option.key +'">'+ option.value + '</option>'
+                    $('#mvusRoleId').append(optionHtml);// 往下拉菜单里添加元素
+                }
+            },
+            dataType : 'json'
+        });
+    });
+
     layui.use('table', function(){
 
         var table = layui.table;
@@ -168,9 +194,9 @@
                 , {field: 'mvusId', title: 'ID', width: 80}
                 , {field: 'mvusName', title: '姓名', width: 120}
                 , {field: 'mvusLoginName', title: '登陆名', width:150}
-                , {field: 'mvusGender', title: '性别', width:200}
+                , {field: 'mvusGender', title: '性别', width:10}
                 , {field: 'mvusMobile', title: '手机', width:150}
-                , {field: 'mvusMail', title: '邮箱', width:200}
+                , {field: 'mvusMail', title: '身份证号', width:200}
                 , {field: 'mvusOrganizationName', title: '所属组织', width:200}
                 , {field: 'mvusRoleName', title: '所属角色', width:150}
                 , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#operaitonBar'} //这里的toolbar值是模板元素的选择器
@@ -188,15 +214,15 @@
 
         // 批量删除
         $('#btn-delete-all').on('click', function(){
-            var checkStatus = table.checkStatus('organizationTableId'); //organizationTableId 即为基础参数 id 对应的值
+            var checkStatus = table.checkStatus('userTableId'); //organizationTableId 即为基础参数 id 对应的值
 
             if (checkStatus.data.length) {
-                var organizations = checkStatus.data;
+                var users = checkStatus.data;
                 var ids = [];
-                for (var i = 0; i < organizations.length; i++) {
-                    ids.push(organizations[i].mogzId);
+                for (var i = 0; i < users.length; i++) {
+                    ids.push(users[i].mvusId);
                 }
-                removeOrganization(ids);
+                removeUser(ids);
             }
         });
 
@@ -266,31 +292,42 @@
          * 提交表单
          */
         function submitUser() {
-            var mvusId = $('#mvusId').val('');
+            var mvusId = $('#mvusId').val();
             var url = '';
             if (mvusId) {
-                url = '${pageContext.request.contextPath}/organization/modifyOrganization.shtml';
+                url = '${pageContext.request.contextPath}/user/modifyUser.shtml';
             } else {
-                url = '${pageContext.request.contextPath}/organization/addOrganization.shtml';
+                url = '${pageContext.request.contextPath}/user/addUser.shtml';
             }
-            var mogzName = $('#mogzName').val();
+            var user = {};
+            user.mvusId = mvusId;
+            user.mvusName = $('#mvusName').val();
+            user.mvusLoginName = $('#mvusLoginName').val();
+            user.mvusGender = 'F';
+            if ($('#genderMale').attr('checked') == 'checked') {
+                user.mvusGender = 'M';
+            }
+            user.mvusMobile = $('#mvusMobile').val();
+            user.mvusMail = $('#mvusMail').val();
+            user.mvusOrganizationId = $('#mvusOrganizationId').val();
+            user.mvusRoleId = $('#mvusRoleId').val();
             $.ajax({
                 url : url,
                 method : 'POST',
-                data : {'mogzId': mogzId, 'mogzName' : mogzName},
+                data : user,
                 success : function(result) {
                     layer.alert(result.message);
                     if (result.success) {
                         layer.close(layerIndex);
-                        organizationTable.reload();
+                        userTable.reload();
                     }
                 },
                 dataType : 'json'
             });
         }
 
-        function removeOrganization(ids) {
-            var url = '${pageContext.request.contextPath}/organization/removeOrganization.shtml'
+        function removeUser(ids) {
+            var url = '${pageContext.request.contextPath}/user/removeUser.shtml'
             $.ajax({
                 url : url,
                 method : 'POST',
@@ -302,23 +339,6 @@
                 dataType : 'json'
             });
         }
-
-        var form = layui.form;
-        $('#mvusOrganizationId').on('click',function(){
-            $.ajax({
-                url : '${pageContext.request.contextPath}/common/options/getOrganizationOption.shtml',
-                type : 'post',
-                success : function(result) {
-                    var options = result.options;
-                    for (var option in options) {
-                        $('#mvusOrganizationId').append(new Option(option.value,option.key));//往下拉菜单里添加元素
-                    }
-                    form.render();//菜单渲染 把内容加载进去
-                },
-                dataType : 'json'
-            });
-        });
-        form.render('select'); //刷新select选择框渲染
     });
 
 
