@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xin.liaozhixing.mapper.article.MvArticleMapper" >
+
+    <resultMap id="mvArticleModel" type="xin.liaozhixing.model.article.MvArticleModel">
+        <result column="matc_id" property="matcId"></result>
+        <result column="matc_title" property="matcTitle"></result>
+        <result column="matc_content" property="matcContent"></result>
+        <result column="matc_type_name" property="matcType"></result>
+        <result column="matc_organiazation_id" property="matcOrganizationId"></result>
+        <result column="creator" property="creator"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modifier" property="modifier"></result>
+        <result column="modify_time" property="modifyTime"></result>
+    </resultMap>
+
+    <select id="getArticleByExample" resultMap="mvArticleModel">
+
+        select matc.matc_id,
+        matc.matc_title,
+        matc.matc_content,
+        (case when matc.matc_type='01' then '通知' when matc.matc_type = '02' then '新闻' else '政策' end) as matc_type_name,
+        mogz.mogz_name as matc_organiazation_id,
+        c.mvus_name as creator,
+        DATE_FORMAT( matc.create_time, '%Y-%m-%d %H:%i:%s' ) AS create_time,
+        m.mvus_name as modifier,
+        DATE_FORMAT( matc.modify_time, '%Y-%m-%d %H:%i:%s' ) AS modify_time
+        from mv_article matc
+        left join mv_organization mogz
+        on mogz.mogz_id = matc.matc_organiazation_id
+        left join mv_user c
+        on c.mvus_id = matc.creator
+        left join mv_user m
+        on m.mvus_id = matc.modifier
+        where 1=1
+        <if test="example.matcId!=null">
+            and matc.matc_id = #{example.matcId}
+        </if>
+        <if test="example.matcTitle!=null and example.matcTitle!=''">
+            and matc.matc_title like CONCAT('%',#{example.matcTitle},'%')
+        </if>
+        <if test="example.matcType!=null and example.matcType!=''">
+            and matc.matc_type = #{example.matcType}
+        </if>
+        <if test="example.matcOrganizationId!=null">
+            and matc.matc_organiazation_id = #{example.matcOrganizationId}
+        </if>
+            or matc.matc_organiazation_id = 1
+    </select>
+
+</mapper>

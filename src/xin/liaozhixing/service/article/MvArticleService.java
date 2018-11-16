@@ -1,0 +1,11 @@
+package xin.liaozhixing.service.article;
+
+import xin.liaozhixing.model.article.MvArticleModel;
+
+import java.util.List;
+
+public interface MvArticleService {
+
+    List<MvArticleModel> getArticleByExample(MvArticleModel model);
+
+}
