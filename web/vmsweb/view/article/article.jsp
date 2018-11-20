@@ -67,6 +67,10 @@
 
         var table = layui.table;
         var layerIndex = 0;
+        // 获取文章类型
+        var queryString = location.search;
+        var index = queryString.indexOf('=');
+        var articleType = queryString.substr(index+1, queryString.length);
 
         //第一个实例
         var noticeTab = table.render({
@@ -78,7 +82,7 @@
                 {checkbox: true, sort: true, fixed: true, space: true}
                 , {field: 'matcId', title: 'ID', width: 80}
                 , {field: 'matcTitle', title: '标题', width: 200}
-                , {field: 'matcContent', title: '文章', width: 0}
+                , {field: 'matcContent', title: '文章', style:'display:none'}
                 , {field: 'matcType', title: '类型', width:150}
                 , {field: 'matcOrganizationId', title: '组织', width:150}
                 , {field: 'creator', title: '创建者', width:150}
@@ -87,9 +91,11 @@
                 , {field: 'modifyTime', title: '修改时间', width:100, sort: true}
                 , {fixed: 'right', title: '操作', width: 150, align: 'center', toolbar: '#operaitonBar'} //这里的toolbar值是模板元素的选择器
             ]]
-            , where: {'articleType':'01'}
+            , where: {'articleType':articleType}
             , id: 'noticeTabId'
         });
+        // 隐藏文章内容列标题
+        $('table.layui-table thead tr th:eq(3)').addClass('layui-hide');
 
         //监听工具条
         table.on('tool(noticeTab)', function(obj){ // tool工具条 参数为表格layer-filter的值
@@ -105,12 +111,14 @@
             noticeTab.reload({
                 where: { //设定异步数据接口的额外参数，任意设
                     'matcTitle' : $('#query-matcTitle').val()
-                    , 'articleType':'01'
+                    , 'articleType':articleType
                 }
                 ,page: {
                     curr: 1 //重新从第 1 页开始
                 }
             });
+            // 隐藏文章内容列标题
+            $('table.layui-table thead tr th:eq(3)').addClass('layui-hide');
         });
 
 
@@ -120,7 +128,8 @@
         function view(data){
             layerIndex = layer.open({
                 type: 1,
-                title: '查看',
+                title: data.matcTitle,
+                area : ['800px', '550px'],
                 content: data.matcContent //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         }

@@ -18,4 +18,24 @@ public class MvArticleServiceImpl implements MvArticleService {
     public List<MvArticleModel> getArticleByExample(MvArticleModel model) {
         return mapper.getArticleByExample(model);
     }
+
+    @Override
+    public List<MvArticleModel> getArticleAsEdit(MvArticleModel model) {
+        return mapper.getArticleAsEdit(model);
+    }
+
+    @Override
+    public void addArticle(MvArticleModel article) {
+        mapper.addArticle(article);
+    }
+
+    @Override
+    public void modifyArticle(MvArticleModel article) {
+        mapper.modifyArticle(article);
+    }
+
+    @Override
+    public void removeArticle(Long[] ids) {
+        mapper.removeArticle(ids);
+    }
 }

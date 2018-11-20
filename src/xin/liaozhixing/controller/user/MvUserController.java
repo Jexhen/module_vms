@@ -141,6 +141,8 @@ public class MvUserController {
     public @ResponseBody BaseResponse removeUser(@RequestParam("ids[]") Long[]ids) {
         BaseResponse response = new BaseResponse();
         userService.removeUser(ids);
+        response.setSuccess(true);
+        response.setMessage("删除成功");
         return response;
     }
 }

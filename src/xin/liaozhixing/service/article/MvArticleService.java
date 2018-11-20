@@ -8,4 +8,11 @@ public interface MvArticleService {
 
     List<MvArticleModel> getArticleByExample(MvArticleModel model);
 
+    List<MvArticleModel> getArticleAsEdit(MvArticleModel model);
+
+    void addArticle(MvArticleModel article);
+
+    void modifyArticle(MvArticleModel article);
+
+    void removeArticle(Long[] ids);
 }
