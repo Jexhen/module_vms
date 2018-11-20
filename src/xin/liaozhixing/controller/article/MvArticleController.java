@@ -55,12 +55,11 @@ public class MvArticleController {
         } else {
             existArticles = service.getArticleByExample(model);
         }
-        if (EmptyUtils.isNotEmpty(existArticles)) {
-            response.setCode(0);
-            response.setMsg("");
-            response.setData(existArticles);
-            response.setCount(existArticles.size());
-        }
+        response.setCode(0);
+        response.setMsg("");
+        response.setData(existArticles);
+        response.setCount(existArticles.size());
+
         return response;
     }
 

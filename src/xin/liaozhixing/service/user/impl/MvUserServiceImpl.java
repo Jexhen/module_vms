@@ -16,7 +16,7 @@ public class MvUserServiceImpl implements MvUserService {
     private MvUserMapper userMapper;
 
     @Override
-    public List<MvUserModel> getUesr(MvUserModel user) {
+    public List<MvUserModel> getUser(MvUserModel user) {
         return userMapper.getUser(user);
     }
 
@@ -33,5 +33,10 @@ public class MvUserServiceImpl implements MvUserService {
     @Override
     public void removeUser(Long[] ids) {
         userMapper.removeUser(ids);
+    }
+
+    @Override
+    public List<MvUserModel> getAnswerer(MvUserModel user) {
+        return userMapper.getAnswerer(user);
     }
 }

@@ -33,7 +33,7 @@ public class MvUserController {
         String path = "redirect:/title/getTitle.shtml";
         if (null != user) {
             if (EmptyUtils.isNotEmpty(user.getMvusLoginName()) && EmptyUtils.isNotEmpty(user.getMvusPassword())) {
-                List<MvUserModel> users = userService.getUesr(user);
+                List<MvUserModel> users = userService.getUser(user);
                 if (EmptyUtils.isEmpty(users)) {
                     model.addAttribute("errorInfo","用户名或者密码错误");
                     path = "forward:/index.jsp";

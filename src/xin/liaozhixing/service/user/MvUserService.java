@@ -6,11 +6,13 @@ import xin.liaozhixing.model.user.MvUserQueryModel;
 import java.util.List;
 
 public interface MvUserService {
-    List<MvUserModel> getUesr(MvUserModel user);
+    List<MvUserModel> getUser(MvUserModel user);
 
     List<MvUserQueryModel> getUserByExample(MvUserQueryModel user);
 
     void addUser(MvUserModel user);
 
     void removeUser(Long[] ids);
+
+    List<MvUserModel> getAnswerer(MvUserModel user);
 }
