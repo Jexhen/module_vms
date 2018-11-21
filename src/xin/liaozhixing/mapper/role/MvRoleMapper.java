@@ -18,4 +18,6 @@ public interface MvRoleMapper {
     void removeAuthority(@Param("mvrlId") Long mvrlId);
 
     void distributeAuthority(@Param("mvrlId")Long mvrlId, @Param("ids") Long[] ids, @Param("creator") Long creator);
+
+    List<Long> getAuthority(@Param("id")Long id);
 }

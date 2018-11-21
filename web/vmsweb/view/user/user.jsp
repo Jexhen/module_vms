@@ -90,7 +90,7 @@
         <label class="layui-form-label">身份证号</label>
 
         <div class="layui-input-inline">
-            <input type="text" id="mvusMobile" name="mvusMobile" lay-verify="required" placeholder="请输入身份证号" autocomplete="off"
+            <input type="text" id="mvusMail" name="mvusMail" lay-verify="required" placeholder="请输入身份证号" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
@@ -107,7 +107,7 @@
         <label class="layui-form-label">手机</label>
 
         <div class="layui-input-inline">
-            <input type="text" id="mvusMail" name="mvusMail" lay-verify="required" placeholder="请输入手机" autocomplete="off"
+            <input type="text" id="mvusMobile" name="mvusMobile" lay-verify="required" placeholder="请输入手机" autocomplete="off"
                    class="layui-input">
         </div>
     </div>

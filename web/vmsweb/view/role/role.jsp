@@ -154,8 +154,10 @@
         table.on('tool(roleTable)', function(obj){ // tool工具条 参数为表格layer-filter的值
             var data = obj.data;
             if(obj.event === 'edit'){
+                // 编辑角色
                 editRole(data);
             } else if (obj.event === 'distribute') {
+                // 分配权限
                 distribute(data);
             }
         });
@@ -269,8 +271,43 @@
             }
         }
 
+        /**
+         * 分配权限
+         * @param data
+         */
         function distribute(data) {
             $('#authority-mvrlId').val(data.mvrlId);
+            $.ajax({
+                url : '${pageContext.request.contextPath}/role/getAuthority.shtml',
+                method : 'post',
+                data : {'id' : data.mvrlId},
+                success : function (result) {
+                    if (result.success) {
+                        var ids = result.data;
+                        var titles = $("input[name='title']");
+                        if (ids.length>0) {
+                            for (var i = 0; i < titles.length; i++) {
+                                var j = 0;
+                                for (; j < ids.length; j++) {
+                                    if (ids[j]==$(titles[i]).val()) {
+                                        break;
+                                    }
+                                }
+                                if (j<ids.length) {
+                                    $(titles[i]).prop('checked', 'checked');
+                                } else {
+                                    $(titles[i]).removeAttr('checked');
+                                }
+                            }
+                        } else {
+                            for (var i = 0; i < titles.length; i++) {
+                                $(titles[i]).removeAttr('checked');
+                            }
+                        }
+                    }
+                },
+                dataType : 'json'
+            });
             layerIndex = layer.open({
                 type: 1,
                 title: '编辑',

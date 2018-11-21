@@ -73,4 +73,10 @@
             (#{mvrlId}, #{id},#{creator},SYSDATE(),#{creator},SYSDATE())
         </foreach>
     </insert>
+
+    <select id="getAuthority" resultType="Long">
+        select mrtr_title_id
+        from mv_role_title_relation mrtr
+        where mrtr_role_id = #{id}
+    </select>
 </mapper>

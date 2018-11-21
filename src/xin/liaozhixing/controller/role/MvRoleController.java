@@ -79,6 +79,12 @@ public class MvRoleController {
         return response;
     }
 
+    /**
+     * 增加角色
+     * @param role
+     * @param request
+     * @return
+     */
     @RequestMapping("/addRole")
     public @ResponseBody BaseResponse addRole(MvRoleModel role, HttpServletRequest request) {
         BaseResponse response = new BaseResponse();
@@ -96,6 +102,11 @@ public class MvRoleController {
         return response;
     }
 
+    /**
+     * 删除角色
+     * @param roleIds
+     * @return
+     */
     @RequestMapping("/deleteRoles.shtml")
     public @ResponseBody  BaseResponse deleteRole(@RequestParam(value = "roleIds[]") Long[] roleIds) {
         BaseResponse response = new BaseResponse();
@@ -110,6 +121,13 @@ public class MvRoleController {
         return response;
     }
 
+    /**
+     * 分配权限
+     * @param mvrlId
+     * @param ids
+     * @param request
+     * @return
+     */
     @RequestMapping("/distribute")
     public @ResponseBody BaseResponse distribute(Long mvrlId, @RequestParam("ids[]") Long[] ids, HttpServletRequest request) {
         BaseResponse response = new BaseResponse();
@@ -120,6 +138,25 @@ public class MvRoleController {
         roleService.distributeAuthority(mvrlId,ids,loginUser.getMvusId());
         response.setSuccess(true);
         response.setMessage("分配权限成功");
+        return response;
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/getAuthority")
+    public @ResponseBody BaseResponse getAuthority(Long id) {
+        BaseResponse response = new BaseResponse();
+        if (id!=null) {
+            List<Long> existAuthority = roleService.getAuthority(id);
+            response.setSuccess(true);
+            response.setData(existAuthority);
+        } else {
+            response.setSuccess(false);
+            response.setMessage("id不能为空");
+        }
         return response;
     }
 }

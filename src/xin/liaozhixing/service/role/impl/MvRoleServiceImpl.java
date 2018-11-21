@@ -55,4 +55,15 @@ public class MvRoleServiceImpl implements MvRoleService {
     public void distributeAuthority(Long mvrlId, Long[] ids, Long mvusId) {
         roleMapper.distributeAuthority(mvrlId,ids,mvrlId);
     }
+
+    /**
+     * 查询权限
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Long> getAuthority(Long id) {
+        return roleMapper.getAuthority(id);
+    }
 }

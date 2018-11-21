@@ -36,4 +36,11 @@ public interface MvRoleService {
      * @param mvusId 修改者
      */
     void distributeAuthority(Long mvrlId, Long[] ids, Long mvusId);
+
+    /**
+     * 查询权限
+     * @param id
+     * @return
+     */
+    List<Long> getAuthority(Long id);
 }
