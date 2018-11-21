@@ -52,6 +52,10 @@
     <resultMap id="mvCertificationModel" type="xin.liaozhixing.model.certification.MvCertificationModel">
         <result column="mctf_id" property="mctfId"></result>
         <result column="mctf_name" property="mctfName"></result>
+        <result column="mvct_auditor" property="mvctAuditor"></result>
+        <result column="mctf_attachment_name" property="mctfAttachmentName"></result>
+        <result column="mctf_attachment_url" property="mctfAttachmentUrl"></result>
+        <result column="mvct_desc" property="mvctDesc"></result>
         <result column="mctf_status" property="mctfStatus"></result>
         <result column="mctf_reject_reason" property="mctfRejectReason"></result>
         <result column="mctf_certification_type_id" property="mctfCertificationTypeId"></result>
@@ -63,6 +67,10 @@
     <select id="getCertificationByExample" resultMap="mvCertificationModel">
         select mctf.mctf_id,
         mctf.mctf_name,
+        auditor.mvus_name AS mvct_auditor,
+        mvct.mvct_desc,
+        mctf.mctf_attachment_name,
+        mctf.mctf_attachment_url,
         (case when mctf.mctf_status='00' then '新增' when mctf.mctf_status='01' then '同意' else '驳回' end) as mctf_status,
         (case
         when mctf.mctf_status='00'
@@ -78,6 +86,8 @@
         from mv_certification mctf
         left join mv_certification_type mvct
         on mvct.mvct_id = mctf.mctf_certification_type_id
+        LEFT JOIN mv_user auditor
+        ON auditor.mvus_id = mvct.mvct_auditor
         left join mv_user c
         on c.mvus_id = mctf.creator
         left join mv_user m
@@ -85,11 +95,33 @@
         left join mv_organization mogz
         on mogz.mogz_id = c.mvus_organization_id
         where 1=1
+        <if test="example.mctfName!=null and example.mctfName!=''">
+            and mctf.mctf_name like concat('%',#{example.mctfName},'%')
+        </if>
         <if test="example.creator!=null">
             and mctf.creator = #{example.creator}
         </if>
         <if test="example.auditor!=null">
             and mvct.mvct_auditor = #{example.auditor}
         </if>
+
     </select>
+
+    <delete id="removeCertification">
+        delete from mv_certification
+        where 1=1
+        and mctf_id in
+        <foreach collection="ids" open="(" item="id" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="modifyCertification">
+        UPDATE mv_certification
+        SET mctf_status = #{certification.mctfStatus},
+        mctf_pick_up_time = STR_TO_DATE( #{certification.mctfPickUpTime}, '%Y-%m-%d'),
+        mctf_reject_reason = #{certification.mctfRejectReason}
+        WHERE
+	    mctf_id = #{certification.mctfId}
+    </update>
 </mapper>

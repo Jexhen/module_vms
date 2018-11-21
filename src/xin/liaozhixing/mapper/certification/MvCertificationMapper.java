@@ -24,6 +24,17 @@ public interface MvCertificationMapper {
     /**
      * 查询证明
      */
-
     List<MvCertificationModel> getCertificationByExample(@Param("example") MvCertificationModel example);
+
+    /**
+     * 删除证明
+     * @param ids
+     */
+    void removeCertification(@Param("ids") Long[] ids);
+
+    /**
+     * 修改证明
+     * @param certification
+     */
+    void modifyCertification(@Param("certification") MvCertificationModel certification);
 }

@@ -26,4 +26,16 @@ public interface MvCertificationService {
      * @return
      */
     List<MvCertificationModel> getCertificationByExample(MvCertificationModel example);
+
+    /**
+     * 删除证明
+     * @param ids
+     */
+    void removeCertification(Long[] ids);
+
+    /**
+     * 修改证明
+     * @param certification
+     */
+    void modifyCertification(MvCertificationModel certification);
 }

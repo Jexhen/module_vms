@@ -46,4 +46,24 @@ public class MvCertificationServiceImpl implements MvCertificationService {
     public List<MvCertificationModel> getCertificationByExample(MvCertificationModel example) {
         return mapper.getCertificationByExample(example);
     }
+
+    /**
+     * 删除证明
+     *
+     * @param ids
+     */
+    @Override
+    public void removeCertification(Long[] ids) {
+        mapper.removeCertification(ids);
+    }
+
+    /**
+     * 修改证明
+     *
+     * @param certification
+     */
+    @Override
+    public void modifyCertification(MvCertificationModel certification) {
+        mapper.modifyCertification(certification);
+    }
 }

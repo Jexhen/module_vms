@@ -18,7 +18,7 @@ public class MvCertificationModel {
 
     private String mctfRejectReason;
 
-    private Date mctfPickUpTime;
+    private String mctfPickUpTime;
 
     private Long auditor;
 
@@ -31,6 +31,10 @@ public class MvCertificationModel {
     private String modifyTime;
 
     private String organizationName;
+
+    private String mvctAuditor;
+
+    private String mvctDesc;
 
     public Long getMctfId() {
         return mctfId;
@@ -120,11 +124,11 @@ public class MvCertificationModel {
         this.mctfRejectReason = mctfRejectReason;
     }
 
-    public Date getMctfPickUpTime() {
+    public String getMctfPickUpTime() {
         return mctfPickUpTime;
     }
 
-    public void setMctfPickUpTime(Date mctfPickUpTime) {
+    public void setMctfPickUpTime(String mctfPickUpTime) {
         this.mctfPickUpTime = mctfPickUpTime;
     }
 
@@ -142,5 +146,21 @@ public class MvCertificationModel {
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+
+    public String getMvctAuditor() {
+        return mvctAuditor;
+    }
+
+    public void setMvctAuditor(String mvctAuditor) {
+        this.mvctAuditor = mvctAuditor;
+    }
+
+    public String getMvctDesc() {
+        return mvctDesc;
+    }
+
+    public void setMvctDesc(String mvctDesc) {
+        this.mvctDesc = mvctDesc;
     }
 }

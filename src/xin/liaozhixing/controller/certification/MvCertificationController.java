@@ -1,5 +1,6 @@
 package xin.liaozhixing.controller.certification;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import xin.liaozhixing.utils.EmptyUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Random;
 
@@ -160,12 +162,56 @@ public class MvCertificationController {
         MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
         if (certification==null)
             certification = new MvCertificationModel();
+        if (EmptyUtils.isNotEmpty(certification.getMctfName())) {
+            try {
+                String decodeName = new String(certification.getMctfName().getBytes("ISO-8859-1"),"UTF-8");
+                certification.setMctfName(decodeName);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
         certification.setCreator(loginUser.getMvusId().toString());
         List<MvCertificationModel> certificationByExample = service.getCertificationByExample(certification);
         response.setCode(0);
         response.setMsg("");
         response.setData(certificationByExample);
         response.setCount(certificationByExample.size());
+        return response;
+    }
+
+    /**
+     * 删除证明
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/removeCertification")
+    public @ResponseBody BaseResponse removeCertification(@RequestParam("ids[]") Long[] ids) {
+        BaseResponse response = new BaseResponse();
+        service.removeCertification(ids);
+        response.setSuccess(true);
+        response.setMessage("删除成功");
+        return response;
+    }
+
+    @RequestMapping("/updateCertification")
+    public @ResponseBody BaseResponse updateCertification(MvCertificationModel certification, HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        if (certification!=null && certification.getMctfId()!=null) {
+            // 通过
+            if (EmptyUtils.isNotEmpty(certification.getMctfStatus())){
+                MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+                certification.setModifier(loginUser.getMvusId().toString());
+                service.modifyCertification(certification);
+                response.setSuccess(true);
+                response.setMessage("操作成功");
+            } else {
+                response.setSuccess(false);
+                response.setMessage("状态不允许为空");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("ID不能为空");
+        }
         return response;
     }
 }
