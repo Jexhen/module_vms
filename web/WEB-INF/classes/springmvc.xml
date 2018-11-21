@@ -49,5 +49,10 @@
 			<property name="prefix" value="/vmsweb/view"/>
 			<property name="suffix" value=".jsp"/>
 		</bean>
-		
+
+		<bean id="multipartResolver"
+			  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<property name="maxUploadSize" value="1000000000" />
+		</bean>
+
 </beans>

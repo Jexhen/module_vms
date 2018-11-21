@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import sun.invoke.empty.Empty;
 import xin.liaozhixing.model.base.BaseOptionsResponse;
 import xin.liaozhixing.model.base.OptionsModel;
+import xin.liaozhixing.model.certification.MvCertificationTypeModel;
 import xin.liaozhixing.model.organization.MvOrganizationModel;
 import xin.liaozhixing.model.role.MvRoleModel;
 import xin.liaozhixing.model.user.MvUserModel;
 import xin.liaozhixing.model.user.MvUserQueryModel;
+import xin.liaozhixing.service.certification.MvCertificationService;
 import xin.liaozhixing.service.organization.MvOrganizationService;
 import xin.liaozhixing.service.role.MvRoleService;
 import xin.liaozhixing.service.role.impl.MvRoleServiceImpl;
@@ -32,6 +34,8 @@ public class OptionsController {
     private MvRoleService roleService;
     @Autowired
     private MvUserService userService;
+    @Autowired
+    private MvCertificationService certificationService;
 
     /**
      * 获取组织下拉框
@@ -98,4 +102,23 @@ public class OptionsController {
         return response;
     }
 
+    @RequestMapping("/getCertificationTypeOption")
+    public @ResponseBody BaseOptionsResponse getCertificationTypeOption(HttpServletRequest request) {
+        BaseOptionsResponse response = new BaseOptionsResponse();
+        MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+        MvCertificationTypeModel example = new MvCertificationTypeModel();
+        example.setOrganizationId(loginUser.getMvusOrganizationId());
+        List<MvCertificationTypeModel> certificationTypes = certificationService.getCertificationTypeByExample(example);
+        List<OptionsModel> options = new ArrayList<>();
+        if(EmptyUtils.isNotEmpty(certificationTypes)) {
+            for (MvCertificationTypeModel certificationType : certificationTypes) {
+                OptionsModel option = new OptionsModel();
+                option.setKey(certificationType.getMvctId());
+                option.setValue(certificationType.getMvctName());
+                options.add(option);
+            }
+        }
+        response.setOptions(options);
+        return response;
+    }
 }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xin.liaozhixing.mapper.certification.MvCertificationMapper" >
+
+    <resultMap id="mvCertificationTypeModel" type="xin.liaozhixing.model.certification.MvCertificationTypeModel">
+        <result column="mvct_id" property="mvctId"></result>
+        <result column="mvct_name" property="mvctName"></result>
+        <result column="mvct_desc" property="mvctDesc"></result>
+        <result column="mvct_auditor" property="mvctAuditor"></result>
+        <result column="mvct_is_need_attachment" property="mvctIsNeedAttachment"></result>
+        <result column="creator" property="creator"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modifier" property="modifier"></result>
+        <result column="modify_time" property="modifyTime"></result>
+    </resultMap>
+
+    <select id="getCertificationTypeByExample" resultMap="mvCertificationTypeModel">
+        SELECT
+        mvct.mvct_id,
+        mvct.mvct_name,
+        mvct.mvct_desc,
+        auditor.mvus_name AS mvct_auditor,
+        mvct.mvct_is_need_attachment,
+        c.mvus_name AS creator,
+        DATE_FORMAT( mvct.create_time, '%Y-%m-%d %H:%i:%s' ) as create_time,
+        m.mvus_name AS modifier,
+        DATE_FORMAT( mvct.modify_time, '%Y-%m-%d %H:%i:%s' ) as modify_time
+        FROM
+        mv_certification_type mvct
+        LEFT JOIN mv_user auditor ON auditor.mvus_id = mvct.mvct_auditor
+        LEFT JOIN mv_user c ON c.mvus_id = mvct.creator
+        LEFT JOIN mv_user m ON m.mvus_id = mvct.modifier
+        WHERE
+        1 = 1
+        <if test="example.mvctName!=null and example.mvctName!=''">
+            AND mvct.mvct_name LIKE CONCAT( '%', #{example.mvctName}, '%' )
+        </if>
+        <if test="example.organizationId!=null">
+            AND auditor.mvus_organization_id IN (#{example.organizationId}, 1 )
+        </if>
+        <if test="example.mvctId!=null">
+            AND mvct.mvct_id = #{example.mvctId}
+        </if>
+    </select>
+
+    <insert id="addCertification">
+        INSERT INTO mv_certification ( mctf_name, mctf_status, mctf_certification_type_id, mctf_attachment_name, mctf_attachment_url, creator, create_time, modifier, modify_time )
+        VALUES
+            ( #{certification.mctfName}, '00', #{certification.mctfCertificationTypeId}, #{certification.mctfAttachmentName}, #{certification.mctfAttachmentUrl}, #{certification.creator}, SYSDATE( ), #{certification.modifier}, SYSDATE( ) );
+    </insert>
+
+    <resultMap id="mvCertificationModel" type="xin.liaozhixing.model.certification.MvCertificationModel">
+        <result column="mctf_id" property="mctfId"></result>
+        <result column="mctf_name" property="mctfName"></result>
+        <result column="mctf_status" property="mctfStatus"></result>
+        <result column="mctf_reject_reason" property="mctfRejectReason"></result>
+        <result column="mctf_certification_type_id" property="mctfCertificationTypeId"></result>
+        <result column="organization_name" property="organizationName"></result>
+        <result column="creator" property="creator"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+
+    <select id="getCertificationByExample" resultMap="mvCertificationModel">
+        select mctf.mctf_id,
+        mctf.mctf_name,
+        (case when mctf.mctf_status='00' then '新增' when mctf.mctf_status='01' then '同意' else '驳回' end) as mctf_status,
+        (case
+        when mctf.mctf_status='00'
+        then ''
+        when mctf.mctf_status='01'
+        then CONCAT('请您于',DATE_FORMAT(mctf.mctf_pick_up_time,'%Y年%m月%d日'),'来取证明')
+        else mctf.mctf_reject_reason
+        end) as mctf_reject_reason,
+        mvct.mvct_name as mctf_certification_type_id,
+        c.mvus_name as creator,
+        mogz.mogz_name as organization_name,
+        DATE_FORMAT(mctf.create_time,'%Y-%m-%d %H:%i:%s') as create_time
+        from mv_certification mctf
+        left join mv_certification_type mvct
+        on mvct.mvct_id = mctf.mctf_certification_type_id
+        left join mv_user c
+        on c.mvus_id = mctf.creator
+        left join mv_user m
+        on m.mvus_id = mctf.modifier
+        left join mv_organization mogz
+        on mogz.mogz_id = c.mvus_organization_id
+        where 1=1
+        <if test="example.creator!=null">
+            and mctf.creator = #{example.creator}
+        </if>
+        <if test="example.auditor!=null">
+            and mvct.mvct_auditor = #{example.auditor}
+        </if>
+    </select>
+</mapper>
