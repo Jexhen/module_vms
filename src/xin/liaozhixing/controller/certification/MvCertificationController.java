@@ -214,4 +214,62 @@ public class MvCertificationController {
         }
         return response;
     }
+
+
+    /**
+     * 通过ID查找证明类型
+     * @param example
+     * @return
+     */
+    @RequestMapping("/getCertificationTypeByExample")
+    public @ResponseBody BaseTableResponse getCertificationTypeByExample(MvCertificationTypeModel example, HttpServletRequest request) {
+        BaseTableResponse response = new BaseTableResponse();
+        if (example==null)
+            example = new MvCertificationTypeModel();
+        // 只能查询对应组织的证明类型
+        MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+        example.setOrganizationId(loginUser.getMvusOrganizationId());
+        List<MvCertificationTypeModel> existCertificationTypes = service.getCertificationTypeByExample(example);
+        response.setCode(0);
+        response.setMsg("");
+        response.setData(existCertificationTypes);
+        response.setCount(existCertificationTypes.size());
+        return response;
+    }
+
+    @RequestMapping("/modifyCertificationType")
+    public @ResponseBody BaseResponse modifyCertificationType(MvCertificationTypeModel certificationTypeModel, HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+        certificationTypeModel.setModifier(loginUser.getMvusId().toString());
+        service.modifyCertificationType(certificationTypeModel);
+        response.setSuccess(true);
+        response.setMessage("修改成功");
+        return response;
+    }
+
+    @RequestMapping("/addCertificationType")
+    public @ResponseBody BaseResponse addCertificationType(MvCertificationTypeModel type, HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+        type.setCreator(loginUser.getMvusId().toString());
+        service.addCertificationType(type);
+        response.setSuccess(true);
+        response.setMessage("新增成功");
+        return response;
+    }
+
+    /**
+     * 删除证明类型
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/removeCertificationType")
+    public @ResponseBody BaseResponse removeCertificationType(@RequestParam("ids[]") Long[] ids) {
+        BaseResponse response = new BaseResponse();
+        service.removeCertificationType(ids);
+        response.setSuccess(true);
+        response.setMessage("删除成功");
+        return response;
+    }
 }

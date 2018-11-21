@@ -38,4 +38,22 @@ public interface MvCertificationService {
      * @param certification
      */
     void modifyCertification(MvCertificationModel certification);
+
+    /**
+     * 增加证明类型
+     * @param type
+     */
+    void addCertificationType(MvCertificationTypeModel type);
+
+    /**
+     * 删除证明类型
+     * @param ids
+     */
+    void removeCertificationType(Long[] ids);
+
+    /**
+     * 修改证明类型
+     * @param type
+     */
+    void modifyCertificationType(MvCertificationTypeModel type);
 }

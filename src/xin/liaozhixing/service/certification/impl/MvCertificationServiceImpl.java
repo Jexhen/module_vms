@@ -66,4 +66,34 @@ public class MvCertificationServiceImpl implements MvCertificationService {
     public void modifyCertification(MvCertificationModel certification) {
         mapper.modifyCertification(certification);
     }
+
+    /**
+     * 增加证明类型
+     *
+     * @param type
+     */
+    @Override
+    public void addCertificationType(MvCertificationTypeModel type) {
+        mapper.addCertificationType(type);
+    }
+
+    /**
+     * 删除证明类型
+     *
+     * @param ids
+     */
+    @Override
+    public void removeCertificationType(Long[] ids) {
+        mapper.removeCertificationType(ids);
+    }
+
+    /**
+     * 修改证明类型
+     *
+     * @param type
+     */
+    @Override
+    public void modifyCertificationType(MvCertificationTypeModel type) {
+        mapper.modifyCertificationType(type);
+    }
 }

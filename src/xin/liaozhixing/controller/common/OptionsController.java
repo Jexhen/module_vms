@@ -102,6 +102,11 @@ public class OptionsController {
         return response;
     }
 
+    /**
+     * 获取证明类型
+     * @param request
+     * @return
+     */
     @RequestMapping("/getCertificationTypeOption")
     public @ResponseBody BaseOptionsResponse getCertificationTypeOption(HttpServletRequest request) {
         BaseOptionsResponse response = new BaseOptionsResponse();

@@ -124,4 +124,31 @@
         WHERE
 	    mctf_id = #{certification.mctfId}
     </update>
+
+    <insert id="addCertificationType">
+        INSERT INTO mv_certification_type ( mvct_name, mvct_desc, mvct_auditor, mvct_is_need_attachment, creator, create_time, modifier, modify_time )
+        VALUES
+            ( #{type.mvctName}, #{type.mvctDesc}, #{type.mvctAuditor}, #{type.mvctIsNeedAttachment}, #{type.creator}, SYSDATE( ), #{type.creator}, SYSDATE( ) )
+    </insert>
+
+    <delete id="removeCertificationType">
+        delete from mv_certification_type
+        where mvct_id in
+        <foreach collection="ids" open="(" item="id" separator="," close=")">
+            #{id}
+        </foreach>
+
+    </delete>
+
+    <update id="modifyCertificationType">
+        UPDATE mv_certification_type
+        SET mvct_name = #{type.mvctName},
+        mvct_desc = #{type.mvctDesc},
+        mvct_is_need_attachment = #{type.mvctIsNeedAttachment},
+        mvct_auditor = #{type.mvctAuditor},
+        modifier = #{type.modifier},
+        modify_time = SYSDATE( )
+        WHERE
+            mvct_id = #{type.mvctId}
+    </update>
 </mapper>

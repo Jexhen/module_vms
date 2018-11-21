@@ -37,4 +37,22 @@ public interface MvCertificationMapper {
      * @param certification
      */
     void modifyCertification(@Param("certification") MvCertificationModel certification);
+
+    /**
+     * 增加证明类型
+     * @param type
+     */
+    void addCertificationType(@Param("type") MvCertificationTypeModel type);
+
+    /**
+     * 删除证明类型
+     * @param ids
+     */
+    void removeCertificationType(@Param("ids") Long[] ids);
+
+    /**
+     * 修改证明类型
+     * @param type
+     */
+    void modifyCertificationType(@Param("type") MvCertificationTypeModel type);
 }
