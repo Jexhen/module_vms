@@ -49,6 +49,7 @@
 <!-- 工具条 -->
 <script type="text/html" id="operaitonBar">
     <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-mini" lay-event="distribute">分配权限</a>
 </script>
 
 <!--表单-->
@@ -79,10 +80,52 @@
         </div>
     </div>
 </div>
+
+<div id="authorityForm" hidden="hidden">
+    <div class="layui-form-item" hidden="hidden">
+        <label class="layui-form-label">角色ID</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="authority-mvrlId" name="authority-mvrlId" autocomplete="off"
+                   class="layui-input" disabled="disabled">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">复选框</label>
+        <div class="layui-input-block" id="title">
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <div class="layui-btn" lay-submit lay-filter="*" id="btn-submit-auth">立即提交</div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="<%=basePath%>/vmsweb/frame/layui/layui.all.js"></script>
 <script type="text/javascript">
     var $ = layui.jquery,
         layer = layui.layer;
+
+    $(function () {
+        // 加载标题下拉框
+        $.ajax({
+            url : '${pageContext.request.contextPath}/title/getAllTitle.shtml',
+            type : 'post',
+            success : function(result) {
+                if (result.success) {
+                    var data = result.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var checkBoxHtml = '<label class="layui-form-label"><input type="checkbox" name="title" value="'+data[i].mvttId+'" >'+data[i].mvttName+'<label>';
+                        $('#title').append(checkBoxHtml);
+                    }
+                }
+
+            },
+            dataType : 'json'
+        });
+    });
 
     layui.use('table', function(){
         var table = layui.table;
@@ -112,6 +155,8 @@
             var data = obj.data;
             if(obj.event === 'edit'){
                 editRole(data);
+            } else if (obj.event === 'distribute') {
+                distribute(data);
             }
         });
 
@@ -223,6 +268,36 @@
                 });
             }
         }
+
+        function distribute(data) {
+            $('#authority-mvrlId').val(data.mvrlId);
+            layerIndex = layer.open({
+                type: 1,
+                title: '编辑',
+                content: $('#authorityForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+        }
+
+        // 权限提交
+        $('#btn-submit-auth').on('click',function () {
+            var mvrlId = $('#authority-mvrlId').val();
+            var titles = $("input[name='title']");
+            var ids = [];
+            for (var i = 0; i < titles.length; i++) {
+                if (titles[i].checked) {
+                    ids.push($(titles[i]).val());
+                }
+            }
+            $.ajax({
+               url : '${pageContext.request.contextPath}/role/distribute.shtml',
+               method : 'post',
+               data : {'mvrlId' : mvrlId, 'ids' : ids},
+                success : function (result) {
+                    layer.alert(result.message);
+                },
+                dataType : 'json'
+            });
+        });
     });
 
 </script>

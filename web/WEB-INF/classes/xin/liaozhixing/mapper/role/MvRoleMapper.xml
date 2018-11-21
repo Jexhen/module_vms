@@ -31,6 +31,7 @@
             <if test="example.mvrlName!=null and example.mvrlName!=''">
                 AND mvrl.mvrl_name like concat('%',#{example.mvrlName},'%')
             </if>
+            AND mvrl.mvrl_id != 1
     </select>
 
     <update id="modifyRole">
@@ -59,4 +60,17 @@
             #{roleId}
         </foreach>
     </delete>
+
+    <delete id="removeAuthority">
+        delete from mv_role_title_relation
+        where mrtr_role_id = #{mvrlId}
+    </delete>
+
+    <insert id="distributeAuthority">
+            INSERT into mv_role_title_relation (mrtr_role_id,mrtr_title_id,creator,create_time,modifier,modify_time)
+            VALUES
+        <foreach collection="ids" item="id" separator=",">
+            (#{mvrlId}, #{id},#{creator},SYSDATE(),#{creator},SYSDATE())
+        </foreach>
+    </insert>
 </mapper>

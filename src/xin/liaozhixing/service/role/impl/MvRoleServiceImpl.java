@@ -33,4 +33,26 @@ public class MvRoleServiceImpl implements MvRoleService {
     public void deleteRoles(Long[] roleIds) {
         roleMapper.deleteRoles(roleIds);
     }
+
+    /**
+     * 删除角色的所有权限
+     *
+     * @param mvrlId
+     */
+    @Override
+    public void removeAuthority(Long mvrlId) {
+        roleMapper.removeAuthority(mvrlId);
+    }
+
+    /**
+     * 分配权限
+     *
+     * @param mvrlId 角色ID
+     * @param ids    功能id集
+     * @param mvusId 修改者
+     */
+    @Override
+    public void distributeAuthority(Long mvrlId, Long[] ids, Long mvusId) {
+        roleMapper.distributeAuthority(mvrlId,ids,mvrlId);
+    }
 }

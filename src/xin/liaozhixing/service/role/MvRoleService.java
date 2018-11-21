@@ -22,4 +22,18 @@ public interface MvRoleService {
     void addRole(MvRoleModel role);
 
     void deleteRoles(Long[] roleIds);
+
+    /**
+     * 删除角色的所有权限
+     * @param mvrlId
+     */
+    void removeAuthority(Long mvrlId);
+
+    /**
+     * 分配权限
+     * @param mvrlId 角色ID
+     * @param ids 功能id集
+     * @param mvusId 修改者
+     */
+    void distributeAuthority(Long mvrlId, Long[] ids, Long mvusId);
 }

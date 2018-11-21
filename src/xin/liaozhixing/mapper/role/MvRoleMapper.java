@@ -14,4 +14,8 @@ public interface MvRoleMapper {
     void addRole(@Param("role") MvRoleModel role);
 
     void deleteRoles(@Param("roleIds") Long[] roleIds);
+
+    void removeAuthority(@Param("mvrlId") Long mvrlId);
+
+    void distributeAuthority(@Param("mvrlId")Long mvrlId, @Param("ids") Long[] ids, @Param("creator") Long creator);
 }

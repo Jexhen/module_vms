@@ -109,4 +109,17 @@ public class MvRoleController {
         }
         return response;
     }
+
+    @RequestMapping("/distribute")
+    public @ResponseBody BaseResponse distribute(Long mvrlId, @RequestParam("ids[]") Long[] ids, HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        // 删除该角色下的所有权限
+        roleService.removeAuthority(mvrlId);
+        // 新建权限
+        MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+        roleService.distributeAuthority(mvrlId,ids,loginUser.getMvusId());
+        response.setSuccess(true);
+        response.setMessage("分配权限成功");
+        return response;
+    }
 }
