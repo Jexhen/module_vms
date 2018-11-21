@@ -37,15 +37,12 @@
             mvus.mvus_mobile,
             mvus.mvus_role_id,
             mvrl.mvrl_name,
-            u.mvus_name AS host_name,
             mvus.mvus_login_name,
             mvus.mvus_organization_id,
             mogz.mogz_name
         FROM
             mv_user mvus
             LEFT JOIN mv_role mvrl ON mvus.mvus_role_id = mvrl.mvrl_id
-            LEFT JOIN mv_family mfml ON mvus.mvus_family_id = mfml.mfml_id
-            LEFT JOIN mv_user u ON u.mvus_id = mfml.mfml_host_user_id
             LEFT JOIN mv_organization mogz ON mvus.mvus_organization_id = mogz.mogz_id
         WHERE
             1 = 1
@@ -62,18 +59,15 @@
             mvus.mvus_id,
             mvus.mvus_name,
             mvus.mvus_login_name,
-            mvus.mvus_gender,
+            (case when mvus.mvus_gender='M'then '男' else '女' end) as mvus_gender,
             mvus.mvus_mobile,
             mvus.mvus_mail,
             mogz.mogz_name AS mvus_organization_name,
-            mvrl.mvrl_name AS mvus_role_name,
-            u.mvus_name AS mvus_family_host_name
+            mvrl.mvrl_name AS mvus_role_name
         FROM
             mv_user mvus
         LEFT JOIN mv_organization mogz ON mogz.mogz_id = mvus.mvus_organization_id
         LEFT JOIN mv_role mvrl ON mvrl.mvrl_id = mvus.mvus_role_id
-        LEFT JOIN mv_family mfml ON mfml.mfml_id = mvus.mvus_family_id
-        LEFT JOIN mv_user u ON u.mvus_id = mfml.mfml_host_user_id
         WHERE
             1 = 1
             <if test="example.mvusName!=null and example.mvusName!=''">
@@ -149,4 +143,18 @@
             </if>
             or mvus.mvus_organization_id = 1
     </select>
+
+    <update id="modifyUser">
+        update mv_user
+        set mvus_name = #{user.mvusName},
+        mvus_login_name = #{user.mvusLoginName},
+        mvus_mail =  #{user.mvusMail},
+        mvus_mobile = #{user.mvusMobile},
+        mvus_gender = #{user.mvusGender},
+        mvus_organization_id = #{user.mvusOrganizationId},
+        mvus_role_id = #{user.mvusRoleId},
+        modifier = #{user.modifier},
+        modify_time = SYSDATE( )
+        where mvus_id = #{user.mvusId}
+    </update>
 </mapper>

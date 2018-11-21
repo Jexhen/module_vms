@@ -15,4 +15,6 @@ public interface MvUserService {
     void removeUser(Long[] ids);
 
     List<MvUserModel> getAnswerer(MvUserModel user);
+
+    void modifyUser(MvUserModel user);
 }

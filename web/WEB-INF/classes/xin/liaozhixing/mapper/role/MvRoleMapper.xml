@@ -31,7 +31,6 @@
             <if test="example.mvrlName!=null and example.mvrlName!=''">
                 AND mvrl.mvrl_name like concat('%',#{example.mvrlName},'%')
             </if>
-            AND mvrl.mvrl_id != 1
     </select>
 
     <update id="modifyRole">

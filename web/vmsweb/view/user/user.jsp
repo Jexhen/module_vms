@@ -194,7 +194,7 @@
                 , {field: 'mvusId', title: 'ID', width: 80}
                 , {field: 'mvusName', title: '姓名', width: 120}
                 , {field: 'mvusLoginName', title: '登陆名', width:150}
-                , {field: 'mvusGender', title: '性别', width:10}
+                , {field: 'mvusGender', title: '性别', width:50}
                 , {field: 'mvusMobile', title: '手机', width:150}
                 , {field: 'mvusMail', title: '身份证号', width:200}
                 , {field: 'mvusOrganizationName', title: '所属组织', width:200}
@@ -272,15 +272,29 @@
             $('#mvusId').val(user.mvusId);
             $('#mvusName').val(user.mvusName);
             $('#mvusLoginName').val(user.mvusLoginName);
-            if (user.mvusGender==='M') {
-                $('#genderMale').attr("checked","checked");
+            if (user.mvusGender==='男') {
+                $('#genderMale').prop("checked","checked");
+                $('#genderFemale').removeAttr("checked");
             } else {
-                $('#genderFemale').attr("checked","checked");
+                $('#genderFemale').prop("checked","checked");
+                $('#genderMale').removeAttr("checked");
+            }
+            var organizationOptions = $('#mvusOrganizationId option');
+            for (var i = 0; i < organizationOptions.length; i++) {
+                if (organizationOptions[i].innerHTML==user.mvusOrganizationName) {
+                    $(organizationOptions[i]).prop('selected', 'selected');
+                    break;
+                }
+            }
+            var roleOptions = $('#mvusRoleId option');
+            for (var i = 0; i < roleOptions.length; i++) {
+                if (roleOptions[i].innerHTML==user.mvusRoleName) {
+                    $(roleOptions[i]).prop('selected', 'selected');
+                    break;
+                }
             }
             $('#mvusMobile').val(user.mvusMobile);
             $('#mvusMail').val(user.mvusMail);
-            $('#mvusOrganizationId').val(user.mvusOrganizationName);
-            $('#mvusRoleId').val(user.mvusRoleName);
             layerIndex = layer.open({
                 type: 1,
                 title: '编辑',
@@ -304,7 +318,7 @@
             user.mvusName = $('#mvusName').val();
             user.mvusLoginName = $('#mvusLoginName').val();
             user.mvusGender = 'F';
-            if ($('#genderMale').attr('checked') == 'checked') {
+            if ($('#genderMale').prop('checked')) {
                 user.mvusGender = 'M';
             }
             user.mvusMobile = $('#mvusMobile').val();

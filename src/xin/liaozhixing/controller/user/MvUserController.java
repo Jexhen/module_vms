@@ -137,6 +137,56 @@ public class MvUserController {
         return response;
     }
 
+    @RequestMapping("/modifyUser")
+    public @ResponseBody BaseResponse modifyUser(MvUserModel user, HttpServletRequest request) {
+        BaseResponse response = new BaseResponse();
+        if (user!=null) {
+            if (EmptyUtils.isNotEmpty(user.getMvusName())) {
+                if (EmptyUtils.isNotEmpty(user.getMvusLoginName())) {
+                    if (EmptyUtils.isNotEmpty(user.getMvusMail())) {
+                        if (user.getMvusOrganizationId()!=null) {
+                            if (user.getMvusRoleId()!=null) {
+                                MvUserQueryModel example = new MvUserQueryModel();
+                                example.setMvusLoginName(user.getMvusName());
+                                List<MvUserQueryModel> existUsers = userService.getUserByExample(example);
+                                if (EmptyUtils.isNotEmpty(existUsers)) {
+                                    response.setSuccess(false);
+                                    response.setMessage("登陆名不能重复");
+                                } else {
+                                    MvUserModel loginUser = (MvUserModel) request.getSession().getAttribute("loginUser");
+                                    user.setCreator(loginUser.getMvusId().toString());
+                                    user.setModifier(loginUser.getMvusId().toString());
+                                    userService.modifyUser(user);
+                                    response.setSuccess(true);
+                                    response.setMessage("修改成功！");
+                                }
+                            } else {
+                                response.setSuccess(false);
+                                response.setMessage("角色不能为空");
+                            }
+                        } else {
+                            response.setSuccess(false);
+                            response.setMessage("组织不能为空");
+                        }
+                    } else {
+                        response.setSuccess(false);
+                        response.setMessage("身份证号不能为空");
+                    }
+                } else {
+                    response.setSuccess(false);
+                    response.setMessage("登陆名不能为空");
+                }
+            } else {
+                response.setSuccess(false);
+                response.setMessage("姓名不能为空");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("参数不能为空");
+        }
+        return response;
+    }
+
     @RequestMapping("/removeUser")
     public @ResponseBody BaseResponse removeUser(@RequestParam("ids[]") Long[]ids) {
         BaseResponse response = new BaseResponse();

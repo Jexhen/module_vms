@@ -17,4 +17,6 @@ public interface MvUserMapper {
     void removeUser(@Param("ids") Long[] ids);
 
     List<MvUserModel> getAnswerer(@Param("example")MvUserModel user);
+
+    void modifyUser(@Param("user")MvUserModel user);
 }

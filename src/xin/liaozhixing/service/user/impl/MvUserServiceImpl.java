@@ -39,4 +39,9 @@ public class MvUserServiceImpl implements MvUserService {
     public List<MvUserModel> getAnswerer(MvUserModel user) {
         return userMapper.getAnswerer(user);
     }
+
+    @Override
+    public void modifyUser(MvUserModel user) {
+        userMapper.modifyUser(user);
+    }
 }
