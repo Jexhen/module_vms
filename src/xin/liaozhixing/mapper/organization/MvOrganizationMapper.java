@@ -9,10 +9,19 @@ public interface MvOrganizationMapper {
 
     /**
      * 查询组织
-     * @param example 查询条件
+     * @param example
+     * @param firstIndex
+     * @param pageSize
      * @return
      */
-    List<MvOrganizationModel> getOrganizationByExample(@Param(value = "example") MvOrganizationModel example);
+    List<MvOrganizationModel> getOrganizationByExample(@Param(value = "example") MvOrganizationModel example, @Param("firstIndex") Long firstIndex, @Param("pageSize") Long pageSize);
+
+    /**
+     * 查询个数
+     * @param example
+     * @return
+     */
+    Long getOrganizationCountByExample(@Param(value = "example") MvOrganizationModel example);
 
     /**
      * 修改组织
@@ -28,7 +37,7 @@ public interface MvOrganizationMapper {
 
     /**
      * 删除组织
-     * @param model
+     * @param ids
      */
     void removeOrganization(@Param(value = "ids")Long[] ids);
 }

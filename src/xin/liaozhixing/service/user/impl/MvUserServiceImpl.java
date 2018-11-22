@@ -21,8 +21,19 @@ public class MvUserServiceImpl implements MvUserService {
     }
 
     @Override
-    public List<MvUserQueryModel> getUserByExample(MvUserQueryModel user) {
-        return userMapper.getUserByExample(user);
+    public List<MvUserQueryModel> getUserByExample(MvUserQueryModel user, Long page, Long limit) {
+        List<MvUserQueryModel> list;
+        if (page==null) {
+            list = userMapper.getUserByExample(user, null, null);
+        } else {
+            list = userMapper.getUserByExample(user, (page-1)* limit, limit);
+        }
+        return list;
+    }
+
+    @Override
+    public Long getUserCountByExample(MvUserQueryModel user) {
+        return userMapper.getUserCountByExample(user);
     }
 
     @Override

@@ -31,6 +31,26 @@
             <if test="example.mogzName!=null and example.mogzName!=''">
                 AND mogz.mogz_name LIKE CONCAT('%',#{example.mogzName},'%')
             </if>
+            <if test="firstIndex!=null and pageSize!=null">
+                limit #{firstIndex}, #{pageSize}
+            </if>
+    </select>
+
+    <select id="getOrganizationCountByExample" resultType="Long">
+        SELECT
+        count(1)
+        FROM
+        mv_organization mogz
+        LEFT JOIN mv_user u ON u.mvus_id = mogz.creator
+        LEFT JOIN mv_user m ON m.mvus_id = mogz.modifier
+        WHERE
+        1 = 1
+        <if test="example.mogzId!=null">
+            AND mogz.mogz_id = #{example.mogzId}
+        </if>
+        <if test="example.mogzName!=null and example.mogzName!=''">
+            AND mogz.mogz_name LIKE CONCAT('%',#{example.mogzName},'%')
+        </if>
     </select>
 
     <update id="modifyOrganization">

@@ -30,7 +30,7 @@ public class MvRoleController {
      * @return
      */
     @RequestMapping("/getRoles")
-    public @ResponseBody BaseTableResponse getRoles(MvRoleModel model) {
+    public @ResponseBody BaseTableResponse getRoles(MvRoleModel model, Long page, Long limit) {
         BaseTableResponse response = new BaseTableResponse();
         // 解决lay ui get方式请求中文乱码问题
         if (model!=null && EmptyUtils.isNotEmpty(model.getMvrlName())) {
@@ -41,9 +41,9 @@ public class MvRoleController {
                 e.printStackTrace();
             }
         }
-        List<MvRoleModel> roles = roleService.getRoles(model);
+        List<MvRoleModel> roles = roleService.getRoles(model,page,limit);
         response.setCode(0);// 成功
-        response.setCount(roles.size());
+        response.setCount(roleService.getRolesCount(model).intValue());
         response.setMsg("");
         response.setData(roles);
         return response;

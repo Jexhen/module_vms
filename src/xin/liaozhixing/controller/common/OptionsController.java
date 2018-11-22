@@ -4,18 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.invoke.empty.Empty;
 import xin.liaozhixing.model.base.BaseOptionsResponse;
 import xin.liaozhixing.model.base.OptionsModel;
 import xin.liaozhixing.model.certification.MvCertificationTypeModel;
 import xin.liaozhixing.model.organization.MvOrganizationModel;
 import xin.liaozhixing.model.role.MvRoleModel;
 import xin.liaozhixing.model.user.MvUserModel;
-import xin.liaozhixing.model.user.MvUserQueryModel;
 import xin.liaozhixing.service.certification.MvCertificationService;
 import xin.liaozhixing.service.organization.MvOrganizationService;
 import xin.liaozhixing.service.role.MvRoleService;
-import xin.liaozhixing.service.role.impl.MvRoleServiceImpl;
 import xin.liaozhixing.service.user.MvUserService;
 import xin.liaozhixing.utils.EmptyUtils;
 
@@ -44,7 +41,7 @@ public class OptionsController {
     @RequestMapping("/getOrganizationOption")
     public @ResponseBody BaseOptionsResponse getOrganizationOption() {
         BaseOptionsResponse response = new BaseOptionsResponse();
-        List<MvOrganizationModel> existOrganizations = organizationService.getOrganizationByExample(new MvOrganizationModel());
+        List<MvOrganizationModel> existOrganizations = organizationService.getOrganizationByExample(new MvOrganizationModel(), null, null);
         List<OptionsModel> options = new ArrayList<>();
         if (EmptyUtils.isNotEmpty(existOrganizations)) {
             for (MvOrganizationModel organization : existOrganizations) {
@@ -65,7 +62,7 @@ public class OptionsController {
     @RequestMapping("/getRoleOption")
     public @ResponseBody BaseOptionsResponse getRoleOption() {
         BaseOptionsResponse response = new BaseOptionsResponse();
-        List<MvRoleModel> existRoles = roleService.getRoles(new MvRoleModel());
+        List<MvRoleModel> existRoles = roleService.getRoles(new MvRoleModel(),null,null);
         List<OptionsModel> options = new ArrayList<>();
         if(EmptyUtils.isNotEmpty(existRoles)) {
             for (MvRoleModel role : existRoles) {

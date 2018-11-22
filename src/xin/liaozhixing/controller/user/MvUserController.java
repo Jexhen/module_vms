@@ -50,7 +50,7 @@ public class MvUserController {
     }
 
     @RequestMapping("/getUsers")
-    public @ResponseBody BaseTableResponse getUsers(MvUserQueryModel user) {
+    public @ResponseBody BaseTableResponse getUsers(MvUserQueryModel user, Long page, Long limit) {
         BaseTableResponse response = new BaseTableResponse();
         if (null != user){
             // 解决layui get提交编码问题
@@ -79,11 +79,11 @@ public class MvUserController {
                 }
             }
         }
-        List<MvUserQueryModel> existUsers = userService.getUserByExample(user);
+        List<MvUserQueryModel> existUsers = userService.getUserByExample(user,page,limit);
         response.setCode(0);
         response.setMsg("");
         response.setData(existUsers);
-        response.setCount(existUsers.size());
+        response.setCount(userService.getUserCountByExample(user).intValue());
         return response;
     }
 
@@ -98,7 +98,7 @@ public class MvUserController {
                             if (user.getMvusRoleId()!=null) {
                                 MvUserQueryModel example = new MvUserQueryModel();
                                 example.setMvusLoginName(user.getMvusName());
-                                List<MvUserQueryModel> existUsers = userService.getUserByExample(example);
+                                List<MvUserQueryModel> existUsers = userService.getUserByExample(example,null,null);
                                 if (EmptyUtils.isNotEmpty(existUsers)) {
                                     response.setSuccess(false);
                                     response.setMessage("登陆名不能重复");
@@ -148,7 +148,7 @@ public class MvUserController {
                             if (user.getMvusRoleId()!=null) {
                                 MvUserQueryModel example = new MvUserQueryModel();
                                 example.setMvusLoginName(user.getMvusName());
-                                List<MvUserQueryModel> existUsers = userService.getUserByExample(example);
+                                List<MvUserQueryModel> existUsers = userService.getUserByExample(example,null,null);
                                 if (EmptyUtils.isNotEmpty(existUsers)) {
                                     response.setSuccess(false);
                                     response.setMessage("登陆名不能重复");

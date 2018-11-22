@@ -82,7 +82,32 @@
             <if test="example.mvusLoginName!=null and example.mvusLoginName!=''">
                 AND mvus.mvus_login_name LIKE CONCAT( '%', #{example.mvusLoginName}, '%' )
             </if>
+            <if test="firstIndex!=null and pageSize!=null">
+                limit #{firstIndex}, #{pageSize}
+            </if>
+    </select>
 
+    <select id="getUserCountByExample" resultType="Long">
+        SELECT
+        count(1)
+        FROM
+        mv_user mvus
+        LEFT JOIN mv_organization mogz ON mogz.mogz_id = mvus.mvus_organization_id
+        LEFT JOIN mv_role mvrl ON mvrl.mvrl_id = mvus.mvus_role_id
+        WHERE
+        1 = 1
+        <if test="example.mvusName!=null and example.mvusName!=''">
+            AND mvus.mvus_name LIKE CONCAT( '%', #{example.mvusName}, '%' )
+        </if>
+        <if test="example.mvusOrganizationName!=null and example.mvusOrganizationName!=''">
+            AND mogz.mogz_name LIKE CONCAT( '%', #{example.mvusOrganizationName}, '%' )
+        </if>
+        <if test="example.mvusRoleName!=null and example.mvusRoleName!=''">
+            AND mvrl.mvrl_name LIKE CONCAT( '%', #{example.mvusRoleName}, '%' )
+        </if>
+        <if test="example.mvusLoginName!=null and example.mvusLoginName!=''">
+            AND mvus.mvus_login_name LIKE CONCAT( '%', #{example.mvusLoginName}, '%' )
+        </if>
     </select>
 
     <insert id="addUser">

@@ -10,7 +10,7 @@ public interface MvUserMapper {
 
     List<MvUserModel> getUser(@Param("user") MvUserModel user);
 
-    List<MvUserQueryModel> getUserByExample(@Param("example") MvUserQueryModel user);
+    List<MvUserQueryModel> getUserByExample(@Param("example") MvUserQueryModel user, @Param("firstIndex") Long firstIndex, @Param("pageSize") Long pageSize);
 
     void addUser(@Param("user") MvUserModel user);
 
@@ -19,4 +19,6 @@ public interface MvUserMapper {
     List<MvUserModel> getAnswerer(@Param("example")MvUserModel user);
 
     void modifyUser(@Param("user")MvUserModel user);
+
+    Long getUserCountByExample(@Param("example") MvUserQueryModel user);
 }

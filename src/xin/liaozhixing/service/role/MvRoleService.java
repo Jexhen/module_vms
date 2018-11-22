@@ -11,7 +11,9 @@ public interface MvRoleService {
      * @param model 查询条件
      * @return
      */
-    List<MvRoleModel> getRoles(MvRoleModel model);
+    List<MvRoleModel> getRoles(MvRoleModel model, Long page, Long limit);
+
+    Long getRolesCount(MvRoleModel example);
 
     /**
      * 修改角色

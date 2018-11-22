@@ -15,8 +15,19 @@ public class MvRoleServiceImpl implements MvRoleService {
     private MvRoleMapper roleMapper;
 
     @Override
-    public List<MvRoleModel> getRoles(MvRoleModel model) {
-        return roleMapper.getRoles(model);
+    public List<MvRoleModel> getRoles(MvRoleModel model, Long page, Long limit) {
+        List<MvRoleModel> list;
+        if (page==null) {
+            list = roleMapper.getRoles(model,null, null);
+        } else {
+            list = roleMapper.getRoles(model,(page-1)* limit, limit);
+        }
+        return list;
+    }
+
+    @Override
+    public Long getRolesCount(MvRoleModel example) {
+        return roleMapper.getRolesCount(example);
     }
 
     @Override

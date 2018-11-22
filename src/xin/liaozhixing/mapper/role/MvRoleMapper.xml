@@ -31,6 +31,26 @@
             <if test="example.mvrlName!=null and example.mvrlName!=''">
                 AND mvrl.mvrl_name like concat('%',#{example.mvrlName},'%')
             </if>
+            <if test="firstIndex!=null and pageSize!=null">
+                limit #{firstIndex}, #{pageSize}
+            </if>
+    </select>
+
+    <select id="getRolesCount" resultType="Long">
+        SELECT
+        count(1)
+        FROM
+        mv_role mvrl
+        LEFT JOIN mv_user c ON mvrl.creator = c.mvus_id
+        LEFT JOIN mv_user m ON mvrl.modifier = m.mvus_id
+        WHERE
+        1 = 1
+        <if test="example.mvrlId != null">
+            AND mvrl.mvrl_id = #{example.mvrlId}
+        </if>
+        <if test="example.mvrlName!=null and example.mvrlName!=''">
+            AND mvrl.mvrl_name like concat('%',#{example.mvrlName},'%')
+        </if>
     </select>
 
     <update id="modifyRole">

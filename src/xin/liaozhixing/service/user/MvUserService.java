@@ -8,7 +8,9 @@ import java.util.List;
 public interface MvUserService {
     List<MvUserModel> getUser(MvUserModel user);
 
-    List<MvUserQueryModel> getUserByExample(MvUserQueryModel user);
+    List<MvUserQueryModel> getUserByExample(MvUserQueryModel user, Long page, Long limit);
+
+    Long getUserCountByExample(MvUserQueryModel user);
 
     void addUser(MvUserModel user);
 

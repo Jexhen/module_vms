@@ -1,10 +1,7 @@
 package xin.liaozhixing.controller.organization;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +13,6 @@ import xin.liaozhixing.service.organization.MvOrganizationService;
 import xin.liaozhixing.utils.EmptyUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.BorderUIResource;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -28,7 +24,7 @@ public class MvOrganizationController {
     private MvOrganizationService service;
 
     @RequestMapping("/getOrganization")
-    public @ResponseBody BaseTableResponse getOrganization(MvOrganizationModel model) {
+    public @ResponseBody BaseTableResponse getOrganization(MvOrganizationModel model, Long page, Long limit) {
         BaseTableResponse response = new BaseTableResponse();
         if (null!=model && EmptyUtils.isNotEmpty(model.getMogzName())) {
             // layui默认以get方式提交请求，中文会出现乱码问题，此处如果有组织名称，则对名称重新编码
@@ -39,11 +35,11 @@ public class MvOrganizationController {
                 e.printStackTrace();
             }
         }
-        List<MvOrganizationModel> existOrganization = service.getOrganizationByExample(model);
+        List<MvOrganizationModel> existOrganization = service.getOrganizationByExample(model,page,limit);
         response.setCode(0);// 成功
         response.setMsg("");
         response.setData(existOrganization);
-        response.setCount(existOrganization.size());
+        response.setCount(service.getOrganizationCountByExample(model).intValue());
         return response;
     }
 
@@ -56,7 +52,7 @@ public class MvOrganizationController {
         } else {
             MvOrganizationModel example = new MvOrganizationModel();
             example.setMogzName(model.getMogzName());
-            List<MvOrganizationModel> existModels = service.getOrganizationByExample(example);
+            List<MvOrganizationModel> existModels = service.getOrganizationByExample(example, null, null);
             if (EmptyUtils.isNotEmpty(existModels)) {
                 response.setSuccess(false);
                 response.setMessage("该组织名称已存在，组织名称不能重复!");
@@ -80,7 +76,7 @@ public class MvOrganizationController {
         } else {
             MvOrganizationModel example = new MvOrganizationModel();
             example.setMogzName(model.getMogzName());
-            List<MvOrganizationModel> existModels = service.getOrganizationByExample(example);
+            List<MvOrganizationModel> existModels = service.getOrganizationByExample(example, null, null);
             if (EmptyUtils.isNotEmpty(existModels)) {
                 response.setSuccess(false);
                 response.setMessage("该组织名称已存在，组织名称不能重复!");

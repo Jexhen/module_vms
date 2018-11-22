@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface MvRoleMapper {
 
-    List<MvRoleModel> getRoles(@Param("example") MvRoleModel example);
+    List<MvRoleModel> getRoles(@Param("example") MvRoleModel example,@Param("firstIndex") Long firstIndex, @Param("pageSize") Long pageSize);
+
+    Long getRolesCount(@Param("example") MvRoleModel example);
 
     void modifyRole(@Param("role") MvRoleModel role);
 
