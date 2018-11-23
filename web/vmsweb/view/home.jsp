@@ -63,9 +63,8 @@
             <li class="layui-nav-item">
                 <a class="name" href="javascript:;"><img src="<%=basePath%>/vmsweb/frame/static/image/code.png" alt="logo">${loginUser.mvusName}</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" href-url="demo/login.html"><i class="layui-icon">&#xe621;</i>登录页</a></dd>
-                    <dd><a href="javascript:;" href-url="demo/map.html"><i class="layui-icon">&#xe621;</i>图表</a></dd>
-                    <dd><a href="/"><i class="layui-icon">&#x1006;</i>退出</a></dd>
+                    <dd><a href="javascript:;" id="modifyPassword" onclick="showPannel()"><i class="layui-icon">&#xe621;</i>修改密码</a></dd>
+                    <dd><a href="${pageContext.request.contextPath}/user/logout.shtml"><i class="layui-icon">&#x1006;</i>退出</a></dd>
                 </dl>
             </li>
         </ul>
@@ -99,16 +98,20 @@
     </div>
     <!-- body -->
     <div class="layui-body my-body">
+
         <div class="layui-tab layui-tab-card my-tab" lay-filter="card" lay-allowClose="true">
+
             <ul class="layui-tab-title">
                 <li class="layui-this" lay-id="1"><span><i class="layui-icon">&#xe638;</i>欢迎页</span></li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe id="iframe" src="demo/welcome.html" frameborder="0"></iframe>
+                    <iframe id="iframe" src="<%=basePath%>/vmsweb/view/welcome/weclome.jsp" frameborder="0"></iframe>
                 </div>
             </div>
+
         </div>
+
     </div>
     <!-- footer -->
     <div class="layui-footer my-footer">
@@ -137,15 +140,63 @@
     </table>
 </div>
 
+<!--表单-->
+<div id="userForm" hidden="hidden">
+
+    <div class="layui-form-item" hidden="hidden">
+        <label class="layui-form-label">登录名</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="loginName" name="loginName" autocomplete="off" value="${loginUser.mvusLoginName}"
+                   class="layui-input" disabled="disabled">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">原密码</label>
+
+        <div class="layui-input-inline">
+            <input type="text" id="originalPassword" name="originalPassword" lay-verify="required" placeholder="请输入原密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">新密码</label>
+
+        <div class="layui-input-inline">
+            <input type="password" id="newPassword" name="newPassword" lay-verify="required" placeholder="请输入新密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">重复输入</label>
+
+        <div class="layui-input-inline">
+            <input type="password" id="reNewPassword" name="reNewPassword" lay-verify="required" placeholder="请重复输入新密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <div class="layui-btn" lay-filter="*" id="btn-submit" onclick="submit()">立即提交</div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="<%=basePath%>/vmsweb/frame/layui/layui.all.js"></script>
 <script type="text/javascript" src="<%=basePath%>/vmsweb/frame/static/js/vip_comm.js"></script>
 <script type="text/javascript">
+    // 操作对象
+    var layer       = layui.layer
+        ,vipNav     = layui.vip_nav
+        ,$          = layui.jquery
+        ,layerIndex = 0;
     layui.use(['layer','vip_nav'], function () {
 
-        // 操作对象
-        var layer       = layui.layer
-            ,vipNav     = layui.vip_nav
-            ,$          = layui.jquery;
+
 
         // 顶部左侧菜单生成 [请求地址,过滤ID,是否展开,携带参数]
         vipNav.top_left('./json/nav_top_left.json','side-top-left',false);
@@ -153,9 +204,55 @@
         vipNav.main('./json/nav_main.json','side-main',true);
 
         // you code ...
+        $('#modifyPassword').click(function () {
 
+        });
+
+        // 表单提交
+        $('#btn-submit').on('click',function () {
+            var user = {};
+            user.loginName = $('#loginName').val();
+            user.originalPassword = $('#originalPassword').val();
+            user.newPassword = $('#newPassword').val();
+            user.reNewPassword = $('#reNewPassword').val();
+            $.ajax({
+               url : '${pageContext.request.contextPath}/user/modifyPassword.shtml',
+               method : 'post',
+               data : user,
+               success : function(result){
+                   layer.alert(result.message);
+               }
+            });
+        });
 
     });
+
+    function showPannel() {
+        $('#originalPassword').val('');
+        $('#newPassword').val('');
+        $('#reNewPassword').val('');
+        layerIndex = layer.open({
+            type: 1,
+            title: '编辑',
+            content: $('#userForm') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+        });
+    }
+
+    function submit() {
+        var user = {};
+        user.loginName = $('#loginName').val();
+        user.originalPassword = $('#originalPassword').val();
+        user.newPassword = $('#newPassword').val();
+        user.reNewPassword = $('#reNewPassword').val();
+        $.ajax({
+            url : '${pageContext.request.contextPath}/user/modifyPassword.shtml',
+            method : 'post',
+            data : user,
+            success : function(result){
+                layer.alert(result.message);
+            }
+        });
+    }
 </script>
 </body>
 </html>

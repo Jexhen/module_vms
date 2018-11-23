@@ -49,6 +49,50 @@ public class MvUserController {
         return path;
     }
 
+    @RequestMapping("/logout")
+    public String userLogout(HttpServletRequest request) {
+        request.getSession().removeAttribute("loginUser");
+        return "redirect:/index.jsp";
+    }
+
+    @RequestMapping("/modifyPassword")
+    public @ResponseBody BaseResponse modifyPassword(String loginName, String originalPassword, String newPassword, String reNewPassword) {
+        BaseResponse response = new BaseResponse();
+        if (EmptyUtils.isNotEmpty(originalPassword)) {
+            if (EmptyUtils.isNotEmpty(newPassword)) {
+                if (EmptyUtils.isNotEmpty(reNewPassword)) {
+                    if (newPassword.equals(reNewPassword)) {
+                        MvUserModel user = new MvUserModel();
+                        user.setMvusLoginName(loginName);
+                        user.setMvusPassword(originalPassword);
+                        List<MvUserModel> existUser = userService.getUser(user);
+                        if (EmptyUtils.isNotEmpty(existUser)) {
+                            userService.updatePassword(existUser.get(0).getMvusId(),newPassword);
+                            response.setSuccess(true);
+                            response.setMessage("修改成功");
+                        } else {
+                            response.setSuccess(false);
+                            response.setMessage("原密码错误");
+                        }
+                    } else {
+                        response.setSuccess(false);
+                        response.setMessage("两次密码不一致");
+                    }
+                } else {
+                    response.setSuccess(false);
+                    response.setMessage("重复密码不能为空");
+                }
+            } else {
+                response.setSuccess(false);
+                response.setMessage("新密码不能为空");
+            }
+        } else {
+            response.setSuccess(false);
+            response.setMessage("原密码不能为空");
+        }
+        return response;
+    }
+
     @RequestMapping("/getUsers")
     public @ResponseBody BaseTableResponse getUsers(MvUserQueryModel user, Long page, Long limit) {
         BaseTableResponse response = new BaseTableResponse();

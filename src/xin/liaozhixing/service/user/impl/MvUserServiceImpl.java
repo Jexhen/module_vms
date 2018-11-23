@@ -55,4 +55,9 @@ public class MvUserServiceImpl implements MvUserService {
     public void modifyUser(MvUserModel user) {
         userMapper.modifyUser(user);
     }
+
+    @Override
+    public void updatePassword(Long mvusId, String newPassword) {
+        userMapper.updatePasssword(mvusId, newPassword);
+    }
 }

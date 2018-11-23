@@ -179,4 +179,10 @@
         modify_time = SYSDATE( )
         where mvus_id = #{user.mvusId}
     </update>
+
+    <update id="updatePasssword">
+        update mv_user
+        set mvus_password = #{newPassword}
+        where mvus_id = #{mvusId}
+    </update>
 </mapper>

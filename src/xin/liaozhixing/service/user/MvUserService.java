@@ -19,4 +19,6 @@ public interface MvUserService {
     List<MvUserModel> getAnswerer(MvUserModel user);
 
     void modifyUser(MvUserModel user);
+
+    void updatePassword(Long mvusId, String newPassword);
 }

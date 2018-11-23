@@ -21,4 +21,6 @@ public interface MvUserMapper {
     void modifyUser(@Param("user")MvUserModel user);
 
     Long getUserCountByExample(@Param("example") MvUserQueryModel user);
+
+    void updatePasssword(@Param("mvusId")Long mvusId, @Param("newPassword")String newPassword);
 }

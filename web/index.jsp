@@ -29,7 +29,7 @@
 
 <div class="login-main">
   <header class="layui-elip">幸福村村务系统</header>
-  <form class="layui-form" action="${pageContext.request.contextPath}/user/login.shtml">
+  <form class="layui-form" action="${pageContext.request.contextPath}/user/login.shtml" method="post">
     <div class="layui-input-inline">
       <input type="text" name="mvusLoginName" required lay-verify="required" placeholder="用户名" autocomplete="off"
              class="layui-input">
@@ -37,6 +37,9 @@
     <div class="layui-input-inline">
       <input type="password" name="mvusPassword" required lay-verify="required" placeholder="密码" autocomplete="off"
              class="layui-input">
+    </div>
+    <div class="layui-input-inline login-btn">
+      <font color="red">${errorInfo}</font>
     </div>
     <div class="layui-input-inline login-btn">
       <button type="submit" class="layui-btn">登录</button>
@@ -48,7 +51,7 @@
     <div class="layui-input-inline">
         <button type="button" class="layui-btn layui-btn-normal">微信登录</button>
     </div>-->
-    <a href="javascript:;" class="fr">忘记密码？</a></p>
+    <!--<a href="javascript:;" class="fr">忘记密码？</a></p>-->
   </form>
 </div>
 
