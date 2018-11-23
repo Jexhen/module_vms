@@ -150,15 +150,12 @@
             mvus.mvus_mobile,
             mvus.mvus_role_id,
             mvrl.mvrl_name,
-            u.mvus_name AS host_name,
             mvus.mvus_login_name,
             mvus.mvus_organization_id,
             mogz.mogz_name
         FROM
             mv_user mvus
             LEFT JOIN mv_role mvrl ON mvus.mvus_role_id = mvrl.mvrl_id
-            LEFT JOIN mv_family mfml ON mvus.mvus_family_id = mfml.mfml_id
-            LEFT JOIN mv_user u ON u.mvus_id = mfml.mfml_host_user_id
             LEFT JOIN mv_organization mogz ON mvus.mvus_organization_id = mogz.mogz_id
         WHERE
             1=1

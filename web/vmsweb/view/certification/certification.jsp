@@ -19,7 +19,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>通知</title>
+    <title>证明</title>
     <link rel="stylesheet" href="<%=basePath%>/vmsweb/frame/layui/css/layui.css">
     <!--<link rel="stylesheet" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">-->
     <link rel="stylesheet" href="<%=basePath%>/vmsweb/frame/static/css/style.css">

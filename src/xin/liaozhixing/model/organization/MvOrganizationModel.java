@@ -1,7 +1,5 @@
 package xin.liaozhixing.model.organization;
 
-import java.util.Date;
-
 public class MvOrganizationModel {
 
     private Long mogzId;
